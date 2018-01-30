@@ -1,14 +1,3 @@
-/* hide/show navigation bar */
-	function hideLeft(){
-		$('#leftMenu').hide()
-		$('#rightArrow').show()
-		$('#rightMain').attr('class','col-md-10 col-md-offset-1 main')
-	}
-	function showLeft(){
-		$('#leftMenu').show()
-		$('#rightArrow').hide()
-		$('#rightMain').attr('class','col-md-10 main')
-	}
 /* Show real password */
 	function seepwd(e){
 		pwd = $('[name="'+e+'"]');
@@ -17,11 +6,11 @@
 			pwd.attr('type','password');
 		};
 	}
-/* Check password when create new staff */
+/* Check password when create new account */
 	function checkpwd(){
-		var pwd = $('[name="pwd"]');
-		var pwdconf =  $('[name="pwdConfirm"]');
-		var btnsubmit = $('[name="newstaff"]');
+		var pwd = $('[name="newpwd"]');
+		var pwdconf =  $('[name="newpwdconf"]');
+		var btnsubmit = $('[name="signup"]');
 		if(pwd.val().length<4){
 			alert("Your password length is too short! Please type more than 3 word");
 			pwd.attr('class','form-control alert-danger');
@@ -35,7 +24,7 @@
 				pwd.attr('class','form-control alert-success');
 				pwdconf.attr('class','form-control alert-success');
 				btnsubmit.attr('disabled',false);
-				checkNewName();
+				checkNewName(); //avoid bypass the disable button :)
 			}else{
 				pwdconf.attr('class','form-control alert-danger');
 				pwdconf.val('');
@@ -43,26 +32,39 @@
 			}
 		}
 	}
-/* Avoid same start/end city */
-	function selectCity(ele){
-		var elename=ele.name=='scity'?'ecity':'scity';
-		$('[name="'+elename+'"] option').attr('disabled',false)
-		$('[name="'+elename+'"] [value="'+ele.value+'"]').attr('disabled',true)
-		if($('[name="'+elename+'"]').val()==ele.value)$('[name="'+elename+'"]').val('')
-	}
-/* Delete ticket */
-	function delTk(id){
-		if(confirm("Do you want to delete the ticket?")){
+/* use ajax to Check newusername if exist */
+	function checkNewName(){
+		$('[name="newusername"]').val($('[name="newusername"]').val().replace(" ",""))
+		if($('[name="newusername"]').val().length>0){
 			$.ajax({
 				url:'ajax.php',
-				data:{"deltkid":id},
-				type:'POST',
+				data:{"usercheck":encodeURI(encodeURI($('[name="newusername"]').val()))},
 				success:function(data){
-					setTimeout(function(){$('#tk'+id).hide()},500)
+					if(data.used=='used'){
+						$('[name="newusername"]').attr('class','form-control alert-danger')
+						$('[name="newusername"]').next().attr('class','seepwd alert-danger')
+						$('[name="newusername"]').next().children('i').attr('class','fa fa-close')
+						$('[name="signup"]').attr('disabled',true)
+					}else if(data.used=='ok'){
+						$('[name="newusername"]').attr('class','form-control alert-success')
+						$('[name="newusername"]').next().attr('class','seepwd alert-success')
+						$('[name="newusername"]').next().children('i').attr('class','fa fa-check')
+						$('[name="signup"]').attr('disabled',false)
+					}else if(data.used=='empty'){
+						$('[name="newusername"]').attr('class','form-control')
+						$('[name="newusername"]').next().attr('class','seepwd hidden')
+						$('[name="signup"]').attr('disabled',true)
+					}
 				},
+				type:'POST',
+				dataType:'json',
 				beforeSend:function(){
-					$('#tk'+id).html("<th colspan=8><center><a class='fa fa-refresh fa-spin nodeco'></a></center></th>")
+					$('[name="newusername"]').next().attr('class','seepwd btn-warning')
+					$('[name="newusername"]').next().children('i').attr('class','fa fa-spinner fa-spin')
 				}
-			})
-		}	
+			});
+		}else{
+			$('[name="newusername"]').attr('class','form-control')
+			$('[name="newusername"]').next().attr('class','seepwd hidden')
+		}
 	}

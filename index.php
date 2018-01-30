@@ -1,6 +1,8 @@
 <?php
 	session_start();
 	require "inc/db.php";
+	//test
+	$_SESSION['userid'] = 1;
 	/*Log out*/
 	if(isset($_GET['logout'])){
 		unset($_SESSION['user']);
@@ -18,7 +20,7 @@
 	include "inc/header.php";
 	include "inc/nav.php";
 	if($page=='home'){
-		include "app/home.php";
+		include "app/foodall.php";
 	}else if($page=='1'){
 		//include "app/1.php";
 	}else if($page=='test'){

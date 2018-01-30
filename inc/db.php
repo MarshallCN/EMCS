@@ -4,7 +4,7 @@
 		$this->conn=$this->getConn();
 	}
 	function getConn(){
-        $conn =  mysqli_connect('localhost','root','',"train");
+        $conn =  mysqli_connect('localhost','root','',"myfoods");
 		mysqli_query($conn,"set names gbk");
         return $conn;
     }

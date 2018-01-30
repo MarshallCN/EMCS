@@ -15,40 +15,61 @@
 		<div class="collapse navbar-collapse" id="navbar-collapse">	
 					<div class="panel-group" id="inner_menu">
 						<div class="panel panel-default">
+							<div class="panel-heading" onclick="$('#menu_addfood')[0].click()">
+								<a class="panel-title menuLabel" href='####' id="menu_addfood">
+								<span class="fa fa-plus"></span> Add Food
+								</a>
+							</div>
 							<div class="panel-heading" onclick="$('#menu1')[0].click()">
-								<a class="panel-title collapsed menuLabel" data-toggle="collapse" data-parent="#inner_menu" id="menu1" href="#panel-element-ticket">
+								<a class="panel-title collapsed menuLabel" data-toggle="collapse" data-parent="#inner_menu" id="menu1" href="#panel-element-storage">
 									Food Storage
 								</a><span class="caret"></span>
 								<span class="icon_dot"></span>
 							</div>
-							<div id="panel-element-ticket" class="panel-collapse collapse">
-								<a href="index.php?page=ticket&action=new" class="menuLabel">
+							<div id="panel-element-storage" class="panel-collapse collapse">
+								<a href="####" class="menuLabel">
+									<div class="panel-body">All</div>
+								</a>
+								<a href="####" class="menuLabel">
 									<div class="panel-body">Refrigerator
 										<span class="icon_notification" draggable="true" style="width: 28px;"><span class="icon_num">12</span></span>
 									</div>
 								</a>
-								<a href="index.php?page=ticket&action=all" class="menuLabel">
+								<a href="####" class="menuLabel">
 									<div class="panel-body">Freezing Chamber</div>
 								</a>
-								<a href="index.php?page=ticket&action=day" class="menuLabel">
+								<a href="####" class="menuLabel">
 									<div class="panel-body">Pantry</div>
+								</a>
+								<a href="####" class="menuLabel">
+									<div class="panel-body">Other</div>
+								</a>
+							</div>
+							<div class="panel-heading" onclick="$('#menu_shopping')[0].click()">
+								<a class="panel-title menuLabel" href='####' id="menu_shopping">
+									Shopping List
+								</a>
+							</div>
+							<div class="panel-heading" onclick="$('#menu_mealplan')[0].click()">
+								<a class="panel-title menuLabel" href='####' id="menu_mealplan">
+									Meal Plan
 								</a>
 							</div>
 							<div class="panel-heading"  onclick="$('#menu2')[0].click()">
 								<a class="panel-title menuLabel" data-toggle="collapse" data-parent="#inner_menu" id="menu2" href="#panel-element-setting">
-									Setting
+									<?php echo $_SESSION['user'];?>'s Setting
 								</a><span class="caret"></span>
 								<span class="icon_dot"></span>
 							</div>
 								<div id="panel-element-setting" class="panel-collapse collapse">
 									<a href="####" class="menuLabel">
-										<div class="panel-body">System Option</div>
+										<div class="panel-body">System Preferences</div>
 									</a>
 									<a href="####" class="menuLabel">
-										<div class="panel-body">My Profile</div>
+										<div class="panel-body">My Account</div>
 									</a>
 								</div>
-							
+
 							<div class="panel-heading" onclick="$('#menu_logout')[0].click()">
 								<a class="panel-title menuLabel" href='index.php?logout' id="menu_logout">
 									Log Out
@@ -70,7 +91,7 @@
 		$('.left_wraps').hide();
 		$(ele).attr('onclick','showMenu(this)');
 		$(ele).attr('class','fa fa-3x fa-arrow-circle-right icona hidden-xs');
-		$('.main-contain').attr('class','col-sm-10 col-sm-offset-1 main-contain')
+		$('.main-contain').attr('class','col-md-10 col-md-offset-1 main-contain')
 		
 	}
 	function showMenu(ele){

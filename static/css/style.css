@@ -116,6 +116,14 @@ h1 {
     border-radius: 50%;
     box-shadow: 1px 1px 5px 0px #515151;
 }
+.main-contain{
+	min-height:90%;
+	background: #f8f8f8;
+    border-radius: 5px;
+    margin-top: 20px;
+	padding: 20px;
+    box-shadow: 2px 2px 10px 1px #333;
+}
 #navbar-collapse{
 	padding:0px;
 	border-color: #333;
@@ -125,11 +133,24 @@ h1 {
 }
 	/*small header*/
 @media (max-width: 768px){
-	
+	.mynav{
+		position:fixed;
+		width:100%;
+		z-index:999;
+	}
+	.main-contain{
+		margin:60px 10px 0 10px;
+	}
+	.loginform{
+		border-bottom:1px solid #333;
+	}
+	.logmain{
+		padding-bottom: 10px;
+	}
 }
 	/*big header*/
 @media (min-width: 768px){
-	.nav{
+	.mynav{
 		height:100%;
 		-webkit-animation: move-in-left cubic-bezier(.22,.58,.12,.98) .4s;
 		animation: move-in-left cubic-bezier(.22,.58,.12,.98) .4s;
@@ -144,6 +165,15 @@ h1 {
 	}
 	.main-contain_left{
 		width:73%;
+	}
+	.loginform{
+		border-right:1px solid #333;
+	}
+	.logmain{
+		padding-bottom: 30px;
+	}
+	.btnlogin{
+	    margin-top: 74px;
 	}
 }
 	/*hide menu button*/
@@ -165,35 +195,28 @@ h1 {
 	text-decoration:none;
 	color:#8a6d3b;
 }
- 
-.main-contain{
-	min-height:90%;
-	background: #fff;
-    border-radius: 5px;
-    margin-top: 20px;
-	padding: 20px;
-    box-shadow: 2px 2px 10px 1px #333;
-}
 
 /**Login Page*/
 .loginTit{
 	color:#fff;
-	margin-top: 0;
+	margin-top: 20px;
 }
 .seepwd{
 	position:absolute;
 	margin-top: -27px;
-	margin-left: 90%;
+	right: 20px;
 	cursor:pointer;
 }
 .logmain{
 	background:#fff;
 	border-radius: 5px;
 	box-shadow: 2px 3px 9px 1px black;
-	min-height: 300px;
+	padding-top: 10px;
+	margin-top: 20px;
 }
 
-/**Home Page*/
+
+/**Myfood Page*/
 .helptip{
     position: absolute;
     height: 60px;
@@ -211,6 +234,22 @@ h1 {
 .icon_ques:focus,
 .icon_ques:hover{
 	text-decoration:none;
+}
+.myfoodblock{
+	height: 160px;
+    background: #ffffff;
+	margin: 6px 0 6px 0;
+	padding: 0 8px 0 0;
+
+}
+.myfoodpic{
+	background:red;
+	height: 100%;
+}
+.myfoodtbl{
+	height: 100%;
+	margin:0px;
+	padding:0px;
 }
 @keyframes move-in-left{
 	0% {

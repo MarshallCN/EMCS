@@ -1,8 +1,6 @@
 <?php
 	session_start();
 	require "inc/db.php";
-	//test
-	$_SESSION['userid'] = 1;
 	/*Log out*/
 	if(isset($_GET['logout'])){
 		unset($_SESSION['user']);
@@ -14,12 +12,12 @@
 	if(!isset($_SESSION['userid'])){
 		header("Location:login.php");
 	}
-	$page = isset($_GET['page']) ? $_GET['page']:'home';
+	$page = isset($_GET['page']) ? $_GET['page']:'allfood';
 	
 	/*Main Pages*/
 	include "inc/header.php";
 	include "inc/nav.php";
-	if($page=='home'){
+	if($page=='allfood'){
 		include "app/foodall.php";
 	}else if($page=='1'){
 		//include "app/1.php";

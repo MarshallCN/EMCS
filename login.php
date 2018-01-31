@@ -13,7 +13,7 @@
 				<h2 class="text-center">Log In</h2>
 				<div class="form-group">
 					<label>Username</label>
-					<input type="text" class="form-control" name='username' maxlength=20 placeholder='Username' required/>
+					<input type="text" class="form-control" name='username' maxlength=20 placeholder='Marshall' required/>
 				</div>
 				<div class="form-group">
 					 <label>Password </label>
@@ -94,7 +94,9 @@
 				$pwdhash = MD5($password.$salt); //MD5 of pwd+salt
 				$sql_newcus = "INSERT INTO user (username, pwdhash, salt_code) VALUES('$username','$pwdhash','$salt')";
 				$mysql->query($sql_newcus);
-				echo"<script type='text/javascript'>alert('Sign up Successfully');location='login.php'</script>";
+				$_SESSION['user'] = $username;
+				$_SESSION['userid'] = mysqli_insert_id($mysql->conn);
+				echo"<script type='text/javascript'>alert('Sign up Successfully".$_SESSION['userid']."');location='index.php'</script>";
 			}
 		}
 	}  

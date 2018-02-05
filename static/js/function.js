@@ -68,3 +68,17 @@
 			$('[name="newusername"]').next().attr('class','seepwd hidden')
 		}
 	}
+/* Vol Range */
+	function volrange(ele,id){
+		vol = $(ele).val()
+		$('#'+id).html(vol)
+	}
+/* Date must be later than tomorrow */
+	function checkDate(ele){
+		reqDate = ele.valueAsDate
+		reqDate = reqDate.setDate(reqDate.getDate())
+		if(reqDate < new Date().getTime()){
+			alert("The Expiration date must be later than today");
+			ele.valueAsDate = new Date(new Date().setDate(new Date().getDate()))
+		}
+	}

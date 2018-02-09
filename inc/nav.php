@@ -16,7 +16,7 @@
 					<div class="panel-group" id="inner_menu">
 						<div class="panel panel-default">
 							<div class="panel-heading" onclick="$('#menu_addfood')[0].click()">
-								<a class="panel-title menuLabel" href='####' id="menu_addfood">
+								<a class="panel-title menuLabel" href='index.php?page=addfood' id="menu_addfood">
 								<span class="fa fa-plus"></span> Add Food
 								</a>
 							</div>
@@ -27,31 +27,31 @@
 								<span class="icon_dot"></span>
 							</div>
 							<div id="panel-element-storage" class="panel-collapse collapse">
-								<a href="####" class="menuLabel">
+								<a href="index.php?page=food&storage=all" class="menuLabel">
 									<div class="panel-body">All</div>
 								</a>
-								<a href="####" class="menuLabel">
+								<a href="index.php?page=food&storage=refrigerator" class="menuLabel">
 									<div class="panel-body">Refrigerator
 										<span class="icon_notification" draggable="true" style="width: 28px;"><span class="icon_num">12</span></span>
 									</div>
 								</a>
-								<a href="####" class="menuLabel">
+								<a href="index.php?page=food&storage=freezing" class="menuLabel">
 									<div class="panel-body">Freezing Chamber</div>
 								</a>
-								<a href="####" class="menuLabel">
+								<a href="index.php?page=food&storage=pantry" class="menuLabel">
 									<div class="panel-body">Pantry</div>
 								</a>
-								<a href="####" class="menuLabel">
+								<a href="index.php?page=food&storage=other" class="menuLabel">
 									<div class="panel-body">Other</div>
 								</a>
 							</div>
 							<div class="panel-heading" onclick="$('#menu_shopping')[0].click()">
-								<a class="panel-title menuLabel" href='####' id="menu_shopping">
+								<a class="panel-title menuLabel" href="index.php?page=shopping" id="menu_shopping">
 									Shopping List
 								</a>
 							</div>
 							<div class="panel-heading" onclick="$('#menu_mealplan')[0].click()">
-								<a class="panel-title menuLabel" href='####' id="menu_mealplan">
+								<a class="panel-title menuLabel" href='index.php?page=plan' id="menu_mealplan">
 									Meal Plan
 								</a>
 							</div>
@@ -62,10 +62,10 @@
 								<span class="icon_dot"></span>
 							</div>
 								<div id="panel-element-setting" class="panel-collapse collapse">
-									<a href="####" class="menuLabel">
+									<a href="index.php?page=config" class="menuLabel">
 										<div class="panel-body">System Preferences</div>
 									</a>
-									<a href="####" class="menuLabel">
+									<a href="index.php?page=account" class="menuLabel">
 										<div class="panel-body">My Account</div>
 									</a>
 								</div>
@@ -103,4 +103,7 @@
 	}
 </script>
 <div class='col-sm-8 main-contain main-contain_left'>
-
+<?php
+	echo '<i class="fa fa-home"></i>&nbsp;>&nbsp;'.ucwords(inputCheck($page)).'&nbsp;>&nbsp;';
+	echo isset($_GET['storage']) ? $_GET['storage']:'';
+?>

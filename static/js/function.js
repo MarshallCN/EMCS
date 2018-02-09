@@ -82,3 +82,28 @@
 			ele.valueAsDate = new Date(new Date().setDate(new Date().getDate()))
 		}
 	}
+/* Remove Food */
+	function removefood(id){
+		$.ajax({
+			url:'ajax.php',
+			data:{"delfoodid":id},
+			success:function(data){
+				setTimeout(function(){$('#food'+id).hide(300,'swing')},200)
+			},
+			type:'POST',
+			dataType:'json',
+			beforeSend:function(){
+				$('#food'+id).html('<center><i class="fa fa-refresh fa-spin fa-5x"></i></center>')
+			}
+		});
+		
+	}
+/* Check Shopping List */
+	function checkshop(ele){
+		ele.className = 'fa fa-check-circle-o fa-3x';
+		ele.onclick = function(){
+			this.className = 'fa fa-circle-o fa-3x';
+			this.onclick = function(){checkshop(this)}
+		}
+	}
+	

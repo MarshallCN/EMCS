@@ -11,5 +11,10 @@
 		}
 		$resp = ['used'=>$isNameUsed];
 		echo json_encode($resp);
+	}else if(isset($_POST['delfoodid'])){
+		//$sql= "DELETE FROM";
+		//$mysql->query($sql);
+		$resp = ['delid'=>$_POST['delfoodid']];
+		echo json_encode($resp);
 	}
 ?>

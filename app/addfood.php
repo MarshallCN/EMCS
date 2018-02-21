@@ -1,4 +1,4 @@
-<form method="post">   
+<form method="post" action="index.php?page=food&storage=all">   
 					<div class="form-group">
 						<label>Food Name</label>
 						<input type="text" class="form-control" name='fname' placeholder="Food Name" required>
@@ -7,7 +7,13 @@
 						<label>Food Category</label>
 						<select class="form-control" name='fcate' required>
 							<option>-</option>
-							<option value='1'>1</option>
+				<?php
+					$sql_allfoodtype = 'SELECT a.id,c.category_name,name,htmlid from allfood AS a INNER JOIN category AS c ON a.category_id=c.id ORDER BY name';
+					$res = $mysql->query($sql_allfoodtype);
+					while($row = $mysql->fetch($res)){
+						echo "<option value=".$row['id'].">".$row['name']."-".$row['category_name']."</option>";
+					}
+				?>
 						</select>
 					</div>
 					<div class="form-group col-xs-6">
@@ -23,9 +29,22 @@
 						</select>
 					</div>
 					<div class="form-group">
+						<label>Storage Place <a href='javascript:void(0);' class="glyphicon glyphicon-question-sign icon_ques"></a>
+						</label>
+						<select class="form-control" name='place' required>
+						<?php
+							$sql_splace = "SELECT * FROM storage_method";
+							$res = $mysql->query($sql_splace);
+							while($row = $mysql->fetch($res)){
+								echo "<option value='".$row['id']."'>".$row['place']." - ".$row['method']."</option>";
+							}
+						?>
+						</select>
+					</div>
+					<div class="form-group">
 						<label>Once Opened Used Within...</label>
 						<div class="input-group">
-							<input type="number" class="form-control" name='expopen'>
+							<input type="number" class="form-control" name='expopen' disabled>
 							<div class="input-group-btn">
 								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 									Days 
@@ -43,13 +62,13 @@
 					<label>Volume Rate: <span id="volrate">100</span>%</label>
 					<div class="range">
 						<span class="label label-primary">0%</span>
-						<input type="range" min="0" max="100" value="100" oninput="volrange(this,'volrate')">
+						<input type="range" min="0" max="100" value="100" oninput="volrange(this,'volrate')" name='vol'>
 						<span class="label label-primary">100%</span>
 					</div>
 					</div>
 					<div class="form-group">
 						<label for="img">Upload a Cover Picture</label>
-						<input type="file" id="img" class="form-control" onchange="fileSelected('addfood','foodupload')"/>
+						<input type="file" id="img" class="form-control" onchange="fileSelected('addfood','foodupload','<?php echo $_SESSION['userid'];?>')"/>
 						<div class='progress progress-striped active' id='upres' style="display:none"><label style="position:absolute;width:90%;text-align:center"></label>
 							<div class="progress-bar progress-bar-success"></div>
 						</div>

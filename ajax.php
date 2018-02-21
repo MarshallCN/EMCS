@@ -21,7 +21,7 @@
 	}
 	/*Upload picture*/
 	if(isset($_FILES['img'])&&isset($_POST['path'])){
-		$filename = 'file'.date('Y_m_d_h_i_s',time()).'.jpg';
+		$filename = $_POST['uid'].'_file'.date('Y_m_d_h_i_s',time()).'.jpg';
 		$path = $_POST['path'];
 		if(is_uploaded_file($_FILES['img']['tmp_name'])){
 			if(move_uploaded_file($_FILES['img']['tmp_name'], "./static/img/$path/$filename")){

@@ -107,7 +107,7 @@
 		}
 	}
 /* upload picture function */
-	function fileSelected(page,path) {
+	function fileSelected(page,path,uid) {
 		file = $('#img')[0].files[0];
 		if (file) {
 			if (file.size > 20*1024*1024){
@@ -122,6 +122,7 @@
 					var data = new FormData();
 					data.append("img",file)
 					data.append("path",path)
+					data.append("uid",uid)
 					var xhr = new XMLHttpRequest();
 					xhr.onreadystatechange = function(){
 						if(xhr.readyState==4 && xhr.status==200){

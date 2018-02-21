@@ -233,3 +233,18 @@
 		</div>					
 	</div>				
 </div>
+<?php
+//add new food into storage	
+	if(isset($_POST['fname'])){
+		$foodname = inputCheck($_POST['fname']);
+		$foodcate = inputCheck($_POST['fcate']);
+		$exp = inputCheck($_POST['exp']);
+		$exptype = inputCheck($_POST['exptype']);
+		$vol = inputCheck($_POST['vol']);
+		$place = inputCheck($_POST['place']);
+		$imgname = inputCheck($_POST['imgname']);
+		$sql_addfood = "INSERT foodtest VALUE ('','$foodname','$foodcate','$exptype','$exp','$vol',NOW(),'$place','$imgname')";
+		$mysql->query($sql_addfood);
+		echo "<script>location.href= confirm('Add food to storage successfully!\\nDo you want to continue adding food?')?'index.php?page=addfood':'index.php?page=food&storage=all'</script>";
+	}
+?>

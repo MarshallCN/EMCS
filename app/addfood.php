@@ -40,13 +40,22 @@
 						</div>
 					</div>
 					<div class="form-group">
-					<label for="minsup">Volume Rate: <span id="volrate">100</span>%</label>
+					<label>Volume Rate: <span id="volrate">100</span>%</label>
 					<div class="range">
 						<span class="label label-primary">0%</span>
-						<input type="range" id="minsup" min="0" max="100" value="100" oninput="volrange(this,'volrate')">
+						<input type="range" min="0" max="100" value="100" oninput="volrange(this,'volrate')">
 						<span class="label label-primary">100%</span>
 					</div>
-				</div>
+					</div>
+					<div class="form-group">
+						<label for="img">Upload a Cover Picture</label>
+						<input type="file" id="img" class="form-control" onchange="fileSelected('addfood','foodupload')"/>
+						<div class='progress progress-striped active' id='upres' style="display:none"><label style="position:absolute;width:90%;text-align:center"></label>
+							<div class="progress-bar progress-bar-success"></div>
+						</div>
+						<img src='' style='display:none;' id='thumbnail' height=100>
+						<input type="hidden" name='imgname' id="imgname">
+					</div>
 					<div>	
 						<button class='btn btn-primary btn-block'>Submit</button>
 					</div>

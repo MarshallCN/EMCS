@@ -106,4 +106,48 @@
 			this.onclick = function(){checkshop(this)}
 		}
 	}
+/* upload picture function */
+	function fileSelected(page,path) {
+		file = $('#img')[0].files[0];
+		if (file) {
+			if (file.size > 20*1024*1024){
+				alert('Warning: Picture must be less than 20 MB!');
+				window.location.href='index.php?page='+page;
+			}else{
+				var ext=file.name.substring(file.name.lastIndexOf('.'),file.name.length).toUpperCase();
+				if(ext!='.BMP'&&ext!='.GIF'&&ext!='.JPG'&&ext!='.JPEG'&&ext!='.PNG'){
+					alert('Please upload image file!(png,gif,jpg,bmp)');
+					window.location.href='index.php?page='+page;
+				}else{
+					var data = new FormData();
+					data.append("img",file)
+					data.append("path",path)
+					var xhr = new XMLHttpRequest();
+					xhr.onreadystatechange = function(){
+						if(xhr.readyState==4 && xhr.status==200){
+							 resp=JSON.parse(xhr.responseText);
+							 switch(resp.status){
+								case 0:filename = $('#imgname').val(resp.filename);break; 
+								case 1:alert('Upload Fail');break;
+								case 2:alert('No File');break;
+							 }
+							 $('#thumbnail').attr('src',window.URL.createObjectURL($('#img')[0].files[0]))
+							 $('#thumbnail').show();
+						}
+					}
+					xhr.upload.onprogress = function(evt){
+						//console.log(evt)
+						var loaded = evt.loaded;
+						var tot = evt.total;
+						var per = Math.floor(100*loaded/tot);
+						$('#upres').show();
+						$('#upres label').html(per+'%')
+						$('#upres div').css('width',per+'%')
+					}
+					xhr.open('post','ajax.php');
+					xhr.send(data)
+				}
+			}
+		}
+	}
 	

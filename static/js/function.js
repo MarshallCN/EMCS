@@ -84,19 +84,40 @@
 	}
 /* Remove Food */
 	function removefood(id){
+		if(confirm("Do you want to remove this food from your storage?")){
+			$.ajax({
+				url:'ajax.php',
+				data:{"delfoodid":id},
+				success:function(data){
+					setTimeout(function(){$('#food'+id).hide(300,'swing')},200)
+				},
+				type:'POST',
+				dataType:'json',
+				beforeSend:function(){
+					$('#food'+id).html('<center><i class="fa fa-refresh fa-spin fa-5x"></i></center>')
+				}
+			});
+		}
+		
+	}
+/* Edit Food */
+	function editfood(id){
 		$.ajax({
 			url:'ajax.php',
-			data:{"delfoodid":id},
+			data:{"editfoodid":id},
 			success:function(data){
-				setTimeout(function(){$('#food'+id).hide(300,'swing')},200)
+				$('[name=fname]').val(data.name)
+				$('[name=fcate]').val(data.foodcate)
+				$('[name=exp]').val(data.exp)
+				$('[name=exptype]').val(data.exp_type)
+				$('[name=place]').val(data.place)
+				$('[name=imgname]').val(data.picpath)
+				$('[name=vol]').val(data.vol)
+				$('[name=editfoodid]').val(data.id)
 			},
 			type:'POST',
-			dataType:'json',
-			beforeSend:function(){
-				$('#food'+id).html('<center><i class="fa fa-refresh fa-spin fa-5x"></i></center>')
-			}
+			dataType:'json'
 		});
-		
 	}
 /* Check Shopping List */
 	function checkshop(ele){

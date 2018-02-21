@@ -14,10 +14,19 @@
 	}
 	/*Delete food*/	
 	if(isset($_POST['delfoodid'])){
-		//$sql= "DELETE FROM";
-		//$mysql->query($sql);
+		$delid = inputCheck($_POST['delfoodid']);
+		$sql= "DELETE FROM foodtest WHERE id = $delid";
+		$mysql->query($sql);
 		$resp = ['delid'=>$_POST['delfoodid']];
 		echo json_encode($resp);
+	}
+	/*Edit food*/	
+	if(isset($_POST['editfoodid'])){
+		$editid = inputCheck($_POST['editfoodid']);
+		$sql= "SELECT * FROM foodtest WHERE id = $editid";
+		$res = $mysql->query($sql);
+		$foodinfo = $mysql->fetch($res);
+		echo json_encode($foodinfo);
 	}
 	/*Upload picture*/
 	if(isset($_FILES['img'])&&isset($_POST['path'])){

@@ -1,4 +1,4 @@
-<form method="post" action="index.php?page=food&storage=all">   
+				<form method="post" action="index.php?page=food&storage=all">   
 					<div class="form-group">
 						<label>Food Name</label>
 						<input type="text" class="form-control" name='fname' placeholder="Food Name" required>
@@ -76,6 +76,6 @@
 						<input type="hidden" name='imgname' id="imgname">
 					</div>
 					<div>	
-						<button class='btn btn-primary btn-block'>Submit</button>
+						<button class='btn btn-primary btn-block' name="newfood">Submit</button>
 					</div>
 				</form>

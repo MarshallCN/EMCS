@@ -30,8 +30,10 @@
 						break;
 				}
 					
+			}else{
+				$storeplace="1=1";
 			}
-			$sql_myfood = "SELECT *,TIMESTAMPDIFF(DAY,NOW(),exp) AS days FROM foodtest WHERE userid = ".$_SESSION['userid']." AND ".$storeplace;
+			$sql_myfood = "SELECT *,TIMESTAMPDIFF(DAY,NOW(),exp) AS days FROM food WHERE userid = ".$_SESSION['userid']." AND ".$storeplace;
 			$res = $mysql->query($sql_myfood);
 			while($row = $mysql->fetch($res)){
 		?>
@@ -115,6 +117,8 @@
 			</table>
 		</div>
 	</div>
+	
+<!-- Edit Food ModalDialog -->	
 <div class="modal" id="modal-editfood">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -135,12 +139,25 @@
 						<select class="form-control" name='fcate' required>
 							<option>-</option>
 				<?php
-					$sql_allfoodtype = 'SELECT a.id,c.category_name,name,htmlid from allfood AS a INNER JOIN category AS c ON a.category_id=c.id ORDER BY name';
+					$sql_allfoodtype = 'SELECT a.id,c.category_name,name,html_id from allfood AS a INNER JOIN category AS c ON a.category_id=c.id ORDER BY name';
 					$res = $mysql->query($sql_allfoodtype);
 					while($row = $mysql->fetch($res)){
 						echo "<option value=".$row['id'].">".$row['name']."-".$row['category_name']."</option>";
 					}
 				?>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>Storage Place <a href='javascript:void(0);' class="glyphicon glyphicon-question-sign icon_ques"></a>
+						</label>
+						<select class="form-control" name='place' required>
+						<?php
+							$sql_splace = "SELECT * FROM storage_method order by method";
+							$res = $mysql->query($sql_splace);
+							while($row = $mysql->fetch($res)){
+								echo "<option value='".$row['id']."'>".$row['place']." - ".$row['method']."</option>";
+							}
+						?>
 						</select>
 					</div>
 					<div class="form-group col-xs-6">
@@ -155,32 +172,28 @@
 							<option value='1'>Best Before</option>
 						</select>
 					</div>
-					<div class="form-group">
-						<label>Storage Place <a href='javascript:void(0);' class="glyphicon glyphicon-question-sign icon_ques"></a>
+					<div class="form-group col-xs-6">
+						<label>Food Status
 						</label>
-						<select class="form-control" name='place' required>
-						<?php
-							$sql_splace = "SELECT * FROM storage_method";
-							$res = $mysql->query($sql_splace);
-							while($row = $mysql->fetch($res)){
-								echo "<option value='".$row['id']."'>".$row['place']." - ".$row['method']."</option>";
-							}
-						?>
+						<select class="form-control" name='status'>
+							<option value='0'>Unopened</option>
+							<option value='1'>Opened</option>
 						</select>
 					</div>
-					<div class="form-group">
+					<div class="form-group col-xs-6">
 						<label>Once Opened Used Within...</label>
 						<div class="input-group">
-							<input type="number" class="form-control" name='expopen' disabled>
+							<input type="number" class="form-control" name='expopen' oninput="onlynum(this)">
+							<input type="hidden" name='expopenunit' value="Days">
 							<div class="input-group-btn">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+								<button type="button" class="btn btn-default dropdown-toggle" id="expbtn" data-toggle="dropdown">
 									Days 
 									<span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu pull-right">
-									<li><a>Days</a></li>
-									<li><a>Weeks</a></li>
-									<li><a>Months</a></li>
+									<li><a onclick="changeunit(this)">Days</a></li>
+									<li><a onclick="changeunit(this)">Weeks</a></li>
+									<li><a onclick="changeunit(this)">Months</a></li>
 								</ul>
 							</div>
 						</div>
@@ -221,14 +234,30 @@
 		$exptype = inputCheck($_POST['exptype']);
 		$vol = inputCheck($_POST['vol']);
 		$place = inputCheck($_POST['place']);
+		$expopen = inputCheck($_POST['expopen']);
+		$expopenunit = inputCheck($_POST['expopenunit']);
 		$imgname = inputCheck($_POST['imgname']);
+		$opendate = $_POST['status']==1 ? 'NOW()':'NULL';
+		switch($expopenunit){
+			case "Days": $unit = 1;break;
+			case "Weeks": $unit = 7;break;
+			case "Months": $unit =  30;break;
+		}
+		$opendays = $unit * $expopen;
 		if(isset($_POST['newfood'])){
-			$sql_addfood = "INSERT foodtest VALUE ('','$foodname','$foodcate','$exptype','$exp','$vol',NOW(),'$place','$imgname','{$_SESSION['userid']}')";
+			$sql_addfood = "INSERT food VALUE ('','$foodname','$foodcate','$exptype','$exp','$vol',NOW(),$opendate,'$opendays','$place','$imgname','{$_SESSION['userid']}')";
 			$mysql->query($sql_addfood);
-			echo "<script>location.href= confirm('Add food to storage successfully!\\nDo you want to continue adding food?')?'index.php?page=addfood':'index.php?page=food&storage=all'</script>";
+			if(isset($_POST['spitemid'])){
+				$rmitemid = inputCheck($_POST['spitemid']);
+				$sql = "DELETE FROM shopping WHERE id = $rmitemid";
+				$mysql->query($sql);
+				echo "<script>location.href= confirm('Move food to storage successfully!\\nDo you want to continue Editing Shopping List?')?'index.php?page=shopping':'index.php?page=food&storage=all'</script>";
+			}else{
+				echo "<script>location.href= confirm('Add food to storage successfully!\\nDo you want to continue adding food?')?'index.php?page=addfood':'index.php?page=food&storage=all'</script>";
+			}
 		}elseif(isset($_POST['editfoodid'])){
 			$editid = inputCheck($_POST['editfoodid']);
-			$sql_editfood = "UPDATE foodtest SET name='$foodname',foodcate='$foodcate',exp_type='$exptype',exp='$exp',vol='$vol',place='$place',picpath='$imgname' WHERE id = $editid";
+			$sql_editfood = "UPDATE food SET name='$foodname',allfood_id='$foodcate',exp_type='$exptype',exp='$exp',vol='$vol',open_date=$opendate,openday='$opendays',place='$place',picpath='$imgname' WHERE id = $editid";
 			$mysql->query($sql_editfood);
 			echo "<script>location.href='index.php?page=food&storage=all'</script>";
 		}

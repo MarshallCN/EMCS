@@ -13,12 +13,12 @@
     <link href="./static/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">	
 	<script src="./static/lib/jquery.min.js"></script>
 	<script src="./static/lib/Chart.bundle.js"></script>
-	<script src="./static/lib/bootstrap/js/bootstrap.min.js"></script>
+	<!--<script src="./static/lib/bootstrap/js/bootstrap.min.js"></script>-->
 	<!-- Online lib files -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
 	<script src="https://cdn.bootcss.com/Chart.js/2.5.0/Chart.bundle.min.js"></script>
 	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>

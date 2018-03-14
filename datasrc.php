@@ -1,5 +1,6 @@
 <table>
 <?php
+die(); //data acquiring and fixing done
 include "inc/db.php";
 $vege = array(
 ["categoty"=>'vegetables',"url"=>'http://www.eatbydate.com/vegetables/fresh-vegetables/asparagus/',"name"=>'Asparagus'],
@@ -460,9 +461,21 @@ function getHtml($url){
 	$output = ob_get_contents(); 
 	ob_end_clean(); 	
 	$start = stripos($output,'<table id="unopened">');
-	$len = stripos($output,'</tbody></table>')-$start;
-	return substr($output,$start+29,$len-29);
+	$len = stripos($output,'</tbody>')-$start;
+	//$len = stripos($output,'</tbody></table>')-$start;
+	return substr($output,$start+33,$len-29);
+	//return substr($output,$start+29,$len-29);
 }
+$fixid = [56,103,151,160,173,174,175];
+$fixid1 = [35,102,105,173];
+//$res = $mysql->Query("SELECT distinct html_id,url from allfood where html_id in(56,103,151,160,173,174,175)");
+/* $res = $mysql->Query("SELECT distinct html_id,url from allfood where html_id in (35,102,105,173)");
+while($row = $mysql->fetch($res)){
+	$html = mysql_real_escape_string(trim(getHtml($row['url'])));
+	$sql_update = "UPDATE html set html = '$html' where id = {$row['html_id']}";
+	$mysql->query($sql_update);
+	echo $row['html_id'].'done<br/>';
+} */
 /* for ($i=0;$i<count($vege);$i++){
 	$name = $vege[$i]["name"];
 	$url = $vege[$i]["url"];

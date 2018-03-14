@@ -117,7 +117,7 @@ h1 {
     box-shadow: 1px 1px 5px 0px #515151;
 }
 .main-contain{
-	min-height:90%;
+	//min-height:90%;
 	background: #f8f8f8;
     border-radius: 5px;
     margin-top: 20px;
@@ -216,7 +216,7 @@ h1 {
 }
 
 
-/**Myfood Page*/
+/**allfood Page*/
 .helptip{
     position: absolute;
     height: 60px;
@@ -246,6 +246,9 @@ h1 {
 	height: 100%;
 	margin:0px;
 	padding:0px;
+}
+.expopen li a{
+	cursor:pointer;
 }
 /** input range**/
 .range{
@@ -298,6 +301,11 @@ h1 {
     left: -15px;
     padding: 30px;
     content: ' '; 
+}
+
+/*Shopping List Page*/
+#editspbtns{
+	display:none;
 }
 @keyframes move-in-left{
 	0% {

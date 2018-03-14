@@ -15,7 +15,7 @@
 	/*Delete food*/	
 	if(isset($_POST['delfoodid'])){
 		$delid = inputCheck($_POST['delfoodid']);
-		$sql= "DELETE FROM foodtest WHERE id = $delid";
+		$sql= "DELETE FROM food WHERE id = $delid";
 		$mysql->query($sql);
 		$resp = ['delid'=>$_POST['delfoodid']];
 		echo json_encode($resp);
@@ -23,7 +23,7 @@
 	/*Edit food*/	
 	if(isset($_POST['editfoodid'])){
 		$editid = inputCheck($_POST['editfoodid']);
-		$sql= "SELECT * FROM foodtest WHERE id = $editid";
+		$sql= "SELECT * FROM food WHERE id = $editid";
 		$res = $mysql->query($sql);
 		$foodinfo = $mysql->fetch($res);
 		echo json_encode($foodinfo);
@@ -42,5 +42,27 @@
 			$status = 2;
 		}
 		echo json_encode(['status'=>$status,'filename'=>$filename]);
+	}
+	/*Buy food in shopping list*/
+	if(isset($_POST['splistid'])){
+		$spitemid = inputCheck($_POST['splistid']);
+		$newstatus = $_POST['ischeck']==1?0:1;
+		$sql = "UPDATE shopping SET isbuy = $newstatus WHERE id = $spitemid";
+		$mysql->query($sql);
+		echo json_encode(['newstatus'=>$newstatus]);
+	}
+	/*Edit shopping list item*/
+	if(isset($_POST['spitemid'])){
+		$spitemid = inputCheck($_POST['spitemid']);
+		$sql = "SELECT * FROM shopping WHERE id = $spitemid";
+		$res = $mysql->fetch($mysql->query($sql));
+		echo json_encode($res);	
+	}
+	/*Remove Shopping list item*/
+	if(isset($_POST['rmitemid'])){
+		$rmitemid = inputCheck($_POST['rmitemid']);
+		$sql = "DELETE FROM shopping WHERE id = $rmitemid";
+		$mysql->query($sql);
+		echo json_encode(['suc'=>1]);
 	}
 ?>

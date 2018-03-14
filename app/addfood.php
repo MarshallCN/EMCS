@@ -8,12 +8,25 @@
 						<select class="form-control" name='fcate' required>
 							<option>-</option>
 				<?php
-					$sql_allfoodtype = 'SELECT a.id,c.category_name,name,htmlid from allfood AS a INNER JOIN category AS c ON a.category_id=c.id ORDER BY name';
+					$sql_allfoodtype = 'SELECT a.id,c.category_name,name,html_id from allfood AS a INNER JOIN category AS c ON a.category_id=c.id ORDER BY name';
 					$res = $mysql->query($sql_allfoodtype);
 					while($row = $mysql->fetch($res)){
 						echo "<option value=".$row['id'].">".$row['name']."-".$row['category_name']."</option>";
 					}
 				?>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>Storage Place <a href='javascript:void(0);' class="glyphicon glyphicon-question-sign icon_ques"></a>
+						</label>
+						<select class="form-control" name='place' required>
+						<?php
+							$sql_splace = "SELECT * FROM storage_method order by method";
+							$res = $mysql->query($sql_splace);
+							while($row = $mysql->fetch($res)){
+								echo "<option value='".$row['id']."'>".$row['place']." - ".$row['method']."</option>";
+							}
+						?>
 						</select>
 					</div>
 					<div class="form-group col-xs-6">
@@ -28,32 +41,28 @@
 							<option value='1'>Best Before</option>
 						</select>
 					</div>
-					<div class="form-group">
-						<label>Storage Place <a href='javascript:void(0);' class="glyphicon glyphicon-question-sign icon_ques"></a>
+					<div class="form-group col-xs-6">
+						<label>Food Status
 						</label>
-						<select class="form-control" name='place' required>
-						<?php
-							$sql_splace = "SELECT * FROM storage_method";
-							$res = $mysql->query($sql_splace);
-							while($row = $mysql->fetch($res)){
-								echo "<option value='".$row['id']."'>".$row['place']." - ".$row['method']."</option>";
-							}
-						?>
+						<select class="form-control" name='status'>
+							<option value='0'>Unopened</option>
+							<option value='1'>Opened</option>
 						</select>
 					</div>
-					<div class="form-group">
+					<div class="form-group col-xs-6">
 						<label>Once Opened Used Within...</label>
 						<div class="input-group">
-							<input type="number" class="form-control" name='expopen' disabled>
+							<input type="number" class="form-control" name='expopen' oninput="onlynum(this)">
+							<input type="hidden" name='expopenunit' value="Days">
 							<div class="input-group-btn">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+								<button type="button" class="btn btn-default dropdown-toggle" id='expbtn' data-toggle="dropdown">
 									Days 
 									<span class="caret"></span>
 								</button>
-								<ul class="dropdown-menu pull-right">
-									<li><a>Days</a></li>
-									<li><a>Weeks</a></li>
-									<li><a>Months</a></li>
+								<ul class="dropdown-menu pull-right expopen">
+									<li><a onclick="changeunit(this)">Days</a></li>
+									<li><a onclick="changeunit(this)">Weeks</a></li>
+									<li><a onclick="changeunit(this)">Months</a></li>
 								</ul>
 							</div>
 						</div>
@@ -75,7 +84,7 @@
 						<img src='' style='display:none;' id='thumbnail' height=100>
 						<input type="hidden" name='imgname' id="imgname">
 					</div>
-					<div>	
-						<button class='btn btn-primary btn-block' name="newfood">Submit</button>
+					<div class="form-group" style="margin-top:40px">	
+						<button class='btn btn-primary btn-block' name="newfood" style="height:60px">Submit</button>
 					</div>
 				</form>

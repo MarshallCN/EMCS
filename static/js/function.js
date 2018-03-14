@@ -6,8 +6,14 @@
 			pwd.attr('type','password');
 		};
 	}
+/* only input integer */
+function onlynum(ele){
+	if($(ele).val() != parseInt($(ele).val())){
+		$(ele).val('')
+	}
+}
 /* Check password when create new account */
-	function checkpwd(){
+	function checkpwd(log=1){
 		var pwd = $('[name="newpwd"]');
 		var pwdconf =  $('[name="newpwdconf"]');
 		var btnsubmit = $('[name="signup"]');
@@ -21,10 +27,12 @@
 			btnsubmit.attr('disabled',true);
 		}else{
 			if(pwd.val() == pwdconf.val()){
+				btnsubmit.attr('disabled',false);
 				pwd.attr('class','form-control alert-success');
 				pwdconf.attr('class','form-control alert-success');
-				btnsubmit.attr('disabled',false);
-				checkNewName(); //avoid bypass the disable button :)
+				if(log==1){
+					checkNewName(); //avoid bypass the disable button :)
+				}
 			}else{
 				pwdconf.attr('class','form-control alert-danger');
 				pwdconf.val('');
@@ -107,11 +115,15 @@
 			data:{"editfoodid":id},
 			success:function(data){
 				$('[name=fname]').val(data.name)
-				$('[name=fcate]').val(data.foodcate)
+				$('[name=fcate]').val(data.allfood_id)
 				$('[name=exp]').val(data.exp)
 				$('[name=exptype]').val(data.exp_type)
+				$('[name=expopen]').val(data.openday)
+				$('[name=status]').val(data.open_date===null?0:1)
 				$('[name=place]').val(data.place)
 				$('[name=imgname]').val(data.picpath)
+				$('#thumbnail').attr('src',"static/img/foodupload/"+data.picpath)
+				$('#thumbnail').show();
 				$('[name=vol]').val(data.vol)
 				$('[name=editfoodid]').val(data.id)
 			},
@@ -119,12 +131,73 @@
 			dataType:'json'
 		});
 	}
+/* Change Food exp date unit */
+	function changeunit(ele){
+		$('#expbtn').html($(ele).html());
+		$('[name="expopenunit"]').val($(ele).html());
+	}
 /* Check Shopping List */
-	function checkshop(ele){
-		ele.className = 'fa fa-check-circle-o fa-3x';
-		ele.onclick = function(){
-			this.className = 'fa fa-circle-o fa-3x';
-			this.onclick = function(){checkshop(this)}
+	function checkshop(ele,id,ischeck){
+		$.ajax({
+			url:'ajax.php',
+			data:{"splistid":id,"ischeck":ischeck},
+			success:function(data){
+				ele.onclick=function(){checkshop(ele,id,data.newstatus)};
+				if(data.newstatus==1){
+					$(ele).attr('class','fa fa-check-circle-o fa-3x');
+					$(ele).parent().next().children('.btn-info').attr('disabled',false)
+				}else if(data.newstatus==0){
+					$(ele).attr('class','fa fa-circle-o fa-3x');
+					$(ele).parent().next().children('.btn-info').attr('disabled',true)
+				};
+			},
+			beforeSend:function(){
+				$(ele).attr('class','fa fa-spinner fa-spin fa-3x')
+			},
+			type:'POST',
+			dataType:'json'
+		});
+	}
+/* Move Item from shopping list */
+	function moveitem(id,name){
+		$('[name="fname"]').val(name);
+		$('[name="spitemid"]').val(id);
+	}
+/* Edit shopping list item */
+	function edititem(id){
+		$('#splabel').html('Edit ');
+		$.ajax({
+			url:'ajax.php',
+			data:{"spitemid":id},
+			success:function(data){
+				$('#add').click()
+				$('[name="newname"]').val(data.name)
+				$('[name="newnote"]').val(data.note)
+				$('[name="editspitemid"]').val(id)
+				$('#spsubmit').hide()
+				$('#editspbtns').show()
+			},
+			type:'POST',
+			dataType:'json'
+		});
+	}
+/* Remove shoppling list item */
+	function rmitem(id){
+		if(confirm("Do you want to remove this item?")){
+			$.ajax({
+				url:'ajax.php',
+				data:{"rmitemid":id},
+				success:function(data){
+					if(data.suc==1){
+						$('#sptr'+id).hide();
+					}
+				},
+				beforeSend:function(){
+					$('#sptr'+id).html("<td><i class='fa fa-spinner fa-spin fa-3x'></i></td>")
+				},
+				type:'POST',
+				dataType:'json'
+			});
 		}
 	}
 /* upload picture function */

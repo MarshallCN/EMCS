@@ -10,17 +10,43 @@
 <!-- Manage Food -->		
 	<div class="tab-content">
 		<div class="tab-pane active" id="panel-byfood">
-			<div class='col-sm-6 myfoodblock' v-for="(item, index) in fooddata" :id="'food'+item.id">
-				<img class="col-xs-4" :src="'static/img/foodupload/'+ item.picpath" alt='no picture'>
+		<?php //include('inc/timecond.php');
+			if(isset($_GET['storage'])){
+				switch($_GET['storage']){
+					case "all": 
+						$storeplace="1=1";
+						break;
+					case "refrigerator":
+						$storeplace="place=2";
+						break;
+					case "freezing":
+						$storeplace="place=1";
+						break;
+					case "pantry":
+						$storeplace="place=3";
+						break;
+					case "other":
+						$storeplace="place=5";
+						break;
+				}
+					
+			}else{
+				$storeplace="1=1";
+			}
+			$sql_myfood = "SELECT *,TIMESTAMPDIFF(DAY,NOW(),exp) AS days FROM food WHERE userid = ".$_SESSION['userid']." AND ".$storeplace;
+			$res = $mysql->query($sql_myfood);
+			while($row = $mysql->fetch($res)){
+		?>
+			<div class='col-sm-6 myfoodblock' id='food<?php echo $row['id'];?>'>
+				<img class="col-xs-4" src="static/img/foodupload/<?php echo $row['picpath'];?>" alt='no picture'>
 				<div class="col-xs-8 myfoodtbl">
 				<table class='table table-striped'>
-				
 					<tr>
 						<th>
 							Name
 						</th>
 						<td>
-							{{item.name}}
+							<?php echo $row['name'];?>
 						</td>
 					</tr>
 					<tr>
@@ -28,9 +54,7 @@
 							Expiration
 						</th>
 						<td>
-							<span v-if="item.days<6" class='label label-danger'>{{item.days}}</span>
-							<span v-else>{{item.days}}</span>
-							Days
+							<?php echo $row['days']<6 ? "<span class='label label-danger'>":"<span>";echo $row['days'];?> Days</span>
 						</td>
 					</tr>
 					<tr>
@@ -38,18 +62,22 @@
 							Volume
 						</th>
 						<td>
-							{{item.vol}} %
+							<?php echo $row['vol'];?>%
 						</td>
 					</tr>
 					<tr>
 						<td colspan=2 class='text-right'>
-							<button class='btn btn-default' href="#modal-editfood"  role="button" data-toggle="modal" @click.prevent="editfood(item.id)">Edit</button>
-							<button class='btn btn-warning' @click.prevent="removefood(item.id)" >Remove</button>
+							<button class='btn btn-default' href="#modal-editfood"  role="button" data-toggle="modal" onclick="editfood(<?php echo $row['id'];?>)">Edit</button>
+							<button class='btn btn-warning' onclick="removefood(<?php echo $row['id'];?>)" >Remove</button>
 						</td>
 					<tr>
 				</table>
 				</div>
+				
 			</div>
+		<?php 
+			}
+		?>
 		</div>
 	<!--  -->
 		<div class="tab-pane" id="panel-request">
@@ -235,4 +263,3 @@
 		}
 	}
 ?>
-<script src="static/js/myvue.js"></script>

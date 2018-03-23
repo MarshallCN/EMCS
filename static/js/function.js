@@ -1,3 +1,39 @@
+/* Navigation active label */
+	function activeclass(ele){
+		$('.fplace').children().removeClass('active')
+		$(ele).children().addClass('active');
+		if((location.href.indexOf("page="))>0){
+			page = $(ele).children().html().split(' ')[0]
+			p = 'fp-'+page
+			location.href="index.php?p="+p;
+		}
+	}
+	function activeclass1(ele){
+		$('.fplace').children().removeClass('active')
+		$(ele).children().addClass('active');
+	}
+	function activelabel(page){
+		$('.panel-heading').parent().removeClass('active')
+		$('#menu_'+page).parent().addClass('active');
+	}
+	function hideMenu(ele){
+		/**$('.nav *').animate({width:'0px',opacity:'0'});$('.nav').animate({width:'0px',opacity:'0'},'fast','swing')**/
+		//$('.menuLabel').hide()
+		//$('.nav').hide(300,'swing')
+		$('.left_wraps').hide();
+		$(ele).attr('onclick','showMenu(this)');
+		$(ele).attr('class','fa fa-3x fa-arrow-circle-right icona hidden-xs');
+		$('.main-contain').attr('class','col-md-10 col-md-offset-1 main-contain')
+		
+	}
+	function showMenu(ele){
+		//$('.menuLabel').show()
+		$('.left_wraps').show();
+		$(ele).attr('onclick','hideMenu(this)');
+		$(ele).attr('class','fa fa-3x fa-arrow-circle-left icona hidden-xs');
+		$('.main-contain').attr('class','col-sm-8 main-contain main-contain_left')
+	}
+
 /* Show real password */
 	function seepwd(e){
 		pwd = $('[name="'+e+'"]');

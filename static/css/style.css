@@ -58,13 +58,13 @@ h1 {
 	color: #e9e9ea;
 }
 .panel-heading a:hover,
-.panel-heading a:active,
+.panel-heading a.active,
 .panel-heading a:focus{
 	text-decoration:none;
 	color:#dca545;
 }
 .panel-heading:hover,
-.panel-heading:active{
+.panel-heading.active{
 	border-radius:3px;
 	border-left: 10px solid #dca545;
 	background: #1f2124;
@@ -74,13 +74,13 @@ h1 {
 	transition: all 0.3s ease;
 }
 .menuLabel:hover,
-.menuLabel:active,
+.menuLabel.active,
 .menuLabel:focus{
 	text-decoration:none;
 	color:#dca545;
 }
 .menuLabel div:hover,
-.menuLabel div:active{
+.menuLabel div.active{
 	border-radius:0px;
 	border-left: 7px solid #dca545;
 	background: #1f2124;

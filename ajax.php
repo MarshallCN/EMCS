@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	require "inc/db.php";
 	/*Check username uniqueness*/	
 	if(isset($_POST['usercheck'])){
@@ -20,7 +21,20 @@
 		$resp = ['delid'=>$_POST['delfoodid']];
 		echo json_encode($resp);
 	}
-	/*Edit food*/	
+	/*Get all food data */
+	if(isset($_POST['foods'])){
+		$place = inputCheck($_POST['place']);
+		if($_POST['foods']=='all'){
+			$sql= "SELECT * FROM food WHERE userid = ".$_SESSION['userid']." AND $place ORDER BY exp";
+			$res = $mysql->query($sql);
+			$foodinfo = array();
+			while($row = $mysql->fetch($res)){
+				array_push($foodinfo,json_encode($row));
+			}
+			echo json_encode($foodinfo);
+		}
+	}
+	/*Get all food data for Editing food*/	
 	if(isset($_POST['editfoodid'])){
 		$editid = inputCheck($_POST['editfoodid']);
 		$sql= "SELECT * FROM food WHERE id = $editid";

@@ -4,7 +4,7 @@
 	include 'inc/header.php';
 ?>
 <dl>
-	<dd class="row clearfix">
+	<dd class="clearfix">
 		<h1 class='loginTit text-center'>
 			<a class="fa fa-globe"></a>&nbsp;EMCS
 		</h1>

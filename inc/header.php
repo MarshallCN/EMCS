@@ -23,6 +23,7 @@
 	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="static/css/style.css" rel="stylesheet" type="text/css">
+	<script src="static/js/vue.js"></script>
 	<script src="static/js/function.js"></script>
 </head>
 <body>

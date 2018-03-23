@@ -71,7 +71,7 @@
 								</div>
 
 							<div class="panel-heading" onclick="$('#menu_logout')[0].click()">
-								<a class="panel-title menuLabel" href='index.php?logout' id="menu_logout">
+								<a class="panel-title menuLabel" href="javascript:if(confirm('Do you want to log out?')){location.href='index.php?logout'}" id="menu_logout">
 									Log Out
 								</a>
 							</div>

@@ -26,10 +26,8 @@
 		include "app/shopping.php";
 	}else if($page=='plan'){
 		include "app/plan.php";
-	}else if($page=='account'){
-		include "app/account.php";
-	}else if($page=='config'){
-		include "app/config.php";
+	}else if($page=='setting'){
+		include "app/setting.php";
 	}
 	include "inc/footer.php";
 ?>

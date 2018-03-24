@@ -46,7 +46,7 @@
 								</a>
 							</div>
 							<div class="panel-heading" onclick="$('#menu_shopping')[0].click()">
-								<a class="panel-title menuLabel" href="index.php?page=shopping" id="menu_shopping">
+								<a class="panel-title menuLabel" href='index.php?page=shopping' id="menu_shopping">
 									Shopping List
 								</a>
 							</div>
@@ -56,20 +56,11 @@
 								</a>
 							</div>
 							<div class="panel-heading"  onclick="$('#menu_setting')[0].click()">
-								<a class="panel-title menuLabel" data-toggle="collapse" data-parent="#inner_menu" id="menu_setting" href="#panel-element-setting">
+								<a class="panel-title menuLabel" href='index.php?page=setting' id="menu_setting" >
 									<?php echo $_SESSION['user'];?>'s Setting
-								</a><span class="caret"></span>
+								</a>
 								<span class="icon_dot"></span>
 							</div>
-								<div id="panel-element-setting" class="panel-collapse collapse">
-									<a href="index.php?page=config" class="menuLabel fplace" id="menu_config">
-										<div class="panel-body">System Preferences</div>
-									</a>
-									<a href="index.php?page=account" class="menuLabel fplace" id="menu_account">
-										<div class="panel-body">My Account</div>
-									</a>
-								</div>
-
 							<div class="panel-heading" onclick="$('#menu_logout')[0].click()">
 								<a class="panel-title menuLabel" href="javascript:if(confirm('Do you want to log out?')){location.href='index.php?logout'}" id="menu_logout">
 									Log Out
@@ -87,9 +78,5 @@
 <div class='col-sm-8 main-contain main-contain_left'>
 <?php
 	echo '<i class="fa fa-home"></i>&nbsp;>&nbsp;'.ucwords(inputCheck($page)).'&nbsp;>&nbsp;';
-	if($page=='config'||$page=='account'){
-		echo "<script>$('#menu_setting')[0].click();activeclass1($('#menu_$page'))</script>";
-	}else{
-		echo "<script>activelabel('$page')</script>";
-	}
+	echo "<script>activelabel('$page')</script>";
 ?>

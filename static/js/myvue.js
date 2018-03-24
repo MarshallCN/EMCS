@@ -1,9 +1,10 @@
 var vm =  new Vue({
-		el:'#panel-byfood',
+		el:'#foodinfo',
 		data: {
 			place: '1=1',
 			fooddata:"",
-			
+			foodstatus: ["Opened","Unopened"],
+			exptype: ["Best Before","Used By"],
 			
 			
 		},
@@ -25,11 +26,17 @@ var vm =  new Vue({
 							foodall.push(JSON.parse(data[x]))
 						}
 						that.fooddata = foodall
+						if(foodall.length==0){
+							$('.emptystate').html("No Food in this area")
+						}else{
+							$('.emptystate').html("")
+						}
 					},
 					type:'POST',
 					dataType:'json'
 				});
 			},
+			/* Edit Food */
 			editfood: function(id) {
 				$.ajax({
 					url:'ajax.php',
@@ -47,11 +54,13 @@ var vm =  new Vue({
 						$('#thumbnail').show();
 						$('[name=vol]').val(data.vol)
 						$('[name=editfoodid]').val(data.id)
+						$('#volrate').html(data.vol)
 					},
 					type:'POST',
 					dataType:'json'
 				});
 			},
+			/* Remove Food */
 			removefood: function(id) {
 				if(confirm("Do you want to remove this food from your storage?")){
 					$.ajax({

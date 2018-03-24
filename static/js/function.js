@@ -112,7 +112,7 @@ function onlynum(ele){
 			$('[name="newusername"]').next().attr('class','seepwd hidden')
 		}
 	}
-/* Vol Range */
+/* Change Vol Range bar*/
 	function volrange(ele,id){
 		vol = $(ele).val()
 		$('#'+id).html(vol)
@@ -126,51 +126,33 @@ function onlynum(ele){
 			ele.valueAsDate = new Date(new Date().setDate(new Date().getDate()))
 		}
 	}
-/* Remove Food */
-	function removefood(id){
-		if(confirm("Do you want to remove this food from your storage?")){
-			$.ajax({
-				url:'ajax.php',
-				data:{"delfoodid":id},
-				success:function(data){
-					setTimeout(function(){$('#food'+id).hide(300,'swing')},200)
-				},
-				type:'POST',
-				dataType:'json',
-				beforeSend:function(){
-					$('#food'+id).html('<center><i class="fa fa-refresh fa-spin fa-5x"></i></center>')
-				}
-			});
-		}
-		
-	}
-/* Edit Food */
-	function editfood(id){
-		$.ajax({
-			url:'ajax.php',
-			data:{"editfoodid":id},
-			success:function(data){
-				$('[name=fname]').val(data.name)
-				$('[name=fcate]').val(data.allfood_id)
-				$('[name=exp]').val(data.exp)
-				$('[name=exptype]').val(data.exp_type)
-				$('[name=expopen]').val(data.openday)
-				$('[name=status]').val(data.open_date===null?0:1)
-				$('[name=place]').val(data.place)
-				$('[name=imgname]').val(data.picpath)
-				$('#thumbnail').attr('src',"static/img/foodupload/"+data.picpath)
-				$('#thumbnail').show();
-				$('[name=vol]').val(data.vol)
-				$('[name=editfoodid]').val(data.id)
-			},
-			type:'POST',
-			dataType:'json'
-		});
-	}
 /* Change Food exp date unit */
 	function changeunit(ele){
 		$('#expbtn').html($(ele).html());
 		$('[name="expopenunit"]').val($(ele).html());
+	}
+/* use ajax to submit form which add/edit/ food into storage */
+	function submitform(){
+		$.ajax({
+			url:'ajax.php',
+			data: new FormData($('#foodeditform')[0]),
+			success:function(data){
+				setTimeout(function(){
+						$('#modal-editfood').modal('hide')
+						vm.getall()
+					$('#submitting').html('Submit')
+					$('#submitting').removeClass("fa fa-spinner fa-spin fa-3x")
+				},200);
+			},
+			beforeSend:function(){
+				$('#submitting').html('')
+				$('#submitting').addClass("fa fa-spinner fa-spin fa-3x")
+			},
+			type:'POST',
+			processData: false,
+			contentType: false,
+			dataType:'json'
+		});
 	}
 /* Check Shopping List */
 	function checkshop(ele,id,ischeck){
@@ -267,7 +249,6 @@ function onlynum(ele){
 						}
 					}
 					xhr.upload.onprogress = function(evt){
-						//console.log(evt)
 						var loaded = evt.loaded;
 						var tot = evt.total;
 						var per = Math.floor(100*loaded/tot);

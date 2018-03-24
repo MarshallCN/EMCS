@@ -8,8 +8,9 @@
 		</li>
 	</ul>
 <!-- Manage Food -->		
-	<div class="tab-content">
+	<div class="tab-content" id="foodinfo">
 		<div class="tab-pane active" id="panel-byfood">
+			<p class='emptystate'></p>
 			<div class='col-sm-6 myfoodblock' v-for="(item, index) in fooddata" :id="'food'+item.id">
 				<img class="col-xs-4" :src="'static/img/foodupload/'+ item.picpath" alt='no picture'>
 				<div class="col-xs-8 myfoodtbl">
@@ -70,6 +71,9 @@
 							Expiration (e.g. Best: 20 days(opened) )
 						</th>
 						<th>
+							Status
+						</th>
+						<th>
 							Volume
 						</th>
 						<th class='text-center'>
@@ -78,11 +82,25 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>1</td><td>1</td><td>1</td><td>1</td>
+				<tr><td class='emptystate'></td></tr>
+					<tr v-for="(item, index) in fooddata" :id="'food'+item.id">
+						<td>{{item.name}}</td>
+						<td>{{item.cate}}</td>
+						<td>
+							<span v-if="item.exp_type==0">Used By</span>
+							<span v-else>Best Before</span>
+							<span v-if="item.days<6" class='label label-danger'>{{item.days}}</span>
+							<span v-else>{{item.days}}</span>
+							days
+						</td>
+						<td>
+							<span v-if="item.open_date!=null"  class='label label-warning'>{{foodstatus[0]}}</span>
+							<span v-else>{{foodstatus[1]}}</span>
+						</td>
+						<td>{{item.vol}}</td>
 						<td class='text-right'>
-							<a class='label label-primary' href="">E</a>
-							<a class='label label-warning' href="">R</a>
+							<a class='label label-primary' href="#modal-editfood"  role="button" data-toggle="modal" @click.prevent="editfood(item.id)">E</a>
+							<a class='label label-warning'  @click.prevent="removefood(item.id)">R</a>
 						</td>
 					</tr>
 				</tbody>
@@ -101,7 +119,7 @@
 				</h4>
 			</div>
 			<div class="modal-body">
-				<form method="post" action="index.php?page=food&storage=all">   
+				<form method="post" id="foodeditform">   
 					<div class="form-group">
 						<label>Food Name</label>
 						<input type="text" class="form-control" name='fname' placeholder="Food Name" required>
@@ -109,7 +127,7 @@
 					<div class="form-group">
 						<label>Food Category</label>
 						<select class="form-control" name='fcate' required>
-							<option>-</option>
+							<option value=1>-</option>
 				<?php
 					$sql_allfoodtype = 'SELECT a.id,c.category_name,name,html_id from allfood AS a INNER JOIN category AS c ON a.category_id=c.id ORDER BY name';
 					$res = $mysql->query($sql_allfoodtype);
@@ -134,7 +152,7 @@
 					</div>
 					<div class="form-group col-xs-6">
 						<label>Expiration</label>
-						<input type="date" class="form-control" name='exp' oninput="checkDate(this)" placeholder="exp">
+						<input type="date" class="form-control" name='exp' oninput="checkDate(this)" placeholder="exp" required>
 					</div>
 					<div class="form-group col-xs-6">
 						<label>Exp. Type <a href='javascript:void(0);' onclick="$('#helptip').toggle()" class="glyphicon glyphicon-question-sign icon_ques"></a>
@@ -189,7 +207,7 @@
 					</div>
 					<div>	
 						<input type="hidden" name='editfoodid'></input>
-						<button class='btn btn-primary btn-block'>Submit</button>
+						<button type="button" class='btn btn-primary btn-block' onclick='submitform()'><span id='submitting'>Submit</span></button>
 					</div>
 				</form>
 				
@@ -197,8 +215,9 @@
 		</div>					
 	</div>				
 </div>
+<script src="static/js/myvue.js"></script>
 <?php
-//add new food into storage	
+//add/move food into storage	
 	if(isset($_POST['fname'])){
 		$foodname = inputCheck($_POST['fname']);
 		$foodcate = inputCheck($_POST['fcate']);
@@ -227,12 +246,14 @@
 			}else{
 				echo "<script>location.href= confirm('Add food to storage successfully!\\nDo you want to continue adding food?')?'index.php?page=addfood':'index.php?page=food&storage=all'</script>";
 			}
-		}elseif(isset($_POST['editfoodid'])){
-			$editid = inputCheck($_POST['editfoodid']);
-			$sql_editfood = "UPDATE food SET name='$foodname',allfood_id='$foodcate',exp_type='$exptype',exp='$exp',vol='$vol',open_date=$opendate,openday='$opendays',place='$place',picpath='$imgname' WHERE id = $editid";
-			$mysql->query($sql_editfood);
-			echo "<script>location.href='index.php?page=food&storage=all'</script>";
 		}
 	}
 ?>
-<script src="static/js/myvue.js"></script>
+<?php
+	if($page=='food'){
+		echo "<script>$('#menu_storage')[0].click();activeclass($('.fplace')[0])</script>";
+		if(isset($_GET['p'])){
+			echo "<script>$('#".$_GET['p']."').click()</script>";
+		}
+	}
+?>

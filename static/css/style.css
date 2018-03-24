@@ -250,6 +250,7 @@ h1 {
 .expopen li a{
 	cursor:pointer;
 }
+
 /** input range**/
 .range{
 	display: flex;

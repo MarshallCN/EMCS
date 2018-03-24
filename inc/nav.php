@@ -87,12 +87,6 @@
 <div class='col-sm-8 main-contain main-contain_left'>
 <?php
 	echo '<i class="fa fa-home"></i>&nbsp;>&nbsp;'.ucwords(inputCheck($page)).'&nbsp;>&nbsp;';
-	if($page=='food'){
-		echo "<script>$('#menu_storage')[0].click();activeclass($('.fplace')[0])</script>";
-		if(isset($_GET['p'])){
-			echo "<script>$('#".$_GET['p']."').click()</script>";
-		}
-	}
 	if($page=='config'||$page=='account'){
 		echo "<script>$('#menu_setting')[0].click();activeclass1($('#menu_$page'))</script>";
 	}else{

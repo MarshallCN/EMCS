@@ -14,18 +14,44 @@
 		echo json_encode($resp);
 	}
 	/*Delete food*/	
-	if(isset($_POST['delfoodid'])){
+	elseif(isset($_POST['delfoodid'])){
 		$delid = inputCheck($_POST['delfoodid']);
 		$sql= "DELETE FROM food WHERE id = $delid";
 		$mysql->query($sql);
 		$resp = ['delid'=>$_POST['delfoodid']];
 		echo json_encode($resp);
 	}
+	/* Edit Food */
+	elseif(isset($_POST['fname'])){
+			$foodname = inputCheck($_POST['fname']);
+			$foodcate = inputCheck($_POST['fcate']);
+			$exp = inputCheck($_POST['exp']);
+			$exptype = inputCheck($_POST['exptype']);
+			$vol = inputCheck($_POST['vol']);
+			$place = inputCheck($_POST['place']);
+			$expopen = inputCheck($_POST['expopen']);
+			$expopenunit = inputCheck($_POST['expopenunit']);
+			$imgname = inputCheck($_POST['imgname']);
+			$opendate = $_POST['status']==1 ? 'NOW()':'NULL';
+			$res=3;
+			switch($expopenunit){
+				case "Days": $unit = 1;break;
+				case "Weeks": $unit = 7;break;
+				case "Months": $unit =  30;break;
+			}
+			$opendays = $unit * $expopen;
+			if(isset($_POST['editfoodid'])){
+				$editid = inputCheck($_POST['editfoodid']);
+				$sql_editfood = "UPDATE food SET name='$foodname',allfood_id='$foodcate',exp_type='$exptype',exp='$exp',vol='$vol',open_date=$opendate,openday='$opendays',place='$place',picpath='$imgname' WHERE id = $editid";
+				$mysql->query($sql_editfood);
+			}
+			echo json_encode(['res'=>1]);
+	}
 	/*Get all food data */
-	if(isset($_POST['foods'])){
+	elseif(isset($_POST['foods'])){
 		$place = inputCheck($_POST['place']);
 		if($_POST['foods']=='all'){
-			$sql= "SELECT * FROM food WHERE userid = ".$_SESSION['userid']." AND $place ORDER BY exp";
+			$sql= "SELECT f.*,c.category_name as cate,TIMESTAMPDIFF(DAY,NOW(),f.exp) AS days FROM food AS f INNER JOIN allfood AS a ON f.allfood_id = a.id INNER JOIN category AS c ON c.id=a.category_id WHERE userid = ".$_SESSION['userid']." AND $place ORDER BY exp";
 			$res = $mysql->query($sql);
 			$foodinfo = array();
 			while($row = $mysql->fetch($res)){
@@ -35,7 +61,7 @@
 		}
 	}
 	/*Get all food data for Editing food*/	
-	if(isset($_POST['editfoodid'])){
+	elseif(isset($_POST['editfoodid'])){
 		$editid = inputCheck($_POST['editfoodid']);
 		$sql= "SELECT * FROM food WHERE id = $editid";
 		$res = $mysql->query($sql);
@@ -43,7 +69,7 @@
 		echo json_encode($foodinfo);
 	}
 	/*Upload picture*/
-	if(isset($_FILES['img'])&&isset($_POST['path'])){
+	elseif(isset($_FILES['img'])&&isset($_POST['path'])){
 		$filename = $_POST['uid'].'_file'.date('Y_m_d_h_i_s',time()).'.jpg';
 		$path = $_POST['path'];
 		if(is_uploaded_file($_FILES['img']['tmp_name'])){
@@ -58,7 +84,7 @@
 		echo json_encode(['status'=>$status,'filename'=>$filename]);
 	}
 	/*Buy food in shopping list*/
-	if(isset($_POST['splistid'])){
+	elseif(isset($_POST['splistid'])){
 		$spitemid = inputCheck($_POST['splistid']);
 		$newstatus = $_POST['ischeck']==1?0:1;
 		$sql = "UPDATE shopping SET isbuy = $newstatus WHERE id = $spitemid";
@@ -66,14 +92,14 @@
 		echo json_encode(['newstatus'=>$newstatus]);
 	}
 	/*Edit shopping list item*/
-	if(isset($_POST['spitemid'])){
+	elseif(isset($_POST['spitemid'])){
 		$spitemid = inputCheck($_POST['spitemid']);
 		$sql = "SELECT * FROM shopping WHERE id = $spitemid";
 		$res = $mysql->fetch($mysql->query($sql));
 		echo json_encode($res);	
 	}
 	/*Remove Shopping list item*/
-	if(isset($_POST['rmitemid'])){
+	elseif(isset($_POST['rmitemid'])){
 		$rmitemid = inputCheck($_POST['rmitemid']);
 		$sql = "DELETE FROM shopping WHERE id = $rmitemid";
 		$mysql->query($sql);

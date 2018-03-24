@@ -86,7 +86,7 @@
 								</div>
 								<div class="form-group col-xs-6">
 									<label>Expiration</label>
-									<input type="date" class="form-control" name='exp' oninput="checkDate(this)" placeholder="exp">
+									<input type="date" class="form-control" name='exp' oninput="checkDate(this)" placeholder="exp" required>
 								</div>
 								<div class="form-group col-xs-6">
 									<label>Exp. Type <a href='javascript:void(0);' onclick="$('#helptip').toggle()" class="glyphicon glyphicon-question-sign icon_ques"></a>

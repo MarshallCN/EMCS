@@ -1,4 +1,4 @@
-<div class="tabbable" id="tabs-article" style='padding-top:10px;'>
+<div>
 	<ul class="nav nav-tabs">
 		<li class="active">
 			<a href="#panel-byfood" data-toggle="tab" id='byfood'><i class="fa fa-window-maximize"></i>&nbsp;Blocks</a>
@@ -15,7 +15,6 @@
 				<img class="col-xs-4" :src="'static/img/foodupload/'+ item.picpath" alt='no picture'>
 				<div class="col-xs-8 myfoodtbl">
 				<table class='table table-striped'>
-				
 					<tr>
 						<th>
 							Name
@@ -82,7 +81,7 @@
 					</tr>
 				</thead>
 				<tbody>
-				<tr><td class='emptystate'></td></tr>
+					<tr class='emptystate'></tr>
 					<tr v-for="(item, index) in fooddata" :id="'food'+item.id">
 						<td>{{item.name}}</td>
 						<td>{{item.cate}}</td>

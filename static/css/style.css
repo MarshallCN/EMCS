@@ -333,3 +333,14 @@ h1 {
 	}
 }
 
+/*Setting Page*/
+.switch input{
+	width: 80px;
+	height: 34px;
+	border-radius: 100px;
+	background:#ccc;
+	transition:0.2s ease;
+}
+.tab-content{
+	min-height:560px;
+}

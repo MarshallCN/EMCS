@@ -27,9 +27,11 @@ var vm =  new Vue({
 						}
 						that.fooddata = foodall
 						if(foodall.length==0){
-							$('.emptystate').html("No Food in this area")
+							$('.emptystate').html("<td><h3 style='margin:50px'>No Food in this area</h3></td>")
+							$('.emptystate').show()
 						}else{
 							$('.emptystate').html("")
+							$('.emptystate').hide()
 						}
 					},
 					type:'POST',

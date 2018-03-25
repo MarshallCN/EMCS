@@ -76,7 +76,11 @@
 <i class="fa fa-3x fa-arrow-circle-left icona hidden-xs" onclick="hideMenu(this)"></i>
 
 <div class='col-sm-8 main-contain main-contain_left'>
+	<div class='col-sm-12' style="padding-bottom:10px">
 <?php
-	echo '<i class="fa fa-home"></i>&nbsp;>&nbsp;'.ucwords(inputCheck($page)).'&nbsp;>&nbsp;';
+	$curpage=($page=='setting')?ucwords($_SESSION['user'])."'s Setting":inputCheck($page);
+	echo '<i class="fa fa-home"></i>&nbsp;>&nbsp;'.ucwords($curpage).'&nbsp;>&nbsp;';
 	echo "<script>activelabel('$page')</script>";
 ?>
+	</div>
+</span>

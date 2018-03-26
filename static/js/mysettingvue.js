@@ -42,7 +42,6 @@ var vmsetting =  new Vue({
 					data:{"notiplanid":id,"ischeck":ischeck},
 					success:function(data){
 						vmsetting.getall();
-						
 					},
 					beforeSend:function(){
 						$(ele).attr('class','fa fa-spinner fa-spin fa-2x')
@@ -51,5 +50,20 @@ var vmsetting =  new Vue({
 					dataType:'json'
 				});
 			},
+			/* Remove Notification Plan rules */
+			rmnoti: function(ele,id){
+				$.ajax({
+					url:'ajax.php',
+					data:{"rmnotiid":id},
+					success:function(data){
+						vmsetting.getall();
+					},
+					beforeSend:function(){
+						$(ele).attr('class','fa fa-spinner fa-spin fa-2x')
+					},
+					type:'POST',
+					dataType:'json'
+				});
+			}
 		}
 });

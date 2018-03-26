@@ -99,25 +99,25 @@
 									<td v-else>{{item.warnbefore}} Days Before Expired</td>
 									<td>{{notitype[item.method]}}</td>
 									<td><i :class="'fa '+notidiable[item.available]+' fa-2x'" @click="checknoti(this,item.id,item.available)" style='cursor:pointer'></i></td>
-									<td><a class="label label-warning" href="####">X</a></td>
+									<td><a class="label label-warning" href="####" @click="rmnoti(this,item.id)">X</a></td>
 								</tr>
 							</table>
 						</div>
-						<form class="form-group col-sm-8">
+						<form class="form-group col-sm-8" method="post" method="index.php?page=setting">
 							<label>Add a Notification</label>
-								<select class="form-control" name='notiday'>
-									<option> Time </option> 
+								<select class="form-control" name='notiday' required>
+									<option value=''> Time </option> 
 									<option value='0'> Expired Today </option> 
 									<option v-for="i in 7" :value="i">{{i}} Day Before Expired</option>
 								</select>
 								<br/>
-								<select class="form-control" name='notiway'>
-									<option> Method </option> 
-									<option value="1">Chrome Notification</option> 
-									<option value="2">Email</option> 
+								<select class="form-control" name='notiway' required>
+									<option value=''> Method </option> 
+									<option value="0">Chrome Notification</option> 
+									<option value="1">Email</option> 
 								</select>
 								<br/>
-								<button class="btn btn-primary btn-block">Add</button>
+								<button class="btn btn-primary btn-block" name='newnoti'>Add</button>
 						</form>
 					</div>
 			</fieldset>
@@ -161,12 +161,20 @@ $("[name='msgchrome']").css('background','<?php echo $userinfo['msg_chrome']==0?
 		}
 	} 
 /**Edit user profile*/
-	if(isset($_POST['profile'])){
+	else if(isset($_POST['profile'])){
 		$email = inputCheck($_POST['email']);
 		$birth = inputCheck($_POST['birth']);
 		$gender = inputCheck($_POST['gender']);
 		$sql_editprofile = "UPDATE user SET email = '$email', birth_date = '$birth', gender = '$gender' WHERE id = ".$_SESSION['userid'];
 		$mysql->query($sql_editprofile);
 		redirect("http://localhost/EMCS/index.php?page=setting","Update profile successfully!");
+	}
+/**Add new noti plan*/
+	else if(isset($_POST['newnoti'])){
+		$notiday = inputCheck($_POST['notiday']);
+		$notiway = inputCheck($_POST['notiway']);
+		$sql_newnoti = "INSERT notiplan VALUES ('','{$_SESSION['userid']}',$notiday,$notiway,1)";
+		$mysql->query($sql_newnoti);
+		echo "<script>$('#preferences').click();vmsetting.getall()</script>";
 	}
 ?>

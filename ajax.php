@@ -134,4 +134,11 @@
 		$mysql->query($sql);
 		echo json_encode(['newstatus'=>$newstatus]);
 	}
+	/*Remove noti rules*/
+	elseif(isset($_POST['rmnotiid'])){
+		$rmnotiid = $_POST['rmnotiid'];
+		$sql_rmnotiid = "DELETE FROM notiplan WHERE id = $rmnotiid";
+		$mysql->query($sql_rmnotiid);
+		echo json_encode(['res'=>$rmnotiid]);
+	}
 ?>

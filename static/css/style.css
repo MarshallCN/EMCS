@@ -132,7 +132,7 @@ h1 {
 	margin-bottom:2px;
 }
 	/*small header*/
-@media (max-width: 768px){
+@media (max-width: 767px){
 	.mynav{
 		position:fixed;
 		width:100%;
@@ -162,6 +162,7 @@ h1 {
 	.left_wraps{
 		height:100%;
 		padding-right: 40px;
+		position: fixed;
 	}
 	.main-contain_left{
 		width:73%;
@@ -179,7 +180,7 @@ h1 {
 	/*hide menu button*/
 .icona{
 	cursor:pointer;
-	position:absolute;
+	position:fixed;
 	z-index:999;
 	padding:20px;
 	bottom:10px;

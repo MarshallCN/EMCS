@@ -61,8 +61,8 @@
 								</a>
 								<span class="icon_dot"></span>
 							</div>
-							<div class="panel-heading" onclick="$('#menu_logout')[0].click()">
-								<a class="panel-title menuLabel" href="javascript:if(confirm('Do you want to log out?')){location.href='index.php?logout'}" id="menu_logout">
+							<div class="panel-heading" onclick="if(confirm('Do you want to log out?')){location.href='index.php?logout'}">
+								<a class="panel-title menuLabel" id="menu_logout">
 									Log Out
 								</a>
 							</div>
@@ -75,7 +75,7 @@
 </div>
 <i class="fa fa-3x fa-arrow-circle-left icona hidden-xs" onclick="hideMenu(this)"></i>
 
-<div class='col-sm-8 main-contain main-contain_left'>
+<div class='col-sm-8 col-sm-offset-3 main-contain main-contain_left'>
 	<div class='col-sm-12' style="padding-bottom:10px">
 <?php
 	$curpage=($page=='setting')?ucwords($_SESSION['user'])."'s Setting":inputCheck($page);

@@ -1,15 +1,15 @@
 <div>
 	<ul class="nav nav-tabs">
-		<li>
+		<li class="active">
 			<a href="#panel-account" data-toggle="tab" id='account'><i class="fa fa-user"></i>&nbsp;Account</a>
 		</li>
-		<li class="active">
+		<li>
 			<a href="#panel-preferences" data-toggle="tab" id='preferences'><i class="fa fa-gear"></i>&nbsp;Preferences</a>
 		</li>
 	</ul>
 <!-- Manage Food -->		
 	<div class="tab-content">
-		<div class="tab-pane " id="panel-account" style="padding-top:15px">
+		<div class="tab-pane active" id="panel-account" style="padding-top:15px">
 			<fieldset class="col-sm-8 col-sm-offset-2">
 			<legend>Login Password</legend>
 				<form method='post'>
@@ -34,17 +34,23 @@
 					</div>
 				</form>
 			</fieldset>
+<?php
+	$sql_users = "SELECT * FROM user where id = ".$_SESSION['userid'];
+	$res_user = $mysql->query($sql_users);
+	$userinfo = $mysql->fetch($res_user); 
+	
+?>
 			<fieldset class="col-sm-8 col-sm-offset-2">
 			<legend>Profile</legend>
 				<form method='post'>
 					<div>
 						<div class="form-group">
 							 <label>Email </label>
-							 <input type="email" name='email' class="form-control" required/>
+							 <input type="email" name='email' class="form-control" value="<?php echo isset($userinfo['email'])?$userinfo['email']:'';?>" required/>
 						</div>
 						<div class="form-group">
 							 <label>Birthday </label>
-							 <input type="date" class="form-control" name='birth'/>
+							 <input type="date" class="form-control" name='birth' value="<?php echo isset($userinfo['birth_date'])?$userinfo['birth_date']:'';?>"/>
 						</div>
 						<div class="form-group">
 								<label>Gender </label>
@@ -53,78 +59,81 @@
 									<option value="1">Male</option> 
 									<option value="2">Female</option> 
 								</select>
+							<script>$("[name='gender']").val(<?php echo isset($userinfo['gender'])?$userinfo['gender']:'';?>)</script>
 							</div>
 						<div class="form-group col-md-4 col-md-offset-8 col-sm-12">
-							 <button type="submit" class="btn btn-block btn-primary" name='accountinfo'>Submit</button>
+							 <button type="submit" class="btn btn-block btn-primary" name='profile'>Submit</button>
 						</div>
 					</div>
 				</form>
 			</fieldset>
 		</div>
-		<div class="tab-pane active" id="panel-preferences" style="padding-top:15px">
+		<div class="tab-pane" id="panel-preferences" style="padding-top:15px">
 			<fieldset class="col-sm-8 col-sm-offset-2">
 			<legend>Notification</legend>
 					<div>
 						<div class="form-group col-sm-12">
 							<div class="range switch">
 								<label class="col-xs-6">Email: </label>
-								<input type="range" class="" min="0" max="100" value='0' onchange="this.value=this.value>50?100:0" oninput="this.style.background=this.value>50?'#337ab7':'#ccc'" name='vol'>
+								<input type="range" min="0" max="100" onchange="dragbtn(this)" oninput="dragbtncolor(this)" name='msgemail'>
 							</div>
 						</div>
 						<div class="form-group col-sm-12">
 							<div class="range switch">
 								<label class="col-xs-6">Chrome: </label>
-								<input type="range" class="" min="0" max="100" value='0' onchange="this.value=this.value>50?100:0" oninput="this.style.background=this.value>50?'#337ab7':'#ccc'" name='vol'>
+								<input type="range" min="0" max="100" onchange="dragbtn(this)" oninput="dragbtncolor(this)" name='msgchrome'>
 							</div>
 						</div>
-						<div class="form-group col-sm-8">
+						<div class="form-group col-sm-12">
 							<label>Notification Plan</label>
 							<table class='table table-striped'>
 								<tr>
 									<th>Expired Day</th>
-									<th>Notification Method</th>
-									<th></th>
+									<th>Method</th>
+									<th>Available</th>
+									<th>Remove</th>
 								</tr>
-								<tr>
-									<td>Expired Today</td>
-									<td>Email</td>
-									<td><a class="label label-warning" href="####">X</a></td>
-								</tr>
-								<tr>
-									<td>Expired Today</td>
-									<td>Chrome</td>
-									<td><a class="label label-warning" href="####">X</a></td>
-								</tr>
-								<tr>
-									<td>3 Days Before</td>
-									<td>Chrome</td>
-									<td><a class="label label-warning" href="####">X</a></td>
-								</tr>
-								<tr>
-									<td>5 Days Before</td>
-									<td>Chrome</td>
+								<tr v-for="(item, index) in notiplan">
+									<td v-if='item.warnbefore==0'>Expired Today</td>
+									<td v-else-if='item.warnbefore==1'>1 Day Before Expired</td>
+									<td v-else>{{item.warnbefore}} Days Before Expired</td>
+									<td>{{notitype[item.method]}}</td>
+									<td><i :class="'fa '+notidiable[item.available]+' fa-2x'" @click="checknoti(this,item.id,item.available)" style='cursor:pointer'></i></td>
 									<td><a class="label label-warning" href="####">X</a></td>
 								</tr>
 							</table>
 						</div>
-						<div class="form-group col-sm-8">
+						<form class="form-group col-sm-8">
 							<label>Add a Notification</label>
-								<select class="form-control" name='gender'>
-									<option> - </option> 
-									<option value="1">Expired Today</option> 
-									<option value="2">1 days Before</option> 
-									<option value="3">3 days Before</option> 
-									<option value="4">5 days Before</option> 
+								<select class="form-control" name='notiday'>
+									<option> Time </option> 
+									<option value='0'> Expired Today </option> 
+									<option v-for="i in 7" :value="i">{{i}} Day Before Expired</option>
 								</select>
-						</div>
+								<br/>
+								<select class="form-control" name='notiway'>
+									<option> Method </option> 
+									<option value="1">Chrome Notification</option> 
+									<option value="2">Email</option> 
+								</select>
+								<br/>
+								<button class="btn btn-primary btn-block">Add</button>
+						</form>
 					</div>
 			</fieldset>
 		</div>
 	</div>
 </div>
+<script src="static/js/mysettingvue.js"></script>
+<script>
+$("[name='msgemail']").val('<?php echo $userinfo['msg_email']==0?0:100;?>')
+$("[name='msgchrome']").val('<?php echo $userinfo['msg_chrome']==0?0:100;?>')
+$("[name='msgemail']").css('background','<?php echo $userinfo['msg_email']==0?'#ccc':'#337ab7';?>')
+$("[name='msgchrome']").css('background','<?php echo $userinfo['msg_chrome']==0?'#ccc':'#337ab7';?>')
+</script>
 <?php
 /**Edit Password (it post 'signup' due to js function variable name is fixed)*/
-		if(isset($_POST['signup'])){
+	if(isset($_POST['signup'])){
 		$oldpwd = inputCheck($_POST['oldpwd']);
 		$res_pwd = $mysql->fetch($mysql->query("SELECT pwdhash,salt_code FROM user WHERE id = '{$_SESSION['userid']}'"));
 		$oldpwdhash = MD5($oldpwd.$res_pwd['salt_code']);
@@ -151,4 +160,13 @@
 			</script>";
 		}
 	} 
+/**Edit user profile*/
+	if(isset($_POST['profile'])){
+		$email = inputCheck($_POST['email']);
+		$birth = inputCheck($_POST['birth']);
+		$gender = inputCheck($_POST['gender']);
+		$sql_editprofile = "UPDATE user SET email = '$email', birth_date = '$birth', gender = '$gender' WHERE id = ".$_SESSION['userid'];
+		$mysql->query($sql_editprofile);
+		redirect("http://localhost/EMCS/index.php?page=setting","Update profile successfully!");
+	}
 ?>

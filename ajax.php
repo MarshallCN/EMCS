@@ -105,4 +105,33 @@
 		$mysql->query($sql);
 		echo json_encode(['suc'=>1]);
 	}
+	/*User preferences - noti switch*/
+	elseif(isset($_POST['switchbtn'])){
+		$type = $_POST['type']=='msgemail'?'msg_email':'msg_chrome';
+		$method = $_POST['type']=='msgemail'?1:0;
+		$status = $_POST['switchbtn']==100?1:0;
+		$sql_switch = "UPDATE user set $type='$status' WHERE id = ".$_SESSION['userid'];
+		$sql_rules = "UPDATE notiplan set available='$status' WHERE method = $method AND user_id = ".$_SESSION['userid'];
+		$mysql->query($sql_switch);
+		$mysql->query($sql_rules);
+		echo json_encode(['res'=>1]);
+	}
+	/*Get all noti rules table*/
+	elseif(isset($_POST['notiplan'])){
+		$sql_notiplan = "SELECT * FROM notiplan WHERE user_id = ".$_SESSION['userid']." ORDER BY warnbefore";
+		$res = $mysql->query($sql_notiplan);
+		$notiplan = array();
+		while($row = $mysql->fetch($res)){
+			array_push($notiplan,json_encode($row));
+		}
+		echo json_encode($notiplan);
+	}
+	/*Edit Noti rules availablity*/
+	elseif(isset($_POST['notiplanid'])){
+		$notiplanid = inputCheck($_POST['notiplanid']);
+		$newstatus = $_POST['ischeck']==1?0:1;
+		$sql = "UPDATE notiplan SET available = $newstatus WHERE id = $notiplanid";
+		$mysql->query($sql);
+		echo json_encode(['newstatus'=>$newstatus]);
+	}
 ?>

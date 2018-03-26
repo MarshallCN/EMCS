@@ -31,7 +31,7 @@
 		$('.left_wraps').show();
 		$(ele).attr('onclick','hideMenu(this)');
 		$(ele).attr('class','fa fa-3x fa-arrow-circle-left icona hidden-xs');
-		$('.main-contain').attr('class','col-sm-8 main-contain main-contain_left')
+		$('.main-contain').attr('class','col-sm-8 col-sm-offset-3 main-contain main-contain_left')
 	}
 
 /* Show real password */
@@ -262,4 +262,22 @@ function onlynum(ele){
 			}
 		}
 	}
-	
+/* Switch button */
+	function dragbtncolor(ele){
+		ele.style.background=ele.value>50?'#337ab7':'#ccc';
+	}
+	function dragbtn(ele){
+		ele.value=ele.value>50?100:0;
+		type = ele.name
+			$.ajax({
+				url:'ajax.php',
+				data:{"switchbtn":ele.value,"type":type},
+				success:function(data){
+					if(data.res!=1){console.log('error')}
+					vmsetting.getall();
+				},
+				type:'POST',
+				dataType:'json'
+			});
+	}
+

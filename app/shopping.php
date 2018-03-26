@@ -24,21 +24,25 @@
 				<?php
 					$sql_splist = "SELECT * FROM shopping WHERE userid = ".$_SESSION['userid'];
 					$res = $mysql->query($sql_splist);
-					$itemid = 0;
-					while($row = $mysql->fetch($res)){
-						$itemid++;
-						$isbuy = $row['isbuy']==1 ? 'fa-check-circle-o':'fa-circle-o';
-						$isdisable = $row['isbuy']==1 ? '':'disabled';
-						echo "<tr id='sptr".$row['id']."'>
-							<td>$itemid</td>
-							<td>".$row['name']."</td>
-							<td>".$row['note']."</td>
-							<td><i class='fa $isbuy fa-3x' style='cursor:pointer' onclick='checkshop(this,".$row['id'].",".$row['isbuy'].")'></i></td>
-							<td>
-								<button class='btn btn-info' href='#modal-movefood' role='button' data-toggle='modal' onclick='moveitem(".$row['id'].",\"".$row['name']."\")' $isdisable>Move</button>
-								<button class='btn btn-primary' onclick='edititem(".$row['id'].")'>Edit</button>
-								<button class='btn btn-warning' onclick='rmitem(".$row['id'].")'>Remove</button>
-							</td></tr>";
+					if(mysqli_num_rows($res)==0){
+						echo "<tr><thd><p class='emptystate'>No items yet</p></th><tr>";
+					}else{
+						$itemid = 0;
+						while($row = $mysql->fetch($res)){
+							$itemid++;
+							$isbuy = $row['isbuy']==1 ? 'fa-check-circle-o':'fa-circle-o';
+							$isdisable = $row['isbuy']==1 ? '':'disabled';
+							echo "<tr id='sptr".$row['id']."'>
+								<td>$itemid</td>
+								<td>".$row['name']."</td>
+								<td>".$row['note']."</td>
+								<td><i class='fa $isbuy fa-3x' style='cursor:pointer' onclick='checkshop(this,".$row['id'].",".$row['isbuy'].")'></i></td>
+								<td>
+									<button class='btn btn-info' href='#modal-movefood' role='button' data-toggle='modal' onclick='moveitem(".$row['id'].",\"".$row['name']."\")' $isdisable>Move</button>
+									<button class='btn btn-primary' onclick='edititem(".$row['id'].")'>Edit</button>
+									<button class='btn btn-warning' onclick='rmitem(".$row['id'].")'>Remove</button>
+								</td></tr>";
+						}
 					}
 				?>
 				</tbody>
@@ -140,7 +144,7 @@
 									<input type="hidden" name='imgname' id="imgname">
 								</div>
 								<div>	
-									<input type="text" name="spitemid">
+									<input type="hidden" name="spitemid">
 									<button class='btn btn-primary btn-block' name="newfood">Submit</button>
 								</div>
 							</form>

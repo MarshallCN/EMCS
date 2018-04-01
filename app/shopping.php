@@ -1,10 +1,10 @@
 <div class="tabbable" id="tabs-article" style='padding-top:10px;'>
 	<ul class="nav nav-tabs">
 		<li class="active">
-			<a href="#panel-show" data-toggle="tab" id='show'>Shooping List</a>
+			<a href="#panel-show" data-toggle="tab" id='show'><i class="fa fa-list-ul"></i>&nbsp;Shooping List</a>
 		</li>
 		<li>
-			<a href="#panel-add" data-toggle="tab" id='add'><i class="fa fa-calendar-check-o"></i>&nbsp;<span id='splabel'>Add New </span>Item</a>
+			<a href="#panel-add" data-toggle="tab" id='add'><i class="fa fa-plus"></i>&nbsp;<span id='splabel'>Add New </span>Item</a>
 		</li>
 	</ul>
 <!-- Manage Food -->		

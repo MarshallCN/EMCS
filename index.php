@@ -25,7 +25,7 @@
 	}else if($page=='shopping'){
 		include "app/shopping.php";
 	}else if($page=='plan'){
-		include "app/plan.php";
+		include "app/test_noti.php";
 	}else if($page=='setting'){
 		include "app/setting.php";
 	}

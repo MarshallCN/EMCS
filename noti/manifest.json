@@ -1,0 +1,11 @@
+{
+  "name": "Hello World",
+  "short_name": "Short Name",
+  "icons": [{
+        "src": "http://localhost/EMCS/noti/images/icon-192x192.png",
+        "sizes": "192x192"
+      }],
+  "start_url": "http://localhost/EMCS",
+  "display": "standalone",
+  "gcm_sender_id": "547287430118"
+}

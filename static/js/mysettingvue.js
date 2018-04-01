@@ -52,18 +52,20 @@ var vmsetting =  new Vue({
 			},
 			/* Remove Notification Plan rules */
 			rmnoti: function(ele,id){
-				$.ajax({
-					url:'ajax.php',
-					data:{"rmnotiid":id},
-					success:function(data){
-						vmsetting.getall();
-					},
-					beforeSend:function(){
-						$(ele).attr('class','fa fa-spinner fa-spin fa-2x')
-					},
-					type:'POST',
-					dataType:'json'
-				});
+				if(confirm("Do you want to remove this rule?")){
+					$.ajax({
+						url:'ajax.php',
+						data:{"rmnotiid":id},
+						success:function(data){
+							vmsetting.getall();
+						},
+						beforeSend:function(){
+							$(ele).attr('class','fa fa-spinner fa-spin fa-2x')
+						},
+						type:'POST',
+						dataType:'json'
+					});
+				}
 			}
 		}
 });

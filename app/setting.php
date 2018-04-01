@@ -173,8 +173,19 @@ $("[name='msgchrome']").css('background','<?php echo $userinfo['msg_chrome']==0?
 	else if(isset($_POST['newnoti'])){
 		$notiday = inputCheck($_POST['notiday']);
 		$notiway = inputCheck($_POST['notiway']);
-		$sql_newnoti = "INSERT notiplan VALUES ('','{$_SESSION['userid']}',$notiday,$notiway,1)";
-		$mysql->query($sql_newnoti);
-		echo "<script>$('#preferences').click();vmsetting.getall()</script>";
+		$sql_check = "SELECT * FROM notiplan WHERE user_id = '{$_SESSION['userid']}' AND warnbefore=$notiday AND method=$notiway";
+		$res = $mysql->query($sql_check);
+		$emails = $mysql->oneQuery("SELECT COUNT(*) FROM notiplan WHERE user_id = '{$_SESSION['userid']}' AND method =1");
+		if($emails>5){
+			echo "<script>alert('Each user could only has maximum 5 free emails notification')</script>";
+		}else{
+			if(mysqli_num_rows($res)>0){
+				echo "<script>alert('Add Unsuccessfully: Same rule exists')</script>";
+			}else{
+				$sql_newnoti = "INSERT notiplan VALUES ('','{$_SESSION['userid']}',$notiday,$notiway,1)";
+				$mysql->query($sql_newnoti);
+				echo "<script>$('#preferences').click();vmsetting.getall()</script>";
+			}
+		}
 	}
 ?>

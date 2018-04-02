@@ -8,18 +8,19 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Expiration Dates Management & Cooking Suggestion System</title>
-    <link href="./static/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!--FontAwesome-->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="./static/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">	
+    <!--jquery3.2.1-->
 	<script src="./static/lib/jquery.min.js"></script>
-	<script src="./static/lib/Chart.bundle.min.js"></script>
-	<!--<script src="./static/lib/bootstrap/js/bootstrap.min.js"></script>-->
+	<!--Bootstrap3.3.7-->
     <link href="./static/lib/bootstrap3.3.7.min.css" rel="stylesheet">
-	<script src="./static/lib/jquery3.2.1.min.js"></script>
-	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="./static/lib/bootstrap.min.js"></script>
+	<!--Chart.js2.5.0-->
+	<script src="./static/lib/Chart.bundle.min.js"></script>
+	<!--Vue.js2.5.13-->
+	<script src="static/lib/vue.js"></script>
+	<!--Customized file-->
     <link href="static/css/style.css" rel="stylesheet" type="text/css">
-	<script src="static/js/vue.js"></script>
 	<script src="static/js/function.js"></script>
 	<link rel="manifest" href="noti/manifest.json">
 </head>

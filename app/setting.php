@@ -81,7 +81,9 @@
 						<div class="form-group col-sm-12">
 							<div class="range switch">
 								<label class="col-xs-6">Chrome: </label>
-								<input type="range" min="0" max="100" onchange="dragbtn(this)" oninput="dragbtncolor(this)" name='msgchrome'>
+								<input type="range" min="0" max="100" onchange="dragbtn(this)" oninput="dragbtncolor(this)" class="js-push-button" name='msgchrome'>
+							</div>
+							<div class='js-log'>
 							</div>
 						</div>
 						<div class="form-group col-sm-12">
@@ -125,6 +127,9 @@
 	</div>
 </div>
 <script src="static/js/mysettingvue.js"></script>
+<script src="noti/config.js"></script>
+<script src="noti/demo.js"></script>
+<script src="noti/main.js"></script>
 <script>
 $("[name='msgemail']").val('<?php echo $userinfo['msg_email']==0?0:100;?>')
 $("[name='msgchrome']").val('<?php echo $userinfo['msg_chrome']==0?0:100;?>')
@@ -132,6 +137,9 @@ $("[name='msgemail']").css('background','<?php echo $userinfo['msg_email']==0?'#
 $("[name='msgchrome']").css('background','<?php echo $userinfo['msg_chrome']==0?'#ccc':'#337ab7';?>')
 </script>
 <?php
+if($userinfo['msg_chrome']==0){
+	echo "<script>unsubscribe()</script>";
+}
 /**Edit Password (it post 'signup' due to js function variable name is fixed)*/
 	if(isset($_POST['signup'])){
 		$oldpwd = inputCheck($_POST['oldpwd']);

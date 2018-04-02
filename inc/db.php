@@ -9,7 +9,7 @@
         return $conn;
     }
 	function fetch($result){
-        $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+        $row = mysqli_fetch_array($result);
         return $row;
     }
 	function query($sql){

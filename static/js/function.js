@@ -269,6 +269,24 @@ function onlynum(ele){
 	function dragbtn(ele){
 		ele.value=ele.value>50?100:0;
 		type = ele.name
+		if(type=='msgchrome'){
+			var status
+			if(ele.value>50){
+				subscribe()
+			}else{
+				unsubscribe()
+				$.ajax({
+					url:'ajax.php',
+					data:{"ispush":'del'},
+					success:function(data){
+						console.log(data)
+					},
+					type:'POST',
+					dataType:'json'
+				});
+			}
+			
+		}
 			$.ajax({
 				url:'ajax.php',
 				data:{"switchbtn":ele.value,"type":type},
@@ -279,5 +297,9 @@ function onlynum(ele){
 				type:'POST',
 				dataType:'json'
 			});
+	}
+	function switchbtn(ele,val){
+		ele.value = val
+		dragbtncolor(ele)		
 	}
 

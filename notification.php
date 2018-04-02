@@ -8,14 +8,19 @@ if(isset($_GET['userid'])){
 	$headers[] = "Content-Type: application/json";
 	$user_id = inputCheck($_GET['userid']);
 	$tokens = array();
-	//$token = "dcVvsmLYDAE:APA91bEav7dIcnoIa58DXkG-LQ38GJmLLdmaQI_MClsLhFrVQryvOIvZs-rjoAbjFCuPTCKO4Y0Tz9_HSse2IfhsfsyEcXjGtps_6cQLuKO7-AN0yRfR_ppyJ5LG2AGnO6vTdit3biKJ";
 	$sql_token = "SELECT * FROM user_token WHERE user_id = '$user_id'";
 	$res = $mysql->query($sql_token);
-	if(mysqli_num_rows($res)>0){
+	$tokennum = mysqli_num_rows($res);
+	if($tokennum>0){
 		while($row = $mysql->fetch($res)){
 			array_push($tokens,$row['token']);
 		}
-		$token = implode('\",\"',$tokens);
+		if($tokennum==1){
+			$token = $tokens[0];
+		}else{
+			$token = implode('","',$tokens);
+		}
+	}
 		$data_string = '{"registration_ids":[
 				"'.$token.'"
 			]}';
@@ -27,6 +32,5 @@ if(isset($_GET['userid'])){
 		curl_close($ch);
 		echo 'curl --header "Authorization: key=AIzaSyCfUTbrS9FIQUKvqecUXDytzriLIzve5f8" 
 	--header Content-Type:"application/json" https://android.googleapis.com/gcm/send
-    -d "{\"registration_ids\":[\"'.$token.'\"]}"';;
-	}
+    -d "{\"registration_ids\":[\"'.$token.'\"]}"';	
 }

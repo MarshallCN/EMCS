@@ -141,4 +141,34 @@
 		$mysql->query($sql_rmnotiid);
 		echo json_encode(['res'=>$rmnotiid]);
 	}
+	//Push messege setting
+	elseif(isset($_POST['ispush'])){
+		$res = 'No update noti';
+		if($_POST['ispush']=='add'){
+			$subId = isset($_POST['token'])?$_POST['token']:'';
+			if(!empty($subId)){
+				$current = $mysql->oneQuery("SELECT COUNT(*) FROM user_token WHERE token = '$subId' AND user_id = ".$_SESSION['userid']);
+			}
+			if($current == 0){
+				$browser = md5($_SERVER['HTTP_USER_AGENT']);
+				$sql_find = "SELECT count(*) FROM user_token WHERE browser = '$browser' AND user_id = ".$_SESSION['userid'];
+				$num = $mysql->oneQuery($sql_find);
+				if($num>0){
+					$sql_del = "DELETE FROM user_token WHERE browser = '$browser' AND user_id = ".$_SESSION['userid'];
+					$mysql->query($sql_del);
+				}
+					$sql_add = "INSERT user_token VALUES ('','".$_SESSION['userid']."','$subId','$browser')";
+					$mysql->query($sql_add);
+					$res = 'add new noti';
+			}
+		}else{
+			$sql_del = "DELETE FROM user_token WHERE user_id = ".$_SESSION['userid'];
+			$mysql->query($sql_del);
+			$res = 'Remove all chrome noti';
+		}
+		echo json_encode(['res'=>$res]);
+		
+	}
+
+	
 ?>

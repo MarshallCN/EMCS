@@ -42,11 +42,18 @@ function sendSubscriptionToServer(subscription) {
   // generating the appropriate cURL command
  /*  showCurlCommand(mergedEndpoint); */
 	var endpointSections = mergedEndpoint.split('/');
-	var subscriptionId = endpointSections[endpointSections.length - 1];
+	subscriptionId = endpointSections[endpointSections.length - 1];
    console.log(subscriptionId)
-  //AJAX 存储Token
-  
-  //提醒计划任务
+				$.ajax({
+					url:'ajax.php',
+					data:{"ispush":'add',"token":subscriptionId},
+					success:function(data){
+						console.log(data.res)
+					},
+					type:'POST',
+					dataType:'json'
+				});
+
 }
 
 // NOTE: This code is only suitable for GCM endpoints,
@@ -72,8 +79,8 @@ function sendSubscriptionToServer(subscription) {
 } */
 
 function unsubscribe() {
-  var pushButton = document.querySelector('.js-push-button');
-  pushButton.disabled = true;
+  var pushButton = $('.js-push-button')[0];
+   pushButton.disabled = true;
   //curlCommandDiv.textContent = '';
 
   navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
@@ -87,7 +94,7 @@ function unsubscribe() {
           // to allow the user to subscribe to push
           isPushEnabled = false;
           pushButton.disabled = false;
-          pushButton.textContent = 'Enable Push Messages';
+          switchbtn(pushButton,1);
           return;
         }
 
@@ -101,7 +108,7 @@ function unsubscribe() {
         // We have a subcription, so call unsubscribe on it
         pushSubscription.unsubscribe().then(function() {
           pushButton.disabled = false;
-          pushButton.textContent = 'Enable Push Messages';
+         switchbtn(pushButton,1);
           isPushEnabled = false;
         }).catch(function(e) {
           // We failed to unsubscribe, this can lead to
@@ -109,8 +116,8 @@ function unsubscribe() {
           // the subscription id from your data store and
           // inform the user that you disabled push
 
-         window.Demo.debug.log('Unsubscription error: ', e); 
           pushButton.disabled = false;
+         window.Demo.debug.log('Unsubscription error: ', e); 
         });
       }).catch(function(e) {
         window.Demo.debug.log('Error thrown while unsubscribing from ' +
@@ -122,7 +129,7 @@ function unsubscribe() {
 function subscribe() { 
   // Disable the button so it can't be changed while
   // we process the permission request
-  var pushButton = document.querySelector('.js-push-button');
+  var pushButton = $('.js-push-button')[0];
   pushButton.disabled = true;
 
   navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
@@ -130,7 +137,7 @@ function subscribe() {
       .then(function(subscription) {
         // The subscription was successful
         isPushEnabled = true;
-        pushButton.textContent = 'Disable Push Messages';
+        switchbtn(pushButton,99);
         pushButton.disabled = false;
 
         // TODO: Send the subscription subscription.endpoint
@@ -145,15 +152,15 @@ function subscribe() {
           // means we failed to subscribe and the user will need
           // to manually change the notification permission to
           // subscribe to push messages
-          window.Demo.debug.log('Permission for Notifications was denied');
           pushButton.disabled = true;
+          window.Demo.debug.log('Permission for Notifications was denied');
         } else {
           // A problem occurred with the subscription, this can
           // often be down to an issue or lack of the gcm_sender_id
           // and / or gcm_user_visible_only
           window.Demo.debug.log('Unable to subscribe to push.', e); 
           pushButton.disabled = false;
-          pushButton.textContent = 'Enable Push Messages';
+          switchbtn(pushButton,1);
         }
       });
   });
@@ -161,8 +168,10 @@ function subscribe() {
 
 // Once the service worker is registered set the initial state
 function initialiseState() {
+	var pushButton = $('.js-push-button')[0];
   // Are Notifications supported in the service worker?
   if (!('showNotification' in ServiceWorkerRegistration.prototype)) {
+	pushButton.disabled = true;
     window.Demo.debug.log('Notifications aren\'t supported.');
     return;
   }
@@ -171,12 +180,14 @@ function initialiseState() {
   // If its denied, it's a permanent block until the
   // user changes the permission
   if (Notification.permission === 'denied') {
+	pushButton.disabled = true;
     window.Demo.debug.log('The user has blocked notifications.');
     return;
   }
 
   // Check if push messaging is supported
   if (!('PushManager' in window)) {
+	 pushButton.disabled = true;
     window.Demo.debug.log('Push messaging isn\'t supported.');
     return;
   }
@@ -188,7 +199,7 @@ function initialiseState() {
       .then(function(subscription) {
         // Enable any UI which subscribes / unsubscribes from
         // push messages.
-        var pushButton = document.querySelector('.js-push-button');
+        var pushButton = $('.js-push-button')[0];
         pushButton.disabled = false;
 
         if (!subscription) {
@@ -202,7 +213,7 @@ function initialiseState() {
 
         // Set your UI to show they have subscribed for
         // push messages
-        pushButton.textContent = 'Disable Push Messages';
+       switchbtn(pushButton,99);
         isPushEnabled = true;
       })
       .catch(function(err) {
@@ -212,14 +223,14 @@ function initialiseState() {
 }
 
 window.addEventListener('load', function() {
-  var pushButton = document.querySelector('.js-push-button');
-  pushButton.addEventListener('click', function() {
-    if (isPushEnabled) {
+ /*  var pushButton = $('.js-push-button')[0];
+  pushButton.addEventListener('change', function() {
+    if (pushButton.value) {
       unsubscribe();
     } else {
       subscribe();
     }
-  });
+  }); */
 
   // Check that service workers are supported, if so, progressively
   // enhance and add push messaging support, otherwise continue without it.

@@ -4,6 +4,7 @@ var vmsetting =  new Vue({
 			notiplan:'',
 			notitype:['Chrome','Email'],
 			notidiable:['fa-circle-o','fa-check-circle-o'],
+			cursor: ['not-allowed','pointer'],
 			
 		},
 		mounted(){

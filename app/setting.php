@@ -147,7 +147,7 @@ $tags = array();
 $tags['type']='chrome';
 $postData = array();
 $postData['userid'] = 1; 
-ATrigger::doCreate("1minute", "http://marshal1.tech/FYP/notification.php", $tags, '', '', '',$postData);
+ATrigger::doCreate("1minute", "http://marshal1.tech/FYP/notification.php", $tags, '','3', '1',$postData);
 /**Edit Password (it post 'signup' due to js function variable name is fixed)*/
 	if(isset($_POST['signup'])){
 		$oldpwd = inputCheck($_POST['oldpwd']);

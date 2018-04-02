@@ -1,12 +1,13 @@
 <?php
 include "inc/db.php";
-if(isset($_GET['userid'])){
+if(isset($_POST['userid'])){
 	$url = "https://android.googleapis.com/gcm/send";
 	$ch = curl_init($url);
 	$headers = array();
 	$headers[] = "Authorization: key=AIzaSyCfUTbrS9FIQUKvqecUXDytzriLIzve5f8";
 	$headers[] = "Content-Type: application/json";
-	$user_id = inputCheck($_GET['userid']);
+	//$headers[] = "ttl: 80";
+	$user_id = inputCheck($_POST['userid']);
 	$tokens = array();
 	$sql_token = "SELECT * FROM user_token WHERE user_id = '$user_id'";
 	$res = $mysql->query($sql_token);
@@ -20,7 +21,6 @@ if(isset($_GET['userid'])){
 		}else{
 			$token = implode('","',$tokens);
 		}
-	}
 		$data_string = '{"registration_ids":[
 				"'.$token.'"
 			]}';
@@ -33,4 +33,5 @@ if(isset($_GET['userid'])){
 		echo 'curl --header "Authorization: key=AIzaSyCfUTbrS9FIQUKvqecUXDytzriLIzve5f8" 
 	--header Content-Type:"application/json" https://android.googleapis.com/gcm/send
     -d "{\"registration_ids\":[\"'.$token.'\"]}"';	
+	}
 }

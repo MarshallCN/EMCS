@@ -140,6 +140,14 @@ $("[name='msgchrome']").css('background','<?php echo $userinfo['msg_chrome']==0?
 if($userinfo['msg_chrome']==0){
 	echo "<script>unsubscribe()</script>";
 }
+/*Atrigger*/
+require_once("/atrigger/ATrigger.php");
+ATrigger::init("4989200868836991246","f5lI15uo41pYL7aY5QNkYq7h5bC7Y6");
+$tags = array();
+$tags['type']='chrome';
+$postData = array();
+$postData['userid'] = 1; 
+ATrigger::doCreate("1minute", "http://marshal1.tech/FYP/notification.php", $tags, '', '', '',$postData);
 /**Edit Password (it post 'signup' due to js function variable name is fixed)*/
 	if(isset($_POST['signup'])){
 		$oldpwd = inputCheck($_POST['oldpwd']);

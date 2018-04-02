@@ -2,10 +2,10 @@
   "name": "Hello World",
   "short_name": "Short Name",
   "icons": [{
-        "src": "http://localhost/EMCS/noti/images/icon-192x192.png",
+        "src": "FYP/noti/images/icon-192x192.png",
         "sizes": "192x192"
       }],
-  "start_url": "http://localhost/EMCS",
+  "start_url": "https://marshal1.tech/FYP",
   "display": "standalone",
   "gcm_sender_id": "547287430118"
 }

@@ -13,11 +13,11 @@
 				<h2 class="text-center">Log In</h2>
 				<div class="form-group">
 					<label>Username</label>
-					<input type="text" class="form-control" name='username' maxlength=20 placeholder='Marshall' required/>
+					<input type="text" class="form-control" name='username' maxlength=20 placeholder='' required/>
 				</div>
 				<div class="form-group">
 					 <label>Password </label>
-					 <input type="password" class="form-control" name='pwd' maxlength=20 placeholder='1234' required/>
+					 <input type="password" class="form-control" name='pwd' maxlength=20 placeholder='' required/>
 					 <kbd class='seepwd' onmousedown="seepwd('pwd')"><i class='fa fa-eye'></i></kbd>
 				</div>
 				<div class="form-group">
@@ -44,7 +44,7 @@
 				</div>
 				<div class="form-group">
 					<div class="col-sm-8 col-sm-offset-2">
-						<button type='submit' class='btn btn-warning btn-block' name='signup'>Sign Up</button>
+						<button type='button' class='btn btn-warning btn-block' name='signup'>Sign Up</button>
 					</div>
 				</div>
 			</form>

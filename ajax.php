@@ -1,6 +1,8 @@
 <?php
 	session_start();
 	require "inc/db.php";
+	require_once("/atrigger/ATrigger.php");
+	ATrigger::init("4989200868836991246","f5lI15uo41pYL7aY5QNkYq7h5bC7Y6");
 	/*Check username uniqueness*/	
 	if(isset($_POST['usercheck'])){
 		$usercheck = inputCheck(strtolower(preg_replace("/\s/","",$_POST['usercheck'])));
@@ -114,6 +116,10 @@
 		$sql_rules = "UPDATE notiplan set available='$status' WHERE method = $method AND user_id = ".$_SESSION['userid'];
 		$mysql->query($sql_switch);
 		$mysql->query($sql_rules);
+		/*Atrigger*/
+		$firstdate = date("d/M/Y").":12:00:00";
+		ATrigger::doCreate("1minute", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>'1'],"$firstdate",1, 3,["userid"=>'1']);
+		//ATrigger::doDelete(["type"=>"chrome"]);
 		echo json_encode(['res'=>1]);
 	}
 	/*Get all noti rules table*/

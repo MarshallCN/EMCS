@@ -140,14 +140,15 @@ $("[name='msgchrome']").css('background','<?php echo $userinfo['msg_chrome']==0?
 if($userinfo['msg_chrome']==0){
 	echo "<script>unsubscribe()</script>";
 }
-/*Atrigger*/
-require_once("/atrigger/ATrigger.php");
-ATrigger::init("4989200868836991246","f5lI15uo41pYL7aY5QNkYq7h5bC7Y6");
-$tags = array();
-$tags['type']='chrome';
-$postData = array();
-$postData['userid'] = 1; 
-ATrigger::doCreate("1minute", "http://marshal1.tech/FYP/notification.php", $tags, '','3', '1',$postData);
+	require_once("/atrigger/ATrigger.php");
+	ATrigger::init("4989200868836991246","f5lI15uo41pYL7aY5QNkYq7h5bC7Y6");
+/* $firstdate = date("d/M/Y",strtotime('+1 day')).":12:00:00";
+echo $firstdate; */
+$sql_alldates = "SELECT f.*,TIMESTAMPDIFF(DAY,NOW(),f.exp) AS days FROM food AS f INNER JOIN allfood AS a ON f.allfood_id = a.id WHERE userid = 1";
+$res_alldates = $mysql->query($sql_alldates);
+$setdate = '03/Apr/2018:09:00:00';
+$firstDate = date_create_from_format('d/M/Y:H:i:s', $setdate);
+		ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>'1'],$firstDate,3, 3,["userid"=>'1']);
 /**Edit Password (it post 'signup' due to js function variable name is fixed)*/
 	if(isset($_POST['signup'])){
 		$oldpwd = inputCheck($_POST['oldpwd']);

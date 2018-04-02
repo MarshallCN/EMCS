@@ -22,7 +22,8 @@
 }
 $mysql = new Mysql();
 	function inputCheck($input){	//prevent some of SQL injection and XSS attack
-		$input=mysqli_real_escape_string(htmlspecialchars(strip_tags($input)));
+		global $mysql;
+		$input = mysqli_real_escape_string($mysql->conn,htmlspecialchars(strip_tags($input)));
 		return $input;
 	}
 	function redirect($url,$msg=''){	//redirect and alert

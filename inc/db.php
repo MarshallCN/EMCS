@@ -4,7 +4,7 @@
 		$this->conn=$this->getConn();
 	}
 	function getConn(){
-        $conn =  mysqli_connect('mysql.hostinger.com.hk','u813337812_root','76359599',"u813337812_emcs");
+        $conn =  mysqli_connect('localhost','root','',"emcs");
 		mysqli_query($conn,"set names gbk");
         return $conn;
     }
@@ -22,8 +22,7 @@
 }
 $mysql = new Mysql();
 	function inputCheck($input){	//prevent some of SQL injection and XSS attack
-		global $mysql;
-		$input=mysql_real_escape_string(htmlspecialchars(strip_tags($input)));
+		$input=mysqli_real_escape_string(htmlspecialchars(strip_tags($input)));
 		return $input;
 	}
 	function redirect($url,$msg=''){	//redirect and alert

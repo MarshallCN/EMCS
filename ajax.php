@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	require "inc/db.php";
-	require_once("/atrigger/ATrigger.php");
+	require_once("atrigger/ATrigger.php");
 	ATrigger::init("4989200868836991246","f5lI15uo41pYL7aY5QNkYq7h5bC7Y6");
 	/*Check username uniqueness*/	
 	if(isset($_POST['usercheck'])){

@@ -28,21 +28,21 @@
 							</div>
 							<div id="panel-element-storage" class="panel-collapse collapse">
 								<a href="####" onclick="activeclass(this);vm.place='1=1';vm.getall();" id='fp-All' class="menuLabel fplace">
-									<div class="panel-body">All</div>
+									<div class="panel-body">All </div>
 								</a>
 								<a href="####" onclick="activeclass(this);vm.place='place=2';vm.getall();" id='fp-Refrigerator' class="menuLabel fplace">
-									<div class="panel-body">Refrigerator
+									<div class="panel-body">Refrigerator 
 										<span class="icon_notification" draggable="true" style="width: 28px;"><span class="icon_num">12</span></span>
 									</div>
 								</a>
 								<a href="####" onclick="activeclass(this);vm.place='place=1';vm.getall();" id='fp-Freezing' class="menuLabel fplace">
-									<div class="panel-body">Freezing Chamber</div>
+									<div class="panel-body">Freezing Chamber </div>
 								</a>
 								<a href="####" onclick="activeclass(this);vm.place='place=3';vm.getall();" id='fp-Pantry' class="menuLabel fplace">
-									<div class="panel-body">Pantry</div>
+									<div class="panel-body">Pantry </div>
 								</a>
 								<a href="####" onclick="activeclass(this);vm.place='place=5';vm.getall();" id='fp-Other' class="menuLabel fplace">
-									<div class="panel-body">Other</div>
+									<div class="panel-body">Other </div>
 								</a>
 							</div>
 							<div class="panel-heading" onclick="$('#menu_shopping')[0].click()">

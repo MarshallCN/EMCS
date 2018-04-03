@@ -1,13 +1,13 @@
 <?php
 include "inc/db.php";
-if(isset($_POST['userid'])){
+if(isset($_POST['userid'])||isset($_GET['uid'])){
+	$user_id=isset($_GET['uid'])?inputCheck($_GET['uid']):inputCheck($_POST['userid']);
 	$url = "https://android.googleapis.com/gcm/send";
 	$ch = curl_init($url);
 	$headers = array();
 	$headers[] = "Authorization: key=AIzaSyCfUTbrS9FIQUKvqecUXDytzriLIzve5f8";
 	$headers[] = "Content-Type: application/json";
 	//$headers[] = "ttl: 80";
-	$user_id = inputCheck($_POST['userid']);
 	$tokens = array();
 	$sql_token = "SELECT * FROM user_token WHERE user_id = '$user_id'";
 	$res = $mysql->query($sql_token);

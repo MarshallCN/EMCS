@@ -47,6 +47,7 @@
 				$sql_editfood = "UPDATE food SET name='$foodname',allfood_id='$foodcate',exp_type='$exptype',exp='$exp',vol='$vol',open_date=$opendate,openday='$opendays',place='$place',picpath='$imgname' WHERE id = $editid";
 				$mysql->query($sql_editfood);
 			}
+			/*Atrigger*/
 			echo json_encode(['res'=>1]);
 	}
 	/*Get all food data */
@@ -116,10 +117,7 @@
 		$sql_rules = "UPDATE notiplan set available='$status' WHERE method = $method AND user_id = ".$_SESSION['userid'];
 		$mysql->query($sql_switch);
 		$mysql->query($sql_rules);
-		/*Atrigger*/
-		$firstdate = date("d/M/Y").":12:00:00";
-		ATrigger::doCreate("1minute", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>'1'],"$firstdate",1, 3,["userid"=>'1']);
-		//ATrigger::doDelete(["type"=>"chrome"]);
+		/*ATrigger*/
 		echo json_encode(['res'=>1]);
 	}
 	/*Get all noti rules table*/

@@ -1,8 +1,8 @@
 <?php
-$email = isset($_GET['email'])?$_GET['email']:'';
-$tit = isset($_GET['tit'])?$_GET['tit']:'';
-$msg = isset($_GET['msg'])?$_GET['msg']:'';
-$pwd = isset($_GET['pwd'])?md5($_GET['pwd']):'';
+$email = isset($_POST['email'])?$_POST['email']:'';
+$tit = isset($_POST['tit'])?$_POST['tit']:'';
+$msg = isset($_POST['msg'])?$_POST['msg']:'';
+$pwd = isset($_POST['pwd'])?md5($_POST['pwd']):'';
 $pwdhash = "ae23ccc3f30ee9bd82206aa1ba78a2f7";
 if($pwd==$pwdhash){
 	echo "PWD correct";

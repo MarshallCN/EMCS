@@ -46,12 +46,18 @@
 					 <input type="password" class="form-control" name='newpwdconf' maxlength=20 placeholder='1234' onchange='checkpwd()' required/>
 					 <kbd class='seepwd' onmousedown="seepwd('newpwdconf')" onclick='checkpwd()'><i class='fa fa-eye'></i></kbd>
 				</div>
-				<div class="form-group">
 					<label>Verify Code</label>
+				<div class="input-group">
 					<input type="number" class="form-control" name='verifycode' max=9999 oninput="checkNewName()" required/>
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button" id='sendemailbtn' onclick='sendemail()'>
+							Send Verify Email
+						</button>
+					</span>
 				</div>
 				<div class="form-group">
 					<div class="col-sm-8 col-sm-offset-2">
+						<input type="text" id='v'>
 						<button type='button' class='btn btn-warning btn-block' name='signup'>Sign Up</button>
 					</div>
 				</div>

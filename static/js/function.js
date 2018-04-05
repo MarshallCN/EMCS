@@ -127,16 +127,19 @@ isemail = false;
 						$('[name="newemail"]').next().attr('class','seepwd alert-danger')
 						$('[name="newemail"]').next().children('i').attr('class','fa fa-close')
 						$('[name="signup"]').attr('disabled',true)
+						$('#sendemailbtn').attr('disabled',true)
 					}else if(data.used=='ok'){
 						$('[name="newemail"]').attr('class','form-control alert-success')
 						$('[name="newemail"]').next().attr('class','seepwd alert-success')
 						$('[name="newemail"]').next().children('i').attr('class','fa fa-check')
 						$('[name="signup"]').attr('disabled',false)
 						isemail = true
+						$('#sendemailbtn').attr('disabled',false)
 					}else if(data.used=='empty'){
 						$('[name="newemail"]').attr('class','form-control')
 						$('[name="newemail"]').next().attr('class','seepwd hidden')
 						$('[name="signup"]').attr('disabled',true)
+						$('#sendemailbtn').attr('disabled',true)
 					}
 				},
 				type:'POST',
@@ -161,6 +164,21 @@ isemail = false;
 			},
 			type:'POST'
 		});
+	}
+/* Get random 0-9 number */
+	function getRandom(){
+		return Math.floor(Math.random()*10).toString()
+	}
+/* Send Verify Email */
+	function sendemail(){
+		if(isemail){
+			var email = $('[name="newemail"]').val()
+			code = getRandom()+getRandom()+getRandom()+getRandom()
+			tit = "EMCS: Your Verify Code"
+			msg = "Thanks for registering EMCS, Your Verify Code is <b>"+code+"</b>"
+			$('#v').val(code)
+			sendmail ("960618",email,tit,msg)
+		}
 	}
 /* Change Vol Range bar*/
 	function volrange(ele,id){

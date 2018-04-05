@@ -1,12 +1,12 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+require '../vendor/autoload.php';
 if(isset($_POST['email'])&&isset($_POST['subject'])&&isset($_POST['body'])&&isset($_POST['altbody'])){
-	if(!empty($_POST['email']&&!empty($_POST['subject'])&&!empty($_POST['body'])&&!empty($_POST['altbody'])){
+	if(!empty($_POST['email'])&&!empty($_POST['subject'])&&!empty($_POST['body'])&&!empty($_POST['altbody'])){
 		$email = $_POST['email'];
 		$subject = $_POST['subject'];
 		$body = $_POST['body'];
 		$altbody = $_POST['altbody'];
-		use PHPMailer\PHPMailer\PHPMailer;
-		require '../vendor/autoload.php';
 		$mail = new PHPMailer;
 		$mail->isSMTP();
 		$mail->SMTPDebug = 0;

@@ -46,18 +46,20 @@
 					 <input type="password" class="form-control" name='newpwdconf' maxlength=20 placeholder='1234' onchange='checkpwd()' required/>
 					 <kbd class='seepwd' onmousedown="seepwd('newpwdconf')" onclick='checkpwd()'><i class='fa fa-eye'></i></kbd>
 				</div>
-					<label>Verify Code</label>
+				<div class="form-group">
+				<label>Verify Code</label>
 				<div class="input-group">
 					<input type="number" class="form-control" name='verifycode' max=9999 oninput="checkNewName()" required/>
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button" id='sendemailbtn' onclick='sendverifyemail()'>
+						<button class="btn btn-default" type="button" id='sendemailbtn' onclick='sendverifyemail()' disabled>
 							Send Verify Email
 						</button>
 					</span>
 				</div>
+				</div>
 				<div class="form-group">
 					<div class="col-sm-8 col-sm-offset-2">
-						<input type="text" id='v'>
+						<input type="hidden" id='v' name='vcode'>
 						<button type='button' class='btn btn-warning btn-block' name='signup'>Sign Up</button>
 					</div>
 				</div>
@@ -93,24 +95,36 @@
 	}else if(isset($_POST['signup'])){
 		$username = inputCheck($_POST['newusername']);
 		$password = inputCheck($_POST['newpwd']);
+		$email = inputCheck($_POST['email']);
 		$passwardconfirm = inputCheck($_POST['newpwdconf']);
-		if($password !=$passwardconfirm){
-			echo"<script type='text/javascript'>alert('Password is not the same');location='login.php'</script>";
-		}else{  
-	    $sql = "SELECT * FROM user WHERE username = '$username'";
-	    $query = $mysql->query("$sql");
-	    $rows = mysqli_num_rows($query);
-			if($rows == 1){
-				echo"<script type='text/javascript'>alert('Username have been Used');location='login.php';  
-				</script>";
-			}else{
-				$salt=base64_encode(mcrypt_create_iv(6,MCRYPT_DEV_RANDOM)); //Add random salt
-				$pwdhash = MD5($password.$salt); //MD5 of pwd+salt
-				$sql_newcus = "INSERT INTO user (username, pwdhash, salt_code) VALUES('$username','$pwdhash','$salt')";
-				$mysql->query($sql_newcus);
-				$_SESSION['user'] = $username;
-				$_SESSION['userid'] = mysqli_insert_id($mysql->conn);
-				echo"<script type='text/javascript'>alert('Sign up Successfully".$_SESSION['userid']."');location='index.php'</script>";
+		$vcode = $_POST['vcode'];
+		$verifycode = $_POST['verifycode'];
+		if($verifycode != $vcode){
+			echo"<script>alert('Verify Code is Wrong!');location='login.php'</script>";
+		}else{
+			if($password !=$passwardconfirm){
+				echo"<script>alert('Password are not same');location='login.php'</script>";
+			}else{  
+				$res = $mysql->query("SELECT * FROM user WHERE email = '$email'");
+				if(mysqli_num_rows($res)){
+					echo"<script>alert('Email has been used!');location='login.php'</script>";
+				}else{
+					$sql = "SELECT * FROM user WHERE username = '$username'";
+					$query = $mysql->query("$sql");
+					$rows = mysqli_num_rows($query);
+					if($rows == 1){
+						echo"<script type='text/javascript'>alert('Username have been Used');location='login.php';  
+						</script>";
+					}else{
+						$salt=base64_encode(mcrypt_create_iv(6,MCRYPT_DEV_RANDOM)); //Add random salt
+						$pwdhash = MD5($password.$salt); //MD5 of pwd+salt
+						$sql_newcus = "INSERT INTO user (username, pwdhash, salt_code, email, msg_email, msg_chrome) VALUES('$username','$pwdhash','$salt','$email',0,0)";
+						$mysql->query($sql_newcus);
+						$_SESSION['user'] = $username;
+						$_SESSION['userid'] = mysqli_insert_id($mysql->conn);
+						echo"<script type='text/javascript'>alert('Sign up Successfully".$_SESSION['userid']."');location='index.php'</script>";
+					}
+				}
 			}
 		}
 	}  

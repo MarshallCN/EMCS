@@ -174,11 +174,22 @@ isemail = false;
 		if(isemail){
 			var email = $('[name="newemail"]').val()
 			code = getRandom()+getRandom()+getRandom()+getRandom()
-			subject = "EMCS: Your Verify Code"
-			body = "<div style='background:#1E3E57;width:100%;min-height=100px;border-radius:5px;'><h3>Thanks for registering EMCS, Your Verify Code is </h3><h2>"+code+"</h2></div>";
+			subject = "Your Verify Code"
+			body = "<div style='background:#1E3E57;width:100%;min-height:100px;border-radius:5px;padding:20px'><h3 style='color:#fff'>Thanks for registering EMCS, Your Verify Code is </h3><h1 style='color:#FF6384'>"+code+"</h1></div>";
 			altbody = "Thanks for registering EMCS, Your Verify Code is: "+code;
 			$('#v').val(code)
 			sendemail (email,subject,body,altbody)
+			$('#sendemailbtn').attr('disabled',true)
+			$('#sendemailbtn').html('<span id="resendtime">60</span>s Later Re-send')
+			t = setInterval(function(){
+				e = $('#resendtime').html()-1
+				$('#resendtime').html(e)
+				if(e==0){
+					clearInterval(t)
+					$('#sendemailbtn').attr('disabled',false)
+					$('#sendemailbtn').html('Send Verify Email')
+				}
+			},1000)
 		}
 	}
 /* Change Vol Range bar*/

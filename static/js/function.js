@@ -67,6 +67,7 @@ function onlynum(ele){
 				pwd.attr('class','form-control alert-success');
 				pwdconf.attr('class','form-control alert-success');
 				if(log==1){
+					checkEmail();
 					checkNewName(); //avoid bypass the disable button :)
 				}
 			}else{
@@ -76,7 +77,7 @@ function onlynum(ele){
 			}
 		}
 	}
-/* use ajax to Check newusername if exist */
+/* use ajax to Check if newusername exist */
 	function checkNewName(){
 		$('[name="newusername"]').val($('[name="newusername"]').val().replace(" ",""))
 		if($('[name="newusername"]').val().length>0){
@@ -111,6 +112,55 @@ function onlynum(ele){
 			$('[name="newusername"]').attr('class','form-control')
 			$('[name="newusername"]').next().attr('class','seepwd hidden')
 		}
+	}
+isemail = false;
+/* use ajax to Check if email exist */
+	function checkNewEmail(){
+		$('[name="newemail"]').val($('[name="newemail"]').val().replace(" ",""))
+		if($('[name="newemail"]').val().length>0){
+			$.ajax({
+				url:'ajax.php',
+				data:{"emailcheck":encodeURI($('[name="newemail"]').val())},
+				success:function(data){
+					if(data.used=='used'){
+						$('[name="newemail"]').attr('class','form-control alert-danger')
+						$('[name="newemail"]').next().attr('class','seepwd alert-danger')
+						$('[name="newemail"]').next().children('i').attr('class','fa fa-close')
+						$('[name="signup"]').attr('disabled',true)
+					}else if(data.used=='ok'){
+						$('[name="newemail"]').attr('class','form-control alert-success')
+						$('[name="newemail"]').next().attr('class','seepwd alert-success')
+						$('[name="newemail"]').next().children('i').attr('class','fa fa-check')
+						$('[name="signup"]').attr('disabled',false)
+						isemail = true
+					}else if(data.used=='empty'){
+						$('[name="newemail"]').attr('class','form-control')
+						$('[name="newemail"]').next().attr('class','seepwd hidden')
+						$('[name="signup"]').attr('disabled',true)
+					}
+				},
+				type:'POST',
+				dataType:'json',
+				beforeSend:function(){
+					$('[name="newemail"]').next().attr('class','seepwd btn-warning')
+					$('[name="newemail"]').next().children('i').attr('class','fa fa-spinner fa-spin')
+				}
+			});
+		}else{
+			$('[name="newemail"]').attr('class','form-control')
+			$('[name="newemail"]').next().attr('class','seepwd hidden')
+		}
+	}
+/* Send Email */
+	function sendmail (pwd,email,tit,msg){
+		$.ajax({
+			url:'https://marshal1.tech/FYP/mail.php',
+			data:{"pwd":pwd,"email":email,"tit":tit,"msg":msg},
+			success:function(data){
+				console.log(data)
+			},
+			type:'POST'
+		});
 	}
 /* Change Vol Range bar*/
 	function volrange(ele,id){

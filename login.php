@@ -29,6 +29,10 @@
 			<form method="post" class='col-sm-6' autocomplete='off'>
 				<h2 class="text-center">Sign Up</h2>
 				<div class="form-group">
+					<label>Email</label>
+					<input type="email" class="form-control" name='newemail' maxlength=100 placeholder='Email' oninput="checkNewEmail()" required/><kbd class='seepwd hidden'><i class=''></i>
+				</div>
+				<div class="form-group">
 					<label>Username</label>
 					<input type="text" class="form-control" name='newusername' maxlength=20 placeholder='Username' oninput="checkNewName()" required/><kbd class='seepwd hidden'><i class=''></i>
 				</div>
@@ -41,6 +45,10 @@
 					 <label>Password Confirm</label>
 					 <input type="password" class="form-control" name='newpwdconf' maxlength=20 placeholder='1234' onchange='checkpwd()' required/>
 					 <kbd class='seepwd' onmousedown="seepwd('newpwdconf')" onclick='checkpwd()'><i class='fa fa-eye'></i></kbd>
+				</div>
+				<div class="form-group">
+					<label>Verify Code</label>
+					<input type="number" class="form-control" name='verifycode' max=9999 oninput="checkNewName()" required/>
 				</div>
 				<div class="form-group">
 					<div class="col-sm-8 col-sm-offset-2">

@@ -15,6 +15,18 @@
 		$resp = ['used'=>$isNameUsed];
 		echo json_encode($resp);
 	}
+	/*Check email uniqueness*/	
+	if(isset($_POST['emailcheck'])){
+		$emailcheck = inputCheck(strtolower(preg_replace("/\s/","",$_POST['emailcheck'])));
+		if(empty($emailcheck)){
+			$isEmailUsed= 'empty';
+		}else{
+			$res = $mysql->query("SELECT * FROM user WHERE email = '$emailcheck'");
+			$isEmailUsed = mysqli_num_rows($res)? 'used':'ok';
+		}
+		$resp = ['used'=>$isEmailUsed];
+		echo json_encode($resp);
+	}
 	/*Delete food*/	
 	elseif(isset($_POST['delfoodid'])){
 		$delid = inputCheck($_POST['delfoodid']);

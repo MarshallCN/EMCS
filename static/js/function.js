@@ -155,7 +155,7 @@ isemail = false;
 		}
 	}
 /* Send Email */
-	function sendmail (pwd,email,tit,msg){
+	function sendemail (pwd,email,tit,msg){
 		$.ajax({
 			url:'https://marshal1.tech/FYP/mail.php',
 			data:{"pwd":pwd,"email":email,"tit":tit,"msg":msg},
@@ -170,14 +170,14 @@ isemail = false;
 		return Math.floor(Math.random()*10).toString()
 	}
 /* Send Verify Email */
-	function sendemail(){
+	function sendverifyemail(){
 		if(isemail){
 			var email = $('[name="newemail"]').val()
 			code = getRandom()+getRandom()+getRandom()+getRandom()
 			tit = "EMCS: Your Verify Code"
 			msg = "Thanks for registering EMCS, Your Verify Code is <b>"+code+"</b>"
 			$('#v').val(code)
-			sendmail ("960618",email,tit,msg)
+			sendemail ("960618",email,tit,msg)
 		}
 	}
 /* Change Vol Range bar*/

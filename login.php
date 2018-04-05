@@ -50,7 +50,7 @@
 				<div class="input-group">
 					<input type="number" class="form-control" name='verifycode' max=9999 oninput="checkNewName()" required/>
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button" id='sendemailbtn' onclick='sendemail()'>
+						<button class="btn btn-default" type="button" id='sendemailbtn' onclick='sendverifyemail()'>
 							Send Verify Email
 						</button>
 					</span>

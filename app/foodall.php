@@ -241,9 +241,26 @@
 		$warndate = date("d/M/Y",strtotime("-3 day",strtotime($exp)));
 		$setdate = $warndate.':09:00:00';
 		$firstDate = date_create_from_format('d/M/Y:H:i:s', $setdate);
-		$res = $mysql->query("SELECT * FROM user WHERE id = ".$_SESSION['userid']." AND msg_chrome = 1");
-		if(!mysqli_num_rows($res)>0){
+		$msgres = $mysql->query("SELECT msg_chrome,msg_email FROM user WHERE id = ".$_SESSION['userid']);
+		$msgSet = $mysql->fetch($msgres);
+		if($msgSet[0]==1){
 			ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$foodid],$firstDate,3, 3,["userid"=>$_SESSION['userid']]);
+		}
+		if($msgSet[1]==1){
+			$useremail = $Mysql->oneQuery("SELECT email FROM user WHERE id =".$_SESSION['userid']);
+			$html = htmlspecialchars("<div style='background:#1E3E57;width:100%;height:400px;border-radius:5px;padding:20px'>
+			<h3 style='color:#fff'>Your Food $foodnam will be expired at</h3>
+			<h1 style='color:#FF6384'>$exp</h1><br/>
+			<h3 style='color:#fff'>Please use it soon!</h3>
+			<a href='https://marshal1.tech/FYP'>Go to EMCS now!</a>
+			</div>");
+			$postary = [
+				"email"=>$useremail,
+				"subject"=>"Your $foodnam will be expired soon!",
+				"body"=>$html,
+				"altbody"=>"Your Food $foodnam will be expired at $exp \r\n Please use it soon!"
+			];
+			ATrigger::doCreate("1day", "http://marshal1.tech/FYP/mailer.php", ['type'=>'email','userid'=>$_SESSION['userid'],'foodid'=>$foodid],$firstDate,3, 3,$postary);
 		}
 			if(isset($_POST['spitemid'])){
 				$rmitemid = inputCheck($_POST['spitemid']);

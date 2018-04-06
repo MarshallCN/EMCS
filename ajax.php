@@ -163,7 +163,7 @@
 		$mysql->query($sql_rmnotiid);
 		echo json_encode(['res'=>$rmnotiid]);
 	}
-	//Push messege setting
+	//Push chrome messege setting
 	elseif(isset($_POST['ispush'])){
 		$res = 'No update noti';
 		$browser = md5($_SERVER['HTTP_USER_AGENT']);

@@ -5,7 +5,7 @@ if(isset($_POST['email'])&&isset($_POST['subject'])&&isset($_POST['body'])&&isse
 	if(!empty($_POST['email'])&&!empty($_POST['subject'])&&!empty($_POST['body'])&&!empty($_POST['altbody'])){
 		$email = $_POST['email'];
 		$subject = $_POST['subject'];
-		$body = $_POST['body'];
+		$body = htmlspecialchars_decode($_POST['body']);
 		$altbody = $_POST['altbody'];
 		$mail = new PHPMailer;
 		$mail->isSMTP();

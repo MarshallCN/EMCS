@@ -95,7 +95,7 @@
 	}else if(isset($_POST['signup'])){
 		$username = inputCheck($_POST['newusername']);
 		$password = inputCheck($_POST['newpwd']);
-		$email = inputCheck($_POST['email']);
+		$email = inputCheck($_POST['newemail']);
 		$passwardconfirm = inputCheck($_POST['newpwdconf']);
 		$vcode = $_POST['vcode'];
 		$verifycode = $_POST['verifycode'];

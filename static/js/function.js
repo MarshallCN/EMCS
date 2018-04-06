@@ -85,6 +85,7 @@ function onlynum(ele){
 				url:'ajax.php',
 				data:{"usercheck":encodeURI(encodeURI($('[name="newusername"]').val()))},
 				success:function(data){
+					console.log(data)
 					if(data.used=='used'){
 						$('[name="newusername"]').attr('class','form-control alert-danger')
 						$('[name="newusername"]').next().attr('class','seepwd alert-danger')

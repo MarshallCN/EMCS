@@ -122,7 +122,7 @@
 						$mysql->query($sql_newcus);
 						$_SESSION['user'] = $username;
 						$_SESSION['userid'] = mysqli_insert_id($mysql->conn);
-						echo"<script type='text/javascript'>alert('Sign up Successfully".$_SESSION['userid']."');location='index.php'</script>";
+						echo"<script'>alert('Sign up Successfully ".$_SESSION['user']."');location='index.php'</script>";
 					}
 				}
 			}

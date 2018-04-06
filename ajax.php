@@ -32,6 +32,7 @@
 		$delid = inputCheck($_POST['delfoodid']);
 		$sql= "DELETE FROM food WHERE id = $delid";
 		$mysql->query($sql);
+		ATrigger::doDelete(['foodid'=>$delfoodid]);
 		$resp = ['delid'=>$_POST['delfoodid']];
 		echo json_encode($resp);
 	}
@@ -58,6 +59,14 @@
 				$editid = inputCheck($_POST['editfoodid']);
 				$sql_editfood = "UPDATE food SET name='$foodname',allfood_id='$foodcate',exp_type='$exptype',exp='$exp',vol='$vol',open_date=$opendate,openday='$opendays',place='$place',picpath='$imgname' WHERE id = $editid";
 				$mysql->query($sql_editfood);
+				ATrigger::doDelete(['foodid'=>$editfoodid]);
+				$warndate = date("d/M/Y",strtotime("-3 day",strtotime($exp)));
+				$setdate = $warndate.':09:00:00';
+				$firstDate = date_create_from_format('d/M/Y:H:i:s', $setdate);
+				$num = $mysql->query("SELECT * FROM user WHERE id = ".$_SESSION['userid']." AND msg_chrome = 1");
+				if(!mysqli_num_rows($num)){
+					ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$editfoodid],'',3, 3,["userid"=>$_SESSION['userid']]);
+				}
 			}
 			/*Atrigger*/
 			echo json_encode(['res'=>1]);

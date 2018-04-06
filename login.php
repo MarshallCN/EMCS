@@ -75,7 +75,7 @@
 		$res_pwd = $mysql->query("SELECT id,pwdhash,salt_code,username FROM user WHERE username = '$username'"); 
 		$userInfo = $mysql->fetch($res_pwd);
 		$pwdhash = MD5($pwd.$userInfo['salt_code']);
-		if(mysqli_num_rows($res_pwd)){
+		if(mysqli_num_rows($res_pwd)>0){
 			$rightpwd = $userInfo['pwdhash'];
 			if($pwdhash == $rightpwd){
 				$_SESSION['user'] = $userInfo['username'];
@@ -106,7 +106,7 @@
 				echo"<script>alert('Password are not same');location='login.php'</script>";
 			}else{  
 				$res = $mysql->query("SELECT * FROM user WHERE email = '$email'");
-				if(mysqli_num_rows($res)){
+				if(mysqli_num_rows($res>0)){
 					echo"<script>alert('Email has been used!');location='login.php'</script>";
 				}else{
 					$sql = "SELECT * FROM user WHERE username = '$username'";

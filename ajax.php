@@ -10,7 +10,7 @@
 			$isNameUsed= 'empty';
 		}else{
 			$res = $mysql->query("SELECT * FROM user WHERE username = '$usercheck'");
-			$isNameUsed = mysqli_num_rows($res)? 'used':'ok';
+			$isNameUsed = mysqli_num_rows($res>0)? 'used':'ok';
 		}
 		$resp = ['used'=>$isNameUsed];
 		echo json_encode($resp);
@@ -22,7 +22,7 @@
 			$isEmailUsed= 'empty';
 		}else{
 			$res = $mysql->query("SELECT * FROM user WHERE email = '$emailcheck'");
-			$isEmailUsed = mysqli_num_rows($res)? 'used':'ok';
+			$isEmailUsed = mysqli_num_rows($res>0)? 'used':'ok';
 		}
 		$resp = ['used'=>$isEmailUsed];
 		echo json_encode($resp);

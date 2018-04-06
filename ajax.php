@@ -59,10 +59,10 @@
 				$editid = inputCheck($_POST['editfoodid']);
 				$sql_editfood = "UPDATE food SET name='$foodname',allfood_id='$foodcate',exp_type='$exptype',exp='$exp',vol='$vol',open_date=$opendate,openday='$opendays',place='$place',picpath='$imgname' WHERE id = $editid";
 				$mysql->query($sql_editfood);
-				ATrigger::doDelete(['foodid'=>$editfoodid]);
 				$warndate = date("d/M/Y",strtotime("-3 day",strtotime($exp)));
 				$setdate = $warndate.':09:00:00';
 				$firstDate = date_create_from_format('d/M/Y:H:i:s', $setdate);
+				//ATrigger::doDelete(['foodid'=>$editfoodid]);
 				ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$editfoodid],$firstDate,3, 3,["userid"=>$_SESSION['userid']]);
 			}
 			/*Atrigger*/
@@ -166,13 +166,13 @@
 	//Push messege setting
 	elseif(isset($_POST['ispush'])){
 		$res = 'No update noti';
+		$browser = md5($_SERVER['HTTP_USER_AGENT']);
 		if($_POST['ispush']=='add'){
 			$subId = isset($_POST['token'])?$_POST['token']:'';
 			if(!empty($subId)){
 				$current = $mysql->oneQuery("SELECT COUNT(*) FROM user_token WHERE token = '$subId' AND user_id = ".$_SESSION['userid']);
 			}
 			if($current == 0){
-				$browser = md5($_SERVER['HTTP_USER_AGENT']);
 				$sql_find = "SELECT count(*) FROM user_token WHERE browser = '$browser' AND user_id = ".$_SESSION['userid'];
 				$num = $mysql->oneQuery($sql_find);
 				if($num>0){
@@ -184,9 +184,10 @@
 					$res = 'add new noti';
 			}
 		}else{
-			$sql_del = "DELETE FROM user_token WHERE user_id = ".$_SESSION['userid'];
+			$sql_del = "DELETE FROM user_token WHERE user_id = ".$_SESSION['userid']." AND browser = '$browser'";
 			$mysql->query($sql_del);
 			$res = 'Remove all chrome noti';
+			ATrigger::doDelete(['userid'=>$_SESSION['userid']]);
 		}
 		echo json_encode(['res'=>$res]);
 		

@@ -9,7 +9,7 @@
 			<a class="fa fa-globe"></a>&nbsp;EMCS
 		</h1>
 		<div class="col-sm-8 col-sm-offset-2 logmain">
-			<form method="post" class='col-sm-6 loginform' autocomplete='off'>
+			<form method="post" class='col-sm-6' autocomplete='off'>
 				<h2 class="text-center">Log In</h2>
 				<div class="form-group">
 					<label>Username</label>
@@ -26,7 +26,7 @@
 					</div>
 				</div>
 			</form>
-			<form method="post" class='col-sm-6' autocomplete='off'>
+			<form method="post" class='col-sm-6 loginform' autocomplete='off'>
 				<h2 class="text-center">Sign Up</h2>
 				<div class="form-group">
 					<label>Email</label>

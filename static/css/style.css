@@ -142,7 +142,7 @@ h1 {
 		margin:60px 10px 0 10px;
 	}
 	.loginform{
-		border-bottom:1px solid #333;
+		border-top:1px solid #333;
 	}
 	.logmain{
 		padding-bottom: 10px;
@@ -168,7 +168,7 @@ h1 {
 		width:73%;
 	}
 	.loginform{
-		border-right:1px solid #333;
+		border-left:1px solid #333;
 	}
 	.logmain{
 		padding-bottom: 30px;

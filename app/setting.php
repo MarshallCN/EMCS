@@ -38,7 +38,9 @@
 	$sql_users = "SELECT * FROM user where id = ".$_SESSION['userid'];
 	$res_user = $mysql->query($sql_users);
 	$userinfo = $mysql->fetch($res_user); 
-	
+	$browser = md5($_SERVER['HTTP_USER_AGENT']);
+	$isBrowserNoti = $mysql->oneQuery("SELECT COUNT(*) FROM user_token WHERE browser = '$browser' AND user_id = ".$_SESSION['userid']);
+	$isNoti = $isBrowserNoti>0?true:false;
 ?>
 			<fieldset class="col-sm-8 col-sm-offset-2">
 			<legend>Profile</legend>
@@ -132,9 +134,9 @@
 <script src="noti/main.js"></script>
 <script>
 $("[name='msgemail']").val('<?php echo $userinfo['msg_email']==0?0:100;?>')
-$("[name='msgchrome']").val('<?php echo $userinfo['msg_chrome']==0?0:100;?>')
+$("[name='msgchrome']").val('<?php echo $isNoti?0:100;?>')
 $("[name='msgemail']").css('background','<?php echo $userinfo['msg_email']==0?'#ccc':'#337ab7';?>')
-$("[name='msgchrome']").css('background','<?php echo $userinfo['msg_chrome']==0?'#ccc':'#337ab7';?>')
+$("[name='msgchrome']").css('background','<?php echo $isNoti==0?'#ccc':'#337ab7';?>')
 </script>
 <?php
 if($userinfo['msg_chrome']==0){

@@ -5,7 +5,6 @@ self.addEventListener('push', function(event) {
 	if (event.data) {
     console.log(event.data.json());
   }
-    console.log(subscriptionId);
   var title = 'Yay a message.';
   var body = event.data ? event.data.text():'No payload';
   var icon = '/FYP/noti/images/icon-192x192.png';

@@ -135,7 +135,9 @@
 		$sql_rules = "UPDATE notiplan set available='$status' WHERE method = $method AND user_id = ".$_SESSION['userid'];
 		$mysql->query($sql_switch);
 		$mysql->query($sql_rules);
-		/*ATrigger*/
+		if($type=='msg_email'&&$status==0){
+			ATrigger::doDelete(['userid'=>$_SESSION['userid'],'type'=>'email']);
+		}
 		echo json_encode(['res'=>1]);
 	}
 	/*Get all noti rules table*/
@@ -187,7 +189,7 @@
 			$sql_del = "DELETE FROM user_token WHERE user_id = ".$_SESSION['userid']." AND browser = '$browser'";
 			$mysql->query($sql_del);
 			$res = 'Remove all chrome noti';
-			ATrigger::doDelete(['userid'=>$_SESSION['userid']]);
+			ATrigger::doDelete(['userid'=>$_SESSION['userid'],'type'=>'chrome']);
 		}
 		echo json_encode(['res'=>$res]);
 		

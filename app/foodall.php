@@ -243,7 +243,7 @@
 		$firstDate = date_create_from_format('d/M/Y:H:i:s', $setdate);
 		$res = $mysql->query("SELECT * FROM user WHERE id = ".$_SESSION['userid']." AND msg_chrome = 1");
 		if(!mysqli_num_rows($res)){
-			ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$foodid],'$firstDate',3, 3,["userid"=>$_SESSION['userid']]);
+			ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$foodid],$firstDate,3, 3,["userid"=>$_SESSION['userid']]);
 		}
 			if(isset($_POST['spitemid'])){
 				$rmitemid = inputCheck($_POST['spitemid']);

@@ -216,11 +216,11 @@ function initialiseState() {
        switchbtn(pushButton,99);
         isPushEnabled = true;
 		
-		var endpoint = subscription.endpoint;
+		/* var endpoint = subscription.endpoint;
 		  var key = subscription.getKey('p256dh');
 		  var auth = subscription.getKey('auth');
 		  const clientPublicKey = new Buffer(subscription.keys.p256dh, 'base64');
-		  const clientAuthSecret = new Buffer(subscription.keys.auth, 'base64');
+		  const clientAuthSecret = new Buffer(subscription.keys.auth, 'base64'); */
       })
       .catch(function(err) {
         window.Demo.debug.log('Error during getSubscription()', err);

@@ -71,12 +71,12 @@
 			if(isset($_POST['editfoodid'])){
 				$editid = inputCheck($_POST['editfoodid']);
 				$sql_editfood = "UPDATE food SET name='$foodname',allfood_id='$foodcate',exp_type='$exptype',exp='$exp',vol='$vol',open_date=$opendate,openday='$opendays',place='$place',picpath='$imgname' WHERE id = $editid";
-				$mysql->query($sql_editfood);
 				$warndate = date("d/M/Y",strtotime("-3 day",strtotime($exp)));
 				$setdate = $warndate.':09:00:00';
 				$firstDate = date_create_from_format('d/M/Y:H:i:s', $setdate);
+				ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$_POST['editfoodid']],$firstDate,3, 3,["userid"=>$_SESSION['userid']]);
+				$mysql->query($sql_editfood);
 				//ATrigger::doDelete(['foodid'=>$editfoodid]);
-				ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$editfoodid],$firstDate,3, 3,["userid"=>$_SESSION['userid']]);
 			}
 			/*Atrigger*/
 			echo json_encode(['res'=>1]);

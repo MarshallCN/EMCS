@@ -62,25 +62,25 @@
 						<div class="form-group">
 								<label>Age Range </label>
 								<select class="form-control" name='age'>
-									<option> - </option> 
-									<option value="0"> ~25 </option> 
-									<option value="1"> 25~35 </option> 
-									<option value="2"> 35~45 </option> 
-									<option value="3"> 45~55 </option>
-									<option value="4"> 55~65 </option>
-									<option value="5"> 65+ </option>
+									<option value="0"> - </option> 
+									<option value="1"> ~25 </option> 
+									<option value="2"> 25~35 </option> 
+									<option value="3"> 35~45 </option> 
+									<option value="4"> 45~55 </option>
+									<option value="5"> 55~65 </option>
+									<option value="6"> 65+ </option>
 								</select>
 							<script>$("[name='age']").val(<?php echo isset($userinfo['age'])?$userinfo['age']:'';?>)</script>
 						</div>
 						<div class="form-group">
 								<label>Cooking Skill </label>
 								<select class="form-control" name='cook' required>
-									<option> - </option> 
-									<option value="0">I Can't Cook</option> 
-									<option value="1">Beginner</option> 
-									<option value="2">Good</option> 
-									<option value="3">Excellent</option>
-									<option value="4">Professional</option>
+									<option value="0"> - </option> 
+									<option value="1">I Can't Cook</option> 
+									<option value="2">Beginner</option> 
+									<option value="3">Good</option> 
+									<option value="4">Excellent</option>
+									<option value="5">Professional</option>
 								</select>
 							<script>$("[name='cook']").val(<?php echo isset($userinfo['cook'])?$userinfo['cook']:'';?>)</script>
 						</div>

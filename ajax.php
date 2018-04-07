@@ -26,6 +26,17 @@
 		}
 		$resp = ['used'=>$isEmailUsed];
 		echo json_encode($resp);
+	/*Search food*/	
+	}elseif(isset($_POST['searchfood'])){
+		$searchfood = $_POST['searchfood'];
+		if(!empty($searchfood)){
+			$res = $mysql->query("SELECT a.id,c.category_name,name,html_id from allfood AS a INNER JOIN category AS c ON a.category_id=c.id WHERE name like '%".$searchfood."%' GROUP BY name ORDER BY name");
+			$foodary = array();
+			while($row = $mysql->fetch($res)){
+				array_push($foodary,$row);
+			}
+			echo json_encode($foodary);
+		}
 	}
 	/*Delete food*/	
 	elseif(isset($_POST['delfoodid'])){

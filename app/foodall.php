@@ -118,20 +118,20 @@
 				</h4>
 			</div>
 			<div class="modal-body">
-				<form method="post" id="foodeditform">   
+				<form method="post" id="foodeditform" action="index.php?p=fp-All">   
 					<div class="form-group">
 						<label>Food Name</label>
-						<input type="text" class="form-control" name='fname' placeholder="Food Name" required>
+						<input type="text" class="form-control" name='fname' placeholder="Type your food name to search a category..." onfocus="this.oninput=function(){searchfood()}" autocomplete='off' required>
 					</div>
 					<div class="form-group">
-						<label>Food Category</label>
+						<label>Choose the Most Similar Category</label>
 						<select class="form-control" name='fcate' required>
-							<option value=1>-</option>
+							<option>-</option>
 				<?php
 					$sql_allfoodtype = 'SELECT a.id,c.category_name,name,html_id from allfood AS a INNER JOIN category AS c ON a.category_id=c.id ORDER BY name';
 					$res = $mysql->query($sql_allfoodtype);
 					while($row = $mysql->fetch($res)){
-						echo "<option value=".$row['id'].">".$row['name']."-".$row['category_name']."</option>";
+						echo "<option value=".$row['id'].">".$row['name']." (".$row['category_name'].")</option>";
 					}
 				?>
 						</select>

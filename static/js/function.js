@@ -85,7 +85,6 @@ function onlynum(ele){
 				url:'ajax.php',
 				data:{"usercheck":encodeURI(encodeURI($('[name="newusername"]').val()))},
 				success:function(data){
-					console.log(data)
 					if(data.used=='used'){
 						$('[name="newusername"]').attr('class','form-control alert-danger')
 						$('[name="newusername"]').next().attr('class','seepwd alert-danger')
@@ -114,6 +113,27 @@ function onlynum(ele){
 			$('[name="newusername"]').next().attr('class','seepwd hidden')
 		}
 	}
+
+/* use ajax to search food while user typing */
+	function searchfood(){
+		if($('[name="fname"]').val().length>0){
+			$.ajax({
+				url:'ajax.php',
+				data:{"searchfood":$('[name="fname"]').val()},
+				success:function(data){
+					console.log(data)
+					var htmls='';
+					for(var i=0;i<data.length;i++){
+					htmls +=  "<option value='"+data[i].id+"'>"+data[i].name+" ("+data[i].category_name+")</option>";
+					}
+					$("[name='fcate']").html(htmls)
+				},
+				type:'POST',
+				dataType:'json'
+			})
+		}
+	}
+
 isemail = false;
 /* use ajax to Check if email exist */
 	function checkNewEmail(){

@@ -31,7 +31,7 @@
 	elseif(isset($_POST['delfoodid'])){
 		$delid = inputCheck($_POST['delfoodid']);
 		$sql= "DELETE FROM food WHERE id = $delid";
-		//$mysql->query($sql);
+		$mysql->query($sql);
 		$tags = array();
 		$tags['foodid']=$delid;
 		ATrigger::doDelete($tags);

@@ -20,7 +20,6 @@
 	include "inc/header.php";
 	include "inc/nav.php";
 	if($page=='food'){
-		$storage = isset($_GET['storage']) ? $_GET['storage']:'all';
 		include "app/foodall.php";
 	}else if($page=='addfood'){
 		include "app/addfood.php";

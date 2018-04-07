@@ -240,13 +240,20 @@
 			$foodid = mysqli_insert_id($mysql->conn);
 		$warndate = date("d/M/Y",strtotime("-3 day",strtotime($exp)));
 		$setdate = $warndate.':09:00:00';
-		$firstDate = date_create_from_format('d/M/Y:H:i:s', $setdate);
+		$firstdate = date_create_from_format('d/M/Y:H:i:s', $setdate);
 		$msgres = $mysql->query("SELECT msg_chrome,msg_email FROM user WHERE id = ".$_SESSION['userid']);
 		$msgSet = $mysql->fetch($msgres);
 		if($msgSet[0]==1){
-			ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$foodid],$firstDate,3, 3,["userid"=>$_SESSION['userid']]);
+			echo "<script>
+			$.ajax({
+			url:'ajax.php',
+			data:{'atriggerChrome':true,'foodid':$foodid,'exp':'$exp'},
+			success:function(data){
+				console.log(data)
+			},
+			type:'POST'});</script>";
 		}
-		if($msgSet[1]==1){
+	 	if($msgSet[1]==1){
 			$useremail = $mysql->oneQuery("SELECT email FROM user WHERE id =".$_SESSION['userid']);
 			$html = htmlspecialchars("<div style='background:#1E3E57;width:100%;height:400px;border-radius:5px;padding:20px'>
 			<h3 style='color:#fff'>Your Food $foodname will be expired at</h3>
@@ -260,24 +267,22 @@
 				"body"=>$html,
 				"altbody"=>"Your Food $foodname will be expired at $exp \r\n Please use it soon!"
 			];
-			ATrigger::doCreate("1day", "http://marshal1.tech/FYP/mailer.php", ['type'=>'email','userid'=>$_SESSION['userid'],'foodid'=>$foodid],$firstDate,3, 3,$postary);
+			ATrigger::doCreate("1day", "http://marshal1.tech/FYP/mailer.php", ['type'=>'email','userid'=>$_SESSION['userid'],'foodid'=>$foodid],$firstdate,3, 3,$postary);
 		}
 			if(isset($_POST['spitemid'])){
 				$rmitemid = inputCheck($_POST['spitemid']);
 				$sql = "DELETE FROM shopping WHERE id = $rmitemid";
 				$mysql->query($sql);
-				echo "<script>location.href= confirm('Move food to storage successfully!\\nDo you want to continue Editing Shopping List?')?'index.php?page=shopping':'index.php?page=food&storage=all'</script>";
+				echo "<script>if(confirm('Move food to storage successfully!\\nDo you want to continue Editing Shopping List?')){location.href='index.php?page=shopping'}</script>";
 			}else{
-				echo "<script>location.href= confirm('Add food to storage successfully!\\nDo you want to continue adding food?')?'index.php?page=addfood':'index.php?page=food&storage=all'</script>";
+				echo "<script>if(confirm('Add food to storage successfully!\\nDo you want to continue adding food?')){location.href='index.php?page=addfood'}</script>";
 			}
 		}
-		
-	}
-?>
-<?php
-	if($page=='food'){
 		echo "<script>$('#menu_storage')[0].click();activeclass($('.fplace')[0])</script>";
-		if(isset($_GET['p'])){
+	}else{
+		if($page=='food'){
+			echo "<script>$('#menu_storage')[0].click();activeclass($('.fplace')[0])</script>";
+			$p = isset($_GET['p']) ? $_GET['p']:'fp-all';
 			echo "<script>$('#".$_GET['p']."').click()</script>";
 		}
 	}

@@ -5,8 +5,9 @@ self.addEventListener('push', function(event) {
 	if (event.data) {
     console.log(event.data.json());
   }
-  var title = 'Yay a message.';
-  var body = event.data ? event.data.text():'No payload';
+  var title = 'Your Food Will Be Expired Soon';
+//  var body = event.data ? event.data.text():'No payload';
+  var body = 'Your Food Will Be Expired Soon. Click here to go to EMCS';
   var icon = '/FYP/noti/images/icon-192x192.png';
   var tag = 'simple-push-demo-notification-tag';
 

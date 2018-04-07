@@ -1,4 +1,4 @@
-				<form method="post" action="index.php?page=food&storage=all">   
+				<form method="post" action="index.php?p=fp-All">   
 					<div class="form-group">
 						<label>Food Name</label>
 						<input type="text" class="form-control" name='fname' placeholder="Food Name" required>

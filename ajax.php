@@ -31,9 +31,11 @@
 	elseif(isset($_POST['delfoodid'])){
 		$delid = inputCheck($_POST['delfoodid']);
 		$sql= "DELETE FROM food WHERE id = $delid";
-		$mysql->query($sql);
-		ATrigger::doDelete(['foodid'=>$delfoodid]);
-		$resp = ['delid'=>$_POST['delfoodid']];
+		//$mysql->query($sql);
+		$tags = array();
+		$tags['foodid']=$delid;
+		ATrigger::doDelete($tags);
+		$resp = ['delid'=>$delid];
 		echo json_encode($resp);
 	}
 	/* Edit Food */
@@ -193,6 +195,15 @@
 		}
 		echo json_encode(['res'=>$res]);
 		
+	}elseif(isset($_POST['atriggerChrome'])){
+		$foodid = $_POST['foodid'];
+		$exp = $_POST['exp'];
+		$before = isset($_POST['before'])?$_POST['before']:'-3';
+		$warndate = date("d/M/Y",strtotime("$before day",strtotime($exp)));
+		$setdate = $warndate.':09:00:00';
+		$firstdate = date_create_from_format('d/M/Y:H:i:s', $setdate);
+		ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$foodid],$firstdate,3, 3,["userid"=>$_SESSION['userid']]);
+		echo 'suc';
 	}
 
 	

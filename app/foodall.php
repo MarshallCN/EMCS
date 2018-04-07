@@ -283,7 +283,7 @@
 		if($page=='food'){
 			echo "<script>$('#menu_storage')[0].click();activeclass($('.fplace')[0])</script>";
 			$p = isset($_GET['p']) ? $_GET['p']:'fp-all';
-			echo "<script>$('#".$_GET['p']."').click()</script>";
+			echo "<script>$('#$p').click()</script>";
 		}
 	}
 ?>

@@ -51,10 +51,6 @@
 							 <input type="email" name='email' class="form-control" value="<?php echo isset($userinfo['email'])?$userinfo['email']:'';?>" required/>
 						</div>
 						<div class="form-group">
-							 <label>Birthday </label>
-							 <input type="date" class="form-control" name='birth' value="<?php echo isset($userinfo['birth_date'])?$userinfo['birth_date']:'';?>"/>
-						</div>
-						<div class="form-group">
 								<label>Gender </label>
 								<select class="form-control" name='gender'>
 									<option value="0">Unknown</option> 
@@ -62,7 +58,32 @@
 									<option value="2">Female</option> 
 								</select>
 							<script>$("[name='gender']").val(<?php echo isset($userinfo['gender'])?$userinfo['gender']:'';?>)</script>
-							</div>
+						</div>
+						<div class="form-group">
+								<label>Age Range </label>
+								<select class="form-control" name='age'>
+									<option> - </option> 
+									<option value="0"> ~25 </option> 
+									<option value="1"> 25~35 </option> 
+									<option value="2"> 35~45 </option> 
+									<option value="3"> 45~55 </option>
+									<option value="4"> 55~65 </option>
+									<option value="5"> 65+ </option>
+								</select>
+							<script>$("[name='age']").val(<?php echo isset($userinfo['age'])?$userinfo['age']:'';?>)</script>
+						</div>
+						<div class="form-group">
+								<label>Cooking Skill </label>
+								<select class="form-control" name='cook' required>
+									<option> - </option> 
+									<option value="0">I Can't Cook</option> 
+									<option value="1">Beginner</option> 
+									<option value="2">Good</option> 
+									<option value="3">Excellent</option>
+									<option value="4">Professional</option>
+								</select>
+							<script>$("[name='cook']").val(<?php echo isset($userinfo['cook'])?$userinfo['cook']:'';?>)</script>
+						</div>
 						<div class="form-group col-md-4 col-md-offset-8 col-sm-12">
 							 <button type="submit" class="btn btn-block btn-primary" name='profile'>Submit</button>
 						</div>
@@ -173,11 +194,12 @@ if($userinfo['msg_chrome']==0){
 /**Edit user profile*/
 	else if(isset($_POST['profile'])){
 		$email = inputCheck($_POST['email']);
-		$birth = inputCheck($_POST['birth']);
+		$age = inputCheck($_POST['age']);
+		$cook = inputCheck($_POST['cook']);
 		$gender = inputCheck($_POST['gender']);
-		$sql_editprofile = "UPDATE user SET email = '$email', birth_date = '$birth', gender = '$gender' WHERE id = ".$_SESSION['userid'];
+		$sql_editprofile = "UPDATE user SET email = '$email', age = '$age', cook = '$cook', gender = '$gender' WHERE id = ".$_SESSION['userid'];
 		$mysql->query($sql_editprofile);
-		redirect("http://localhost/EMCS/index.php?page=setting","Update profile successfully!");
+		redirect("index.php?page=setting","Update profile successfully!");
 	}
 /**Add new noti plan*/
 	else if(isset($_POST['newnoti'])){

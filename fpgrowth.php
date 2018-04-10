@@ -83,7 +83,7 @@ function compareAB($a,$b){
 
 //Send Scan
 //Build FP-Tree
-
+/* 
 $sql_scan2 = "SELECT * FROM recipes_tag";
 $res_scan = $mysql->query($sql_scan2);
 $mysql->query("INSERT fptree VALUE('','Root',' ','0')");
@@ -117,8 +117,8 @@ while($row = $mysql->fetch($res_scan)){
 	}
 	$cid = $row['id'];
 }
-echo $cid.'<br/>';
-/* 
+echo $cid.'<br/>'; */
+
 //FP-Tree挖掘，从项头表末尾开始，寻找路径，which所有节点初始等于末尾点，再累加计数，删除低于阈值的节点
 $sql_headers_trim = "SELECT * FROM header WHERE num>=3 ORDER BY num ASC";
 $res_headers_trim = $mysql->query($sql_headers_trim);
@@ -146,8 +146,8 @@ while($row_fp = $mysql->fetch($res_headers_trim)){
 		}
 	}
 }
-//print_r($subTree); */
+//print_r($subTree);
 $runtime->stop();
-echo "<br/>Build FP-Tree: ".$runtime->spent()." s";
+echo "<br/>Find CBP: ".$runtime->spent()." s";
 ?>
 </pre>

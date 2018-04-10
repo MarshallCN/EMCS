@@ -28,9 +28,10 @@
 							Expiration
 						</th>
 						<td>
-							<span v-if="item.days<6" class='label label-danger'>{{item.days}}</span>
+							<span v-if="item.days<threshold" class='label label-danger'>{{item.days}}</span>
 							<span v-else>{{item.days}}</span>
-							Days
+							<span v-if="item.days<=0"> Days <kbd class='label label-danger'>Expired!</kbd></span>
+							<span v-else>Days</span>
 						</td>
 					</tr>
 					<tr>
@@ -51,7 +52,7 @@
 				</div>
 			</div>
 		</div>
-	<!--  -->
+	<!-- Table View -->
 		<div class="tab-pane" id="panel-request">
 			<div class='helptip' id='helptip' style="display:none;">
 				<a class='label label-primary'>E</a> Edit /
@@ -88,7 +89,7 @@
 						<td>
 							<span v-if="item.exp_type==0">Used By</span>
 							<span v-else>Best Before</span>
-							<span v-if="item.days<6" class='label label-danger'>{{item.days}}</span>
+							<span v-if="item.days<threshold" class='label label-danger'>{{item.days}}</span>
 							<span v-else>{{item.days}}</span>
 							days
 						</td>

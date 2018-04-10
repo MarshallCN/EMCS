@@ -102,6 +102,11 @@
 		$foodinfo = $mysql->fetch($res);
 		echo json_encode($foodinfo);
 	}
+	/*Get User's Expiration Warnign Threshold*/
+	elseif(isset($_POST['threshold'])){
+		$user_threshold = $mysql->oneQuery("SELECT threshold FROM user WHERE id = ".$_SESSION['userid']);
+		echo json_encode(['threshold'=>$user_threshold]);
+	}
 	/*Upload picture*/
 	elseif(isset($_FILES['img'])&&isset($_POST['path'])){
 		$filename = $_POST['uid'].'_file'.date('Y_m_d_h_i_s',time()).'.jpg';

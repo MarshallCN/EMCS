@@ -24,27 +24,28 @@
 								<a class="panel-title collapsed menuLabel" data-toggle="collapse" data-parent="#inner_menu" id="menu_storage" href="#panel-element-storage">
 									Food Storage
 								</a><span class="caret"></span>
-								<span class="icon_dot"></span>
+								<span id='foodnotidot'><span class="icon_dot"></span></span>
 							</div>
 							<div id="panel-element-storage" class="panel-collapse collapse">
-								<a href="####" onclick="activeclass(this);vm.place='1=1';vm.getall();" id='fp-All' class="menuLabel fplace">
-									<div class="panel-body">All </div>
+								<a href="####" onclick="activeclass(this);vm.place='1=1';vm.cid=this.id;vm.getall();" id='fp-All' class="menuLabel fplace">
+									<div class="panel-body">All <span></span></div>
 								</a>
-								<a href="####" onclick="activeclass(this);vm.place='place=2';vm.getall();" id='fp-Refrigerator' class="menuLabel fplace">
-									<div class="panel-body">Refrigerator 
-										<span class="icon_notification" draggable="true" style="width: 28px;"><span class="icon_num">12</span></span>
+								<a href="####" onclick="activeclass(this);vm.place='place=2';vm.cid=this.id;vm.getall();" id='fp-Refrigerator' class="menuLabel fplace">
+									<div class="panel-body">Refrigerator <span></span>
+										
 									</div>
 								</a>
-								<a href="####" onclick="activeclass(this);vm.place='place=1';vm.getall();" id='fp-Freezing' class="menuLabel fplace">
-									<div class="panel-body">Freezing Chamber </div>
+								<a href="####" onclick="activeclass(this);vm.place='place=1';vm.cid=this.id;vm.getall();" id='fp-Freezing' class="menuLabel fplace">
+									<div class="panel-body">Freezing Chamber <span></span></div>
 								</a>
-								<a href="####" onclick="activeclass(this);vm.place='place=3';vm.getall();" id='fp-Pantry' class="menuLabel fplace">
-									<div class="panel-body">Pantry </div>
+								<a href="####" onclick="activeclass(this);vm.place='place=3';vm.cid=this.id;vm.getall();" id='fp-Pantry' class="menuLabel fplace">
+									<div class="panel-body">Pantry <span></span></div>
 								</a>
-								<a href="####" onclick="activeclass(this);vm.place='place=5';vm.getall();" id='fp-Other' class="menuLabel fplace">
-									<div class="panel-body">Other </div>
+								<a href="####" onclick="activeclass(this);vm.place='place=5';vm.cid=this.id;vm.getall();" id='fp-Other' class="menuLabel fplace">
+									<div class="panel-body">Other <span></span></div>
 								</a>
 							</div>
+							</span>
 							<div class="panel-heading" onclick="$('#menu_shopping')[0].click()">
 								<a class="panel-title menuLabel" href='index.php?page=shopping' id="menu_shopping">
 									Shopping List
@@ -59,7 +60,6 @@
 								<a class="panel-title menuLabel" href='index.php?page=setting' id="menu_setting" >
 									<?php echo $_SESSION['user'];?>'s Setting
 								</a>
-								<span class="icon_dot"></span>
 							</div>
 							<div class="panel-heading" onclick="if(confirm('Do you want to log out?')){location.href='index.php?logout'}">
 								<a class="panel-title menuLabel" id="menu_logout">
@@ -84,3 +84,4 @@
 ?>
 	</div>
 </span>
+

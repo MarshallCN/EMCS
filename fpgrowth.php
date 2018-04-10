@@ -62,12 +62,12 @@ while($row = $mysql->fetch($res_scan)){
  */
  
 //项头表，依据支持度排序
-$sql_headers = "SELECT * FROM header ORDER BY num DESC";
+/* $sql_headers = "SELECT * FROM header ORDER BY num DESC";
 $res_headers = $mysql->query($sql_headers);
 $headers = [];
 while($row = $mysql->fetch($res_headers)){
 	$headers[$row['node']] = $row['num'];
-}
+} */
 //print_r($headers);
 
 
@@ -118,7 +118,7 @@ while($row = $mysql->fetch($res_scan)){
 	$cid = $row['id'];
 }
 echo $cid.'<br/>'; */
-
+/* 
 //FP-Tree挖掘，从项头表末尾开始，寻找路径，which所有节点初始等于末尾点，再累加计数，删除低于阈值的节点
 $sql_headers_trim = "SELECT * FROM header WHERE num>=3 ORDER BY num ASC";
 $res_headers_trim = $mysql->query($sql_headers_trim);
@@ -146,8 +146,8 @@ while($row_fp = $mysql->fetch($res_headers_trim)){
 		}
 	}
 }
-//print_r($subTree);
+//print_r($subTree); */
 $runtime->stop();
-echo "<br/>Find CBP: ".$runtime->spent()." s";
+//echo "<br/>Find CBP: ".$runtime->spent()." s";
 ?>
 </pre>

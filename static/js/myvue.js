@@ -5,7 +5,8 @@ var vm =  new Vue({
 			fooddata:"",
 			foodstatus: ["Opened","Unopened"],
 			exptype: ["Best Before","Used By"],
-			
+			threshold: 5,
+			cid:'all'
 			
 		},
 		mounted(){
@@ -19,11 +20,37 @@ var vm =  new Vue({
 				var place = this.place;
 				$.ajax({
 					url:'ajax.php',
+					data:{"threshold":true},
+					success:function(data){
+						that.threshold = data.threshold
+					},
+					type:'POST',
+					dataType:'json'
+				});
+				$.ajax({
+					url:'ajax.php',
 					data:{"foods":'all',"place":place},
 					success:function(data){
 						var foodall = []
+						var warnfood = 0;
 						for(x=0;x<data.length;x++){
-							foodall.push(JSON.parse(data[x]))
+							jsondata = JSON.parse(data[x])
+							if(jsondata.days < that.threshold){
+								warnfood ++;
+							}
+							foodall.push(jsondata)
+						}
+						$('#panel-element-storage div span').html('')
+						if(warnfood>0&&warnfood<10){
+							$('#'+that.cid+' div span').html("<span class='icon_notification' style='width: 20px'><span class='icon_num' style='margin-left: -4.5px;'>"+warnfood+"</span></span>");
+							$('#foodnotidot').show()
+						}else if(warnfood>10){
+							$('#'+that.cid+' div span').html("<span class='icon_notification' style='width: 28px'><span class='icon_num' style='margin-left: -8px;'>"+warnfood+"</span></span>");
+							$('#foodnotidot').show()
+						}else{
+							if(that.place=='1=1'){
+								$('#foodnotidot').hide()
+							}
 						}
 						that.fooddata = foodall
 						if(foodall.length==0){

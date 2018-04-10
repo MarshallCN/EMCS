@@ -29,39 +29,47 @@ class runtime{
 $runtime= new runtime;
 $runtime->start();
 /* FP-Growth */
-
+/* 
+//Pre-processing, add tag to each recipe
+$sql_allfood = "SELECT distinct name FROM allfood group by url";
+$res_allfood = $mysql->query($sql_allfood);
+while($row = $mysql->fetch($res_allfood)){
+	$node = $row['name'];
+	$mysql->query("UPDATE recipes_tag SET items = IF(items='','$node',CONCAT(items,',','$node')) WHERE id in (SELECT id FROM recipes WHERE ingredients like '%$node%')");
+}
+ */
 //Scan data source, create header table
-
-$sql_scan1 = "SELECT * FROM datasrc";
+/* 
+$sql_scan1 = "SELECT * FROM recipes_tag";
 $res_scan = $mysql->query($sql_scan1);
 while($row = $mysql->fetch($res_scan)){
-	$items = explode("^",$row['items']);
+	$items = explode(",",$row['items']);
 	for($i=0;$i<count($items);$i++){
 		//if the item exists in header table, update num
 		$node = $items[$i];
-		$res_headers = $mysql->query("SELECT * FROM header WHERE node like '%$node%'");
-		if(mysqli_num_rows($res_headers) > 0){
-			$headers = $mysql->fetch($res_headers);
-			$hitem_id = $headers['id'];
-			$mysql->query("UPDATE header SET num = num +1 WHERE id = '$hitem_id'");
-		//else, add new item
-		}else{
-			$mysql->query("INSERT header(node,num) VALUE('$node','1')");
+		if($res_headers = $mysql->query("SELECT * FROM header WHERE node like '%$node%'")){
+			if(mysqli_num_rows($res_headers) > 0){
+				$headers = $mysql->fetch($res_headers);
+				$hitem_id = $headers['id'];
+				$mysql->query("UPDATE header SET num = num +1 WHERE id = '$hitem_id'");
+			//else, add new item
+			}else{
+				$mysql->query("INSERT header(node,num) VALUE('$node','1')");
+			}
 		}
 	}
 }
-
+ */
  
 //项头表，依据支持度排序
-
 $sql_headers = "SELECT * FROM header ORDER BY num DESC";
 $res_headers = $mysql->query($sql_headers);
 $headers = [];
 while($row = $mysql->fetch($res_headers)){
 	$headers[$row['node']] = $row['num'];
 }
-print_r($headers);
- 
+//print_r($headers);
+
 
 //Order item according to headers table
 function compareAB($a,$b){
@@ -75,8 +83,8 @@ function compareAB($a,$b){
 
 //Send Scan
 //Build FP-Tree
-/* 
-$sql_scan2 = "SELECT * FROM datasrc";
+
+$sql_scan2 = "SELECT * FROM recipes_tag";
 $res_scan = $mysql->query($sql_scan2);
 $mysql->query("INSERT fptree VALUE('','Root',' ','0')");
 while($row = $mysql->fetch($res_scan)){
@@ -87,25 +95,29 @@ while($row = $mysql->fetch($res_scan)){
 	for($v=0;$v<count($items);$v++){
 		$node = $items[$v];
 		//MIN SUPPORT is 3
-		if($headers[$node]>=3){
-		$sql_search = "SELECT * FROM fptree WHERE path = '$path' AND node = '$node'";
-		$res_search = $mysql->query($sql_search);
-		if(mysqli_num_rows($res_search)>0){
-		//更新已有节点
-			$nodeinfo = $mysql->fetch($res_search);
-			$nodeid = $nodeinfo['id'];
-			$sql_update = "UPDATE fptree SET num = num+1 WHERE id = $nodeid";
-			$mysql->query($sql_update);
-		}else{
-		//从Null开始的新节点
-			$sql_add = "INSERT fptree(node,path,num) VALUES('$node','$path','1')";
-			$mysql->query($sql_add);
+		if(isset($headers[$node])){
+			if($headers[$node]>=3){
+			$sql_search = "SELECT * FROM fptree WHERE path = '$path' AND node = '$node'";
+			if($res_search = $mysql->query($sql_search)){
+				if(mysqli_num_rows($res_search)>0){
+				//更新已有节点
+					$nodeinfo = $mysql->fetch($res_search);
+					$nodeid = $nodeinfo['id'];
+					$sql_update = "UPDATE fptree SET num = num+1 WHERE id = $nodeid";
+					$mysql->query($sql_update);
+				}else{
+				//从Null开始的新节点
+					$sql_add = "INSERT fptree(node,path,num) VALUES('$node','$path','1')";
+					$mysql->query($sql_add);
+				}
+			}
 		}
 		$path .= "/$node";
 		} 
 	}
-} */
-
+	$cid = $row['id'];
+}
+echo $cid.'<br/>';
 /* 
 //FP-Tree挖掘，从项头表末尾开始，寻找路径，which所有节点初始等于末尾点，再累加计数，删除低于阈值的节点
 $sql_headers_trim = "SELECT * FROM header WHERE num>=3 ORDER BY num ASC";
@@ -136,6 +148,6 @@ while($row_fp = $mysql->fetch($res_headers_trim)){
 }
 //print_r($subTree); */
 $runtime->stop();
-echo "<br/>Page Loading: ".$runtime->spent()." s";
+echo "<br/>Build FP-Tree: ".$runtime->spent()." s";
 ?>
 </pre>

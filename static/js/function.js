@@ -393,7 +393,7 @@ isemail = false;
 				data:{"switchbtn":ele.value,"type":type},
 				success:function(data){
 					if(data.res!=1){console.log('error')}
-					vmsetting.getall();
+					//vmsetting.getall();
 				},
 				type:'POST',
 				dataType:'json'

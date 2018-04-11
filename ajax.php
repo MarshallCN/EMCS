@@ -74,7 +74,7 @@
 				$warndate = date("d/M/Y",strtotime("-".$_SESSION['threshold']." day",strtotime($exp)));
 				$setdate = $warndate.':09:00:00';
 				$firstDate = date_create_from_format('d/M/Y:H:i:s', $setdate);
-				ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$_POST['editfoodid']],$firstDate,$_SESSION['retimes'], 3,["userid"=>$_SESSION['userid']]);
+				ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$_POST['editfoodid']],$firstDate,$_SESSION['reptimes'], 3,["userid"=>$_SESSION['userid']]);
 				$mysql->query($sql_editfood);
 				//ATrigger::doDelete(['foodid'=>$editfoodid]);
 			}
@@ -222,7 +222,7 @@
 		$warndate = date("d/M/Y",strtotime("-$before day",strtotime($exp)));
 		$setdate = $warndate.':09:00:00';
 		$firstdate = date_create_from_format('d/M/Y:H:i:s', $setdate);
-		ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$foodid],$firstdate,$_SESSION['retimes'], 3,["userid"=>$_SESSION['userid']]);
+		ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$foodid],$firstdate,$_SESSION['reptimes'], 3,["userid"=>$_SESSION['userid']]);
 		echo 'suc';
 	}
 

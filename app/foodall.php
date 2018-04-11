@@ -28,7 +28,7 @@
 							Expiration
 						</th>
 						<td>
-							<span v-if="item.days<threshold" class='label label-danger'>{{item.days}}</span>
+							<span v-if="parseInt(item.days) <= parseInt(threshold)" class='label label-danger'>{{item.days}}</span>
 							<span v-else>{{item.days}}</span>
 							<span v-if="item.days<0"> Days <kbd class='label label-danger'>Expired!</kbd></span>
 							<span v-else>Days</span>
@@ -89,7 +89,7 @@
 						<td>
 							<span v-if="item.exp_type==0">Used By</span>
 							<span v-else>Best Before</span>
-							<span v-if="item.days<threshold" class='label label-danger'>{{item.days}}</span>
+							<span v-if="parseInt(item.days) <= parseInt(threshold)" class='label label-danger'>{{item.days}}</span>
 							<span v-else>{{item.days}}</span>
 							days
 						</td>

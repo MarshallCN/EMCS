@@ -86,7 +86,7 @@
 		$place = inputCheck($_POST['place']);
 		if($_POST['foods']=='all'){
 		//	$sql= "SELECT f.*,c.category_name as cate,TIMESTAMPDIFF(DAY,NOW(),IF(f.open_date<f.exp,f.open_date,f.exp)) AS days FROM food AS f INNER JOIN allfood AS a ON f.allfood_id = a.id INNER JOIN category AS c ON c.id=a.category_id WHERE userid = ".$_SESSION['userid']." AND $place ORDER BY exp";
-			$sql= "SELECT f.*,c.category_name as cate,TIMESTAMPDIFF(DAY,NOW(),f.exp) AS days FROM food AS f INNER JOIN allfood AS a ON f.allfood_id = a.id INNER JOIN category AS c ON c.id=a.category_id WHERE userid = ".$_SESSION['userid']." AND $place ORDER BY exp";
+			$sql= "SELECT f.*,c.category_name as cate,TIMESTAMPDIFF(DAY,NOW(),f.exp) AS days FROM food AS f INNER JOIN allfood AS a ON f.allfood_id = a.id INNER JOIN category AS c ON c.id=a.category_id WHERE userid = ".$_SESSION['userid']." AND $place ORDER BY days";
 			$res = $mysql->query($sql);
 			$foodinfo = array();
 			while($row = $mysql->fetch($res)){

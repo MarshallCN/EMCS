@@ -70,17 +70,17 @@ h1 {
 	background: #1f2124;
     color: #dca545;
 }
-.menuLabel div{
+.mynav .menuLabel div{
 	transition: all 0.3s ease;
 }
-.menuLabel:hover,
-.menuLabel.active,
-.menuLabel:focus{
+.mynav .menuLabel:hover,
+.mynav .menuLabel.active,
+.mynav .menuLabel:focus{
 	text-decoration:none;
 	color:#dca545;
 }
-.menuLabel div:hover,
-.menuLabel div.active{
+.mynav .menuLabel div:hover,
+.mynav .menuLabel div.active{
 	border-radius:0px;
 	border-left: 7px solid #dca545;
 	background: #1f2124;

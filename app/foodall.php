@@ -3,7 +3,7 @@
 		<li class="active">
 			<a href="#panel-byfood" data-toggle="tab" id='byfood'><i class="fa fa-window-maximize"></i>&nbsp;Blocks</a>
 		</li>
-		<li>
+		<li class='hidden-xs'>
 			<a href="#panel-request" data-toggle="tab" id='driverequ'><i class="fa fa-table"></i>&nbsp;Table</a>
 		</li>
 	</ul>
@@ -30,7 +30,7 @@
 						<td>
 							<span v-if="item.days<threshold" class='label label-danger'>{{item.days}}</span>
 							<span v-else>{{item.days}}</span>
-							<span v-if="item.days<=0"> Days <kbd class='label label-danger'>Expired!</kbd></span>
+							<span v-if="item.days<0"> Days <kbd class='label label-danger'>Expired!</kbd></span>
 							<span v-else>Days</span>
 						</td>
 					</tr>
@@ -239,7 +239,7 @@
 			$sql_addfood = "INSERT food VALUE ('','$foodname','$foodcate','$exptype','$exp','$vol',NOW(),$opendate,'$opendays','$place','$imgname','{$_SESSION['userid']}')";
 			$mysql->query($sql_addfood);
 			$foodid = mysqli_insert_id($mysql->conn);
-		$warndate = date("d/M/Y",strtotime("-3 day",strtotime($exp)));
+		$warndate = date("d/M/Y",strtotime("-".$_SESSION['threshold']." day",strtotime($exp)));
 		$setdate = $warndate.':09:00:00';
 		$firstdate = date_create_from_format('d/M/Y:H:i:s', $setdate);
 		$msgres = $mysql->query("SELECT msg_chrome,msg_email FROM user WHERE id = ".$_SESSION['userid']);
@@ -268,7 +268,7 @@
 				"body"=>$html,
 				"altbody"=>"Your Food $foodname will be expired at $exp \r\n Please use it soon!"
 			];
-			ATrigger::doCreate("1day", "http://marshal1.tech/FYP/mailer.php", ['type'=>'email','userid'=>$_SESSION['userid'],'foodid'=>$foodid],$firstdate,3, 3,$postary);
+			ATrigger::doCreate("1day", "http://marshal1.tech/FYP/mailer.php", ['type'=>'email','userid'=>$_SESSION['userid'],'foodid'=>$foodid],$firstdate,$_SESSION['reptimes'], 3,$postary);
 		}
 			if(isset($_POST['spitemid'])){
 				$rmitemid = inputCheck($_POST['spitemid']);

@@ -5,7 +5,8 @@ var vm =  new Vue({
 			fooddata:"",
 			foodstatus: ["Opened","Unopened"],
 			exptype: ["Best Before","Used By"],
-			threshold: 5,
+			threshold: '',
+			reptimes: '',
 			cid:'all'
 			
 		},
@@ -23,6 +24,7 @@ var vm =  new Vue({
 					data:{"threshold":true},
 					success:function(data){
 						that.threshold = data.threshold
+						that.reptimes = data.reptimes
 					},
 					type:'POST',
 					dataType:'json'
@@ -96,7 +98,7 @@ var vm =  new Vue({
 						url:'ajax.php',
 						data:{"delfoodid":id},
 						success:function(data){
-							setTimeout(function(){$('#food'+id).hide(300,'swing')},200)
+							setTimeout(function(){$('#food'+id).hide(300,'swing')},100)
 						},
 						type:'POST',
 						dataType:'json',

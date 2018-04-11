@@ -72,7 +72,7 @@
 	if(isset($_POST['login'])){
 		$username = strtolower(inputCheck($_POST['username']));
 		$pwd = inputCheck($_POST['pwd']);
-		$res_pwd = $mysql->query("SELECT id,pwdhash,salt_code,username FROM user WHERE username = '$username'"); 
+		$res_pwd = $mysql->query("SELECT id,pwdhash,salt_code,username,threshold,retimes FROM user WHERE username = '$username'"); 
 		$userInfo = $mysql->fetch($res_pwd);
 		$pwdhash = MD5($pwd.$userInfo['salt_code']);
 		if(mysqli_num_rows($res_pwd)>0){
@@ -80,6 +80,8 @@
 			if($pwdhash == $rightpwd){
 				$_SESSION['user'] = $userInfo['username'];
 				$_SESSION['userid'] = $userInfo['id'];
+				$_SESSION['threshold']=$userInfo['threshold'];
+				$_SESSION['reptimes']=$userInfo['retimes'];
 				echo "<script>$('[name=\"username\"').addClass('alert-success');$('[name=\"pwd\"').addClass('alert-success');</script>";
 				redirect('index.php');
 			}else{
@@ -118,10 +120,12 @@
 					}else{
 						$salt=base64_encode(mcrypt_create_iv(6,MCRYPT_DEV_RANDOM)); //Add random salt
 						$pwdhash = MD5($password.$salt); //MD5 of pwd+salt
-						$sql_newcus = "INSERT INTO user (username, pwdhash, salt_code, email, msg_email, msg_chrome) VALUES('$username','$pwdhash','$salt','$email',0,0)";
+						$sql_newcus = "INSERT INTO user (username, pwdhash, salt_code, email, msg_email, msg_chrome,threshold,retimes) VALUES('$username','$pwdhash','$salt','$email',0,0,3,3)";
 						$mysql->query($sql_newcus);
 						$_SESSION['user'] = $username;
 						$_SESSION['userid'] = mysqli_insert_id($mysql->conn);
+						$_SESSION['threshold']=$user['threshold'];
+						$_SESSION['reptimes']=$user['retimes'];
 						echo"<script>alert('Sign up Successfully ".$_SESSION['user']."');location='index.php'</script>";
 					}
 				}

@@ -71,10 +71,10 @@
 			if(isset($_POST['editfoodid'])){
 				$editid = inputCheck($_POST['editfoodid']);
 				$sql_editfood = "UPDATE food SET name='$foodname',allfood_id='$foodcate',exp_type='$exptype',exp='$exp',vol='$vol',open_date=$opendate,openday='$opendays',place='$place',picpath='$imgname' WHERE id = $editid";
-				$warndate = date("d/M/Y",strtotime("-3 day",strtotime($exp)));
+				$warndate = date("d/M/Y",strtotime("-".$_SESSION['threshold']." day",strtotime($exp)));
 				$setdate = $warndate.':09:00:00';
 				$firstDate = date_create_from_format('d/M/Y:H:i:s', $setdate);
-				ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$_POST['editfoodid']],$firstDate,3, 3,["userid"=>$_SESSION['userid']]);
+				ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$_POST['editfoodid']],$firstDate,$_SESSION['retimes'], 3,["userid"=>$_SESSION['userid']]);
 				$mysql->query($sql_editfood);
 				//ATrigger::doDelete(['foodid'=>$editfoodid]);
 			}
@@ -105,8 +105,10 @@
 	}
 	/*Get User's Expiration Warnign Threshold*/
 	elseif(isset($_POST['threshold'])){
-		$user_threshold = $mysql->oneQuery("SELECT threshold FROM user WHERE id = ".$_SESSION['userid']);
-		echo json_encode(['threshold'=>$user_threshold]);
+		$user = $mysql->fetch($mysql->query("SELECT * FROM user WHERE id = ".$_SESSION['userid']));
+		$_SESSION['threshold']=$user['threshold'];
+		$_SESSION['reptimes']=$user['retimes'];
+		echo json_encode(['threshold'=>$user['threshold'],'reptimes'=>$user['retimes']]);
 	}
 	/*Upload picture*/
 	elseif(isset($_FILES['img'])&&isset($_POST['path'])){
@@ -215,11 +217,12 @@
 	}elseif(isset($_POST['atriggerChrome'])){
 		$foodid = $_POST['foodid'];
 		$exp = $_POST['exp'];
-		$before = isset($_POST['before'])?$_POST['before']:'-3';
-		$warndate = date("d/M/Y",strtotime("$before day",strtotime($exp)));
+		//$before = isset($_POST['before'])?$_POST['before']:'-3';
+		$before = $_SESSION['threshold'];
+		$warndate = date("d/M/Y",strtotime("-$before day",strtotime($exp)));
 		$setdate = $warndate.':09:00:00';
 		$firstdate = date_create_from_format('d/M/Y:H:i:s', $setdate);
-		ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$foodid],$firstdate,3, 3,["userid"=>$_SESSION['userid']]);
+		ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$foodid],$firstdate,$_SESSION['retimes'], 3,["userid"=>$_SESSION['userid']]);
 		echo 'suc';
 	}
 

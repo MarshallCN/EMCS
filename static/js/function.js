@@ -403,4 +403,3 @@ isemail = false;
 		ele.value = val
 		dragbtncolor(ele)		
 	}
-

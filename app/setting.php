@@ -109,7 +109,7 @@
 							<div class='js-log'>
 							</div>
 						</div>
-						<div class="form-group col-sm-12">
+						<!--<div class="form-group col-sm-12">
 							<label>Notification Plan</label>
 							<table class='table table-striped'>
 								<tr>
@@ -143,13 +143,35 @@
 								</select>
 								<br/>
 								<button class="btn btn-primary btn-block" name='newnoti'>Add</button>
-						</form>
+						</form>-->
 					</div>
 			</fieldset>
+			<form method='post' action="index.php?page=setting">
+				<fieldset class="col-sm-8 col-sm-offset-2">
+					<legend>Ahead of Days</legend>
+						<div>
+							<div class="form-group col-sm-12">
+								<label class="col-xs-6">Days: </label>
+								<div class='col-sm-2'>
+									<input type="number" min="1" max="30" class="form-control" oninput="dragbtncolor(this)" value="<?php echo $userinfo['threshold'];?>" name='msgdays'>
+								</div>
+							</div>
+							<div class="form-group col-sm-12">
+								<label class="col-xs-6">Repeat Times: </label>
+								<div class='col-sm-2'>
+									<input type="number" min="1" max="5"  class="form-control" oninput="dragbtncolor(this)" value="<?php echo $userinfo['retimes'];?>" name='msgrep'>
+								</div>
+							</div>
+							<div class="col-sm-8">
+								<button type="submit" class="btn btn-warning btn-block">Submit</button>
+							</div>
+						</div>
+				</fieldset>
+			</form>
 		</div>
 	</div>
 </div>
-<script src="static/js/mysettingvue.js"></script>
+<!--<script src="static/js/mysettingvue.js"></script>-->
 <script src="noti/config.js"></script>
 <script src="noti/demo.js"></script>
 <script src="noti/main.js"></script>
@@ -201,8 +223,18 @@ if($userinfo['msg_chrome']==0){
 		$mysql->query($sql_editprofile);
 		redirect("index.php?page=setting","Update profile successfully!");
 	}
+/**Edit noti days and repeat times**/
+	else if(isset($_POST['msgdays'])){
+		$days = inputCheck($_POST['msgdays']);
+		$retimes = inputCheck($_POST['msgrep']);
+		$sql = "UPDATE user SET threshold = '$days', retimes = '$retimes' WHERE id = '".$_SESSION['userid']."'";
+		$mysql->query($sql);
+		echo "<script>$('[name=\"msgdays\"]').val('$days');
+		$('[name=\"msgrep\"]').val('$retimes');$('#preferences').click()</script>";
+	}
+		
 /**Add new noti plan*/
-	else if(isset($_POST['newnoti'])){
+	/* else if(isset($_POST['newnoti'])){
 		$notiday = inputCheck($_POST['notiday']);
 		$notiway = inputCheck($_POST['notiway']);
 		$sql_check = "SELECT * FROM notiplan WHERE user_id = '{$_SESSION['userid']}' AND warnbefore=$notiday AND method=$notiway";
@@ -219,5 +251,5 @@ if($userinfo['msg_chrome']==0){
 				echo "<script>$('#preferences').click();vmsetting.getall()</script>";
 			}
 		}
-	}
+	} */
 ?>

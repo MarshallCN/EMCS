@@ -186,7 +186,7 @@
 		$mysql->query($sql_rmnotiid);
 		echo json_encode(['res'=>$rmnotiid]);
 	}
-	//Push chrome messege setting
+	/*Push chrome messege setting*/
 	elseif(isset($_POST['ispush'])){
 		$res = 'No update noti';
 		$browser = md5($_SERVER['HTTP_USER_AGENT']);
@@ -213,7 +213,7 @@
 			ATrigger::doDelete(['userid'=>$_SESSION['userid'],'type'=>'chrome']);
 		}
 		echo json_encode(['res'=>$res]);
-		
+	//add atrigger task to push chrome notificaiton	
 	}elseif(isset($_POST['atriggerChrome'])){
 		$foodid = $_POST['foodid'];
 		$exp = $_POST['exp'];
@@ -224,6 +224,35 @@
 		$firstdate = date_create_from_format('d/M/Y:H:i:s', $setdate);
 		ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$foodid],$firstdate,$_SESSION['reptimes'], 3,["userid"=>$_SESSION['userid']]);
 		echo 'suc';
+	/* Search user's food in header table */
+	}elseif(isset($_POST['searchfoodfeader'])){
+		$searchFood = inputCheck($_POST['searchfoodfeader']);
+		$sql_sheader = "SELECT id,node FROM header WHERE node like '%$searchFood%'";
+		$res_sheader = $mysql->query($sql_sheader);
+		$res = array('multiple'=>'','details'=>[]);
+		$nums = mysqli_num_rows($res_sheader);
+		if($nums==0){
+			echo json_encode(['res'=>'empty']);
+		}else{
+			$res['multiple'] = $nums>1 ? true:false;
+			while($row = $mysql->fetch($res_sheader)){
+				array_push($res['details'],['id'=>$row['id'],'node'=>str_replace(' ','_',$row['node'])]);
+			}
+			echo json_encode($res);
+		}
+	}
+	/* Find the assoc rules */
+	elseif(isset($_POST['assocnode'])){
+		$node = str_replace('_',' ',inputCheck($_POST['assocnode']));
+		$rootv = $mysql->oneQuery("SELECT num FROM subtree WHERE node = '$node' AND assoc = 'Root'");
+		$sql_assoc = "SELECT assoc,num/$rootv as conf FROM subtree WHERE node = '$node' AND num/$rootv > 0.05 AND assoc!='root' ORDER BY conf DESC LIMIT 15";
+		$res_assoc = $mysql->query($sql_assoc);
+		$res = ['assoc'=>[],'conf'=>[]];
+		while($row = $mysql->fetch($res_assoc)){
+			array_push($res['assoc'],$row['assoc']);
+			array_push($res['conf'],$row['conf']);
+		}
+		echo json_encode($res);
 	}
 
 	

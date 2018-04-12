@@ -15,13 +15,11 @@
 	</ul>
 <!-- Manage Food -->		
 <div class="tab-content" id="foodinfo">
-	<div class="tab-pane active" id="panel-recipes">
-		
+	<div class="tab-pane active" id="panel-recipes">		
 		<form action="index.php?page=plan#recipeslist" method="post">
 		<div class="form-group col-sm-12" style="padding-top:10px">
 		<?php
 			$sql_myfood = "SELECT id,name,TIMESTAMPDIFF(DAY,NOW(),exp) AS days FROM food WHERE userid = ".$_SESSION['userid']." order by days";
-			//使用allfood的food category name 而不是用户自定义名字？
 			$res_myfood = $mysql->query($sql_myfood);
 			$myfoods = array();
 			$cond = '';
@@ -29,7 +27,7 @@
 				array_push($myfoods,['id'=>$row_myfood['id'],'name'=>$row_myfood['name'],'days'=>$row_myfood['days']]);
 				$cond .= " ingredients like '%".$row_myfood['name']."%' AND ";
 				echo "<div class='col-md-2 col-sm-4'>
-				<label for='sfood_".$row_myfood['id']."' style='cursor:pointer'>".ucfirst(strtolower($row_myfood['name'])).": </label>
+				<label for='sfood_".$row_myfood['id']."' style='cursor:pointer'>".ucfirst(strtolower($row_myfood['name']))." (".$row_myfood['days']."Days): </label>
 				<input type='checkbox' name='myfoods[]' id='sfood_".$row_myfood['id']."' value='".$row_myfood['id'].','.$row_myfood['name'].','.$row_myfood['days']."' checked/>
 				</div>";
 			}
@@ -61,7 +59,9 @@
 			<div class="panel panel-default" style='margin-top:0px;'>
 		<?php
 			$sql_ids = "SELECT id FROM recipes WHERE $cond 1=1";
-			$sql_recipes = "SELECT r.*,t.items FROM recipes AS r INNER JOIN recipes_tag AS t ON r.id=t.id WHERE r.id in ($sql_ids) ORDER BY r.rating DESC LIMIT 20";
+		//	$startum = isset($_POST['num'])?$_POST['num']*20:0;
+			$startum = 0;
+			$sql_recipes = "SELECT r.*,t.items FROM recipes AS r INNER JOIN recipes_tag AS t ON r.id=t.id WHERE r.id in ($sql_ids) ORDER BY r.rating DESC LIMIT $startum,20";
 			$res_recipes = $mysql->query($sql_recipes);
 			while($row_recipes = $mysql->fetch($res_recipes)){	
 		?>
@@ -102,14 +102,14 @@
 						<td colspan=2><li><?php echo implode('</li><li>',explode('^',$row_recipes['directions']));?></td>
 					</tr>
 					<tr>
-					removefood
 						<td colspan=2><button type="submit" class="btn btn-block btn-warning consumefood">Consume Selected Foods</button></td>
 					</tr>
 				</table>									
 			</div>	
 		<?php
 			}if(mysqli_num_rows($res_recipes)==0){
-				echo "<h3>Cannot find recipes, please select few foods</h3>";
+				echo "<h4>Cannot find recipes, please select few foods</h4>";
+				$isempty = true;
 			}else{
 				echo "Data from <a href='https://www.kaggle.com/hugodarwood/epirecipes'>Epicurious - Kaggle.com</a>";
 			}
@@ -124,6 +124,7 @@
 	<?php
 		$myfoodnames = '';
 		$removefoodid = '';
+		if(!isset($isempty)){
 			for($i=0;$i<count($myfoods);$i++){
 				$food = strtolower($myfoods[$i]['name']);
 				$ufood = ucfirst(strtolower($myfoods[$i]['name']));
@@ -144,21 +145,39 @@
 					$('#removefoods').click();
 				}
 			})</script>";
-		if(isset($_POST['removefoodid'])){
-			$sql_delfoods = "DELETE FROM food WHERE id in (".$_POST['removefoodid'].")";
-			$mysql->query($sql_delfoods);
-			echo "<script>location.href='index.php'</script>";
-		}
-			
+			if(isset($_POST['removefoodid'])){
+				$sql_delfoods = "DELETE FROM food WHERE id in (".$_POST['removefoodid'].")";
+				$mysql->query($sql_delfoods);
+				for($i=0;$i<count($myfoods);$i++){
+					$tags['foodid']=$myfoods[$i]['id'];
+					ATrigger::doDelete($tags);
+				}
+				echo "<script>location.href='index.php'</script>";
+			}
+		}	
 	?>
-	<!-- Table View -->
+	<!-- Assoc Rules -->
 		<div class="tab-pane" id="panel-assoc">
-			<div class="form-group">
-				<div class="range">
-					<span class="label label-primary">More Accurate</span>
-						<input type="range" min="0" max="100" value="0" name='num'>
-					<span class="label label-primary">More Options</span>
-				</div>
+			<div class="form-group col-sm-6" style="padding-top:10px">
+				<label for="#assocfood">Select Your Food to Explore</label>
+				<select id="assocfood" class="form-control" @change="searchHeader">
+				<?php
+					$sql_myfood = "SELECT id,name FROM food WHERE userid = ".$_SESSION['userid']." order by exp";
+					$res_myfood = $mysql->query($sql_myfood);
+					while($row_myfood = $mysql->fetch($res_myfood)){
+						$row_myfood['name'] = ucfirst(strtolower($row_myfood['name']));
+						echo "<option value='".$row_myfood['name']."'>".$row_myfood['name']."</label></option>";
+					}
+				?>
+				</select>
 			</div>
+			<div class="form-group col-sm-6" style="padding-top:10px">
+				<label for="#assocfood">Select a Specific Categories</label>
+				<select id="assocmore" class="form-control" @change="select2" @click="select2" disabled>
+				</select>
+			</div>
+			<div class="form-group"><h4 id='emptystate'></h4></div>
+			<div class="col-sm-10"><canvas id="assocfoodChart" height="300px"></canvas></div>
 		</div>
+		<script src="static/js/myplanvue.js"></script>
 </div>

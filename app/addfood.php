@@ -5,7 +5,7 @@
 					</div>
 					<div class="form-group">
 						<label>Choose the Most Similar Category</label>
-						<select class="form-control" name='fcate' required>
+						<select class="form-control" name='fcate'>
 							<option>-</option>
 				<?php
 					$sql_allfoodtype = 'SELECT a.id,c.category_name,name,html_id from allfood AS a INNER JOIN category AS c ON a.category_id=c.id ORDER BY name';

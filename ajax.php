@@ -3,6 +3,11 @@
 	require "inc/db.php";
 	require_once("atrigger/ATrigger.php");
 	ATrigger::init("4989200868836991246","f5lI15uo41pYL7aY5QNkYq7h5bC7Y6");
+	/*Use get md5 value*/
+	if(isset($_POST['getmd5'])){
+		$data = MD5($_POST['getmd5']);
+		echo $data;
+	}
 	/*Check username uniqueness*/	
 	if(isset($_POST['usercheck'])){
 		$usercheck = inputCheck(strtolower(preg_replace("/\s/","",$_POST['usercheck'])));

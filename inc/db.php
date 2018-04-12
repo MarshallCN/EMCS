@@ -21,9 +21,13 @@
 	}
 }
 $mysql = new Mysql();
-	function inputCheck($input){	//prevent some of SQL injection and XSS attack
+	function inputCheck($input){	 
 		global $mysql;
-		$input = mysqli_real_escape_string($mysql->conn,htmlspecialchars(strip_tags($input)));
+		$input = mysqli_real_escape_string( //prevent some of SQL injection
+			$mysql->conn,htmlspecialchars( //invalid html tag
+				strip_tags($input) //delete html.php,xml tags
+			)
+		);
 		return $input;
 	}
 	function redirect($url,$msg=''){	//redirect and alert

@@ -6,62 +6,49 @@
 <dl>
 	<dd class="clearfix">
 		<h1 class='loginTit text-center'>
-			<a class="fa fa-globe"></a>&nbsp;EMCS
+			<a class="fa fa-cutlery"></a>&nbsp;<span class="visible-xs">EMCS</span>
+			<span class="hidden-xs">E<span class='muteText'>xpiration</span> M<span class='muteText'>anagement & </span>C<span class='muteText'>ooking</span> S<span class='muteText'>uggestion</span></span>
 		</h1>
-		<div class="col-sm-8 col-sm-offset-2 logmain">
-			<form method="post" class='col-sm-6' autocomplete='off'>
+		<div class="col-sm-6 col-sm-offset-3 logmain">
+			<form method="post" class='col-sm-12' autocomplete='off'>
 				<h2 class="text-center">Log In</h2>
 				<div class="form-group">
 					<label>Username</label>
-					<input type="text" class="form-control" name='username' maxlength=20 placeholder='' required/>
+					<input type="text" class="form-control" name='username' maxlength=20 placeholder='' required/><kbd class='seepwd hidden'><i class=''></i>
 				</div>
 				<div class="form-group">
 					 <label>Password </label>
-					 <input type="password" class="form-control" name='pwd' maxlength=20 placeholder='' required/>
+					 <input type="password" class="form-control" name='pwd' maxlength=20 placeholder='1234' required/>
 					 <kbd class='seepwd' onmousedown="seepwd('pwd')"><i class='fa fa-eye'></i></kbd>
 				</div>
-				<div class="form-group">
-					<div class="col-sm-8 col-sm-offset-2">
-						<button type='submit' class='btn btn-success btn-block btnlogin' name='login'>Log in</button>
-					</div>
-				</div>
-			</form>
-			<form method="post" class='col-sm-6 loginform' autocomplete='off'>
-				<h2 class="text-center">Sign Up</h2>
-				<div class="form-group">
-					<label>Email</label>
-					<input type="email" class="form-control" name='newemail' maxlength=100 placeholder='Email' oninput="checkNewEmail()" required/><kbd class='seepwd hidden'><i class=''></i>
-				</div>
-				<div class="form-group">
-					<label>Username</label>
-					<input type="text" class="form-control" name='newusername' maxlength=20 placeholder='Username' oninput="checkNewName()" required/><kbd class='seepwd hidden'><i class=''></i>
-				</div>
-				<div class="form-group">
-					 <label>Password </label>
-					 <input type="password" class="form-control" name='newpwd' maxlength=20 placeholder='1234' required/>
-					 <kbd class='seepwd' onmousedown="seepwd('newpwd')"><i class='fa fa-eye'></i></kbd>
-				</div>
+				<span id='signInput' style='display:none'>
 				<div class="form-group">
 					 <label>Password Confirm</label>
-					 <input type="password" class="form-control" name='newpwdconf' maxlength=20 placeholder='1234' onchange='checkpwd()' required/>
+					 <input type="password" class="form-control" name='newpwdconf' maxlength=20 placeholder='1234' onchange='checkpwd()' />
 					 <kbd class='seepwd' onmousedown="seepwd('newpwdconf')" onclick='checkpwd()'><i class='fa fa-eye'></i></kbd>
 				</div>
 				<div class="form-group">
-				<label>Verify Code</label>
-				<div class="input-group">
-					<input type="number" class="form-control" name='verifycode' max=9999 oninput="checkNewName()" required/>
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="button" id='sendemailbtn' onclick='sendverifyemail()' disabled>
-							Send Verify Email
-						</button>
-					</span>
-				</div>
+					<label>Email</label>
+					<input type="email" class="form-control" name='newemail' maxlength=100 placeholder='Email' oninput="checkNewEmail()" /><kbd class='seepwd hidden'><i class=''></i>
 				</div>
 				<div class="form-group">
-					<div class="col-sm-8 col-sm-offset-2">
-						<input type="hidden" id='v' name='vcode'>
-						<button type='button' class='btn btn-warning btn-block' name='signup'>Sign Up</button>
+					<label>Verify Code</label>
+					<div class="input-group">
+						<input type="number" class="form-control" name='verifycode' max=9999 oninput="checkNewName()" />
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="button" id='sendemailbtn' onclick='sendverifyemail()' disabled>
+								Send Verify Email
+							</button>
+						</span>
 					</div>
+				</div>
+				</span>
+				<div class="col-md-6 form-group" style='padding:0'>
+					<button type='button' class='btn btn-block btn-lg btn-default' onclick='showSignForm()' name='formlabel'>New User</button>
+				</div>
+				<div class="col-md-6 form-group" style='padding:0'>
+					<input type="hidden" id='v' name='vcodehash'>
+					<button type='submit' class='btn btn-warning btn-lg btn-block' name='login'>Log in</button>
 				</div>
 			</form>
 		</div>
@@ -96,19 +83,19 @@
 		}	
 	}else if(isset($_POST['signup'])){
 		$username = inputCheck($_POST['newusername']);
-		$password = inputCheck($_POST['newpwd']);
+		$password = inputCheck($_POST['pwd']);
 		$email = inputCheck($_POST['newemail']);
 		$passwardconfirm = inputCheck($_POST['newpwdconf']);
-		$vcode = $_POST['vcode'];
-		$verifycode = $_POST['verifycode'];
-		if($verifycode != $vcode){
-			echo"<script>alert('Verify Code is Wrong!');location='login.php'</script>";
+		$vcodehash = $_POST['vcodehash'];
+		$verifycode = md5($_POST['verifycode']);
+		if($verifycode != $vcodehash){
+			echo"<script>alert('Verify Code is Wrong!');</script>";
 		}else{
 			if($password !=$passwardconfirm){
 				echo"<script>alert('Password are not same');location='login.php'</script>";
 			}else{  
 				$res = $mysql->query("SELECT * FROM user WHERE email = '$email'");
-				if(mysqli_num_rows($res>0)){
+				if(mysqli_num_rows($res)>0){
 					echo"<script>alert('Email has been used!');location='login.php'</script>";
 				}else{
 					$sql = "SELECT * FROM user WHERE username = '$username'";
@@ -124,8 +111,8 @@
 						$mysql->query($sql_newcus);
 						$_SESSION['user'] = $username;
 						$_SESSION['userid'] = mysqli_insert_id($mysql->conn);
-						$_SESSION['threshold']=$user['threshold'];
-						$_SESSION['reptimes']=$user['retimes'];
+						$_SESSION['threshold']=3;
+						$_SESSION['reptimes']=3;
 						echo"<script>alert('Sign up Successfully ".$_SESSION['user']."');location='index.php'</script>";
 					}
 				}

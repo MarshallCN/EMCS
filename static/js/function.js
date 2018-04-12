@@ -1,3 +1,17 @@
+/* Login Page */
+	function showSignForm(){
+		$('#signInput').show()
+		$('#signInput .form-control').attr("required",true)
+		$('[name="formlabel"]').html('Already Had Account')
+		$('[name="login"]').html('Sign up')
+		$('[name="login"]').attr('name','signup')
+		$('[name="pwd"]').change(function(){checkpwd()})
+		$('[name="formlabel"]').click(function(){location.href="login.php"})
+		$('[name="pwd"]').val('')
+		$('[name="username"]').attr('oninput','checkNewName()')
+		$('[name="username"]').attr('name','newusername')
+		checkNewName()
+	}
 /* Navigation active label */
 	function activeclass(ele){
 		$('.fplace').children().removeClass('active')
@@ -50,7 +64,7 @@ function onlynum(ele){
 }
 /* Check password when create new account */
 	function checkpwd(log=1){
-		var pwd = $('[name="newpwd"]');
+		var pwd = $('[name="pwd"]');
 		var pwdconf =  $('[name="newpwdconf"]');
 		var btnsubmit = $('[name="signup"]');
 		if(pwd.val().length<4){
@@ -66,9 +80,9 @@ function onlynum(ele){
 				btnsubmit.attr('disabled',false);
 				pwd.attr('class','form-control alert-success');
 				pwdconf.attr('class','form-control alert-success');
-				if(log==1){
-					checkEmail();
-					checkNewName(); //avoid bypass the disable button :)
+				if(log==0){
+					checkNewEmail();
+					checkNewName();
 				}
 			}else{
 				pwdconf.attr('class','form-control alert-danger');
@@ -138,7 +152,7 @@ isemail = false;
 /* use ajax to Check if email exist */
 	function checkNewEmail(){
 		$('[name="newemail"]').val($('[name="newemail"]').val().replace(" ",""))
-		if($('[name="newemail"]').val().length>0){
+		if($('[name="newemail"]')[0].validity.valid){
 			$.ajax({
 				url:'ajax.php',
 				data:{"emailcheck":encodeURI($('[name="newemail"]').val())},
@@ -178,10 +192,21 @@ isemail = false;
 /* Send Email */
 	function sendemail (email,subject,body,altbody){
 		$.ajax({
-			url:'https://marshal1.tech/FYP/mailer.php',
+			url:'mailer.php',
 			data:{"email":email,"subject":subject,"body":body,"altbody":altbody},
 			success:function(data){
 				console.log(data)
+			},
+			type:'POST'
+		});
+	}
+/* Get MD5 Value*/
+	function getMD5(i){
+		$.ajax({
+			url:'ajax.php',
+			data:{"getmd5":i},
+			success:function(data){
+				$('#v').val(data)
 			},
 			type:'POST'
 		});
@@ -196,9 +221,10 @@ isemail = false;
 			var email = $('[name="newemail"]').val()
 			code = getRandom()+getRandom()+getRandom()+getRandom()
 			subject = "Your Verify Code"
-			body = "<div style='background:#1E3E57;width:100%;min-height:100px;border-radius:5px;padding:20px'><h3 style='color:#fff'>Thanks for registering EMCS, Your Verify Code is </h3><h1 style='color:#FF6384'>"+code+"</h1></div>";
+			body = "<div style='background:#1E3E57;width:100%;min-height:100px;border-radius:5px;padding:20px'>\
+			<h3 style='color:#fff'>Thanks for registering EMCS, Your Verify Code is </h3><h1 style='color:#FF6384'>"+code+"</h1></div>";
 			altbody = "Thanks for registering EMCS, Your Verify Code is: "+code;
-			$('#v').val(code)
+			getMD5(code);
 			sendemail (email,subject,body,altbody)
 			$('#sendemailbtn').attr('disabled',true)
 			$('#sendemailbtn').html('<span id="resendtime">60</span>s Later Re-send')

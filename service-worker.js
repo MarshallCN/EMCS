@@ -2,9 +2,9 @@
 
 self.addEventListener('push', function(event) {
   console.log('Received a push message', event);
-	if (event.data) {
+/* 	if (event.data) {
     console.log(event.data.json());
-  }
+  } */
   var title = 'Your Food Will Be Expired Soon';
 //  var body = event.data ? event.data.text():'No payload';
   var body = 'Your Food Will Be Expired Soon. Click here to go to EMCS';

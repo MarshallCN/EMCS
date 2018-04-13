@@ -111,7 +111,7 @@
 				echo "<h4>Cannot find recipes, please select few foods</h4>";
 				$isempty = true;
 			}else{
-				echo "Data from <a href='https://www.kaggle.com/hugodarwood/epirecipes'>Epicurious - Kaggle.com</a>";
+				echo "Data from <a href='https://www.kaggle.com/hugodarwood/epirecipes' target='_blank'>Epicurious - Kaggle.com</a>";
 			}
 		?>
 			</div>

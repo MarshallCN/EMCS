@@ -219,11 +219,10 @@ h1 {
 
 /**allfood Page*/
 .helptip{
-    position: absolute;
-    height: 60px;
-    right: 10px;
-    top: 20px;
+    position: fixed;
     padding: 10px;
+	top:20px;
+	right:20px;
     line-height: 26px;
     background: #f9f9f9;
     border-radius: 5px;
@@ -231,6 +230,22 @@ h1 {
     -webkit-animation: move-in-left cubic-bezier(.22,.58,.12,.98) .4s;
     animation: move-in-left cubic-bezier(.22,.58,.12,.98) .4s;
     box-shadow: 2px 2px 11px 0px rgba(0, 0, 0, 0.55);
+}
+.helptip table th{
+	min-width: 90px;
+	border: 1px solid #ddd;
+	padding-left: 15px;
+	padding-top: 5px;
+	background: #dca545;
+}
+.helptip table td{
+	min-width: 90px;
+	border: 1px solid #ddd;
+	padding-left: 15px;
+	padding-top: 5px;
+}
+.helptip table tr{
+	border: 1px solid #ddd;
 }
 .icon_ques:focus,
 .icon_ques:hover{

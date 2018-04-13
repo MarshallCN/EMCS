@@ -60,11 +60,11 @@
 							<form method="post" action="index.php?page=food&storage=all">
 								<div class="form-group">
 									<label>Food Name</label>
-									<input type="text" class="form-control" name='fname' placeholder="Food Name" required>
+									<input type="text" class="form-control" name='fname' oninput="searchfood();showexp()" placeholder="Food Name" required>
 								</div>
 								<div class="form-group">
 									<label>Food Category</label>
-									<select class="form-control" name='fcate' required>
+									<select class="form-control" name='fcate' onchange='showexp()' onclick='showexp()' required>
 										<option>-</option>
 							<?php
 								$sql_allfoodtype = 'SELECT a.id,c.category_name,name,html_id from allfood AS a INNER JOIN category AS c ON a.category_id=c.id ORDER BY name';
@@ -76,8 +76,7 @@
 									</select>
 								</div>
 								<div class="form-group">
-									<label>Storage Place <a href='javascript:void(0);' class="glyphicon glyphicon-question-sign icon_ques"></a>
-									</label>
+									<label>Storage Place </label>
 									<select class="form-control" name='place' required>
 									<?php
 										$sql_splace = "SELECT * FROM storage_method order by method";
@@ -88,12 +87,27 @@
 									?>
 									</select>
 								</div>
+								<div class='helptip' id='helptip' onclick="$(this).hide()" style="display:none">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+									<table class='table table-bordered'></table>
+									<div>Data From: <a href="http://www.eatbydate.com" target="_blank">EatByDate</a></div>
+								</div>
+								<div class='helptip' id='exptip' onclick="$(this).hide()" style="display:none">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+									<dl>
+										<dt class="font-weight-bold">Best Before</dt>
+										<dd>The date of the best quality, food may still be eatable after the date expires</dd>
+										<dt class="font-weight-bold">Used By</dt>
+										<dd>The real expiration date! Don't eat it after the date expires</dd>
+									<dl>
+								</div>
 								<div class="form-group col-xs-6">
-									<label>Expiration</label>
+									<label>Expiration <a href='javascript:void(0);' onclick="$('#helptip').toggle();$('#exptip').hide()" class="glyphicon glyphicon-question-sign icon_ques"></a>
+									</label>
 									<input type="date" class="form-control" name='exp' oninput="checkDate(this)" placeholder="exp" required>
 								</div>
 								<div class="form-group col-xs-6">
-									<label>Exp. Type <a href='javascript:void(0);' onclick="$('#helptip').toggle()" class="glyphicon glyphicon-question-sign icon_ques"></a>
+									<label>Exp. Type <a href='javascript:void(0);' onclick="$('#helptip').toggle();$('#exptip').show()" class="glyphicon glyphicon-question-sign icon_ques"></a>
 									</label>
 									<select class="form-control" name='exptype'>
 										<option value='0'>Used By</option>

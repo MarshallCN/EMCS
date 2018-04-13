@@ -31,7 +31,6 @@
 		$('#menu_'+page).parent().addClass('active');
 	}
 	function hideMenu(ele){
-		/**$('.nav *').animate({width:'0px',opacity:'0'});$('.nav').animate({width:'0px',opacity:'0'},'fast','swing')**/
 		//$('.menuLabel').hide()
 		//$('.nav').hide(300,'swing')
 		$('.left_wraps').hide();
@@ -135,10 +134,12 @@ function onlynum(ele){
 				url:'ajax.php',
 				data:{"searchfood":$('[name="fname"]').val()},
 				success:function(data){
-					console.log(data)
 					var htmls='';
 					for(var i=0;i<data.length;i++){
 					htmls +=  "<option value='"+data[i].id+"'>"+data[i].name+" ("+data[i].category_name+")</option>";
+					}
+					if(data.length==0){
+						htmls = "<option value='437'>Uncategorized</option>";
 					}
 					$("[name='fcate']").html(htmls)
 				},
@@ -148,6 +149,25 @@ function onlynum(ele){
 		}
 	}
 
+/*Show exp tables*/
+	function showexp(){
+		htmlid = $('[name="fcate"]').val()
+		$.ajax({
+				url:'ajax.php',
+				data:{"htmlid":htmlid},
+				success:function(data){
+					$("#helptip table").html(data)
+					if(data.length>0){
+						$("#helptip").show();						
+					}else{
+						$("#helptip table").html("Cannot find suggestion for selected food")
+						$("#helptip").hide();						
+					}
+				},
+				type:'POST'
+			})
+	}
+	
 isemail = false;
 /* use ajax to Check if email exist */
 	function checkNewEmail(){
@@ -225,7 +245,7 @@ isemail = false;
 			<h3 style='color:#fff'>Thanks for registering EMCS, Your Verify Code is </h3><h1 style='color:#FF6384'>"+code+"</h1></div>";
 			altbody = "Thanks for registering EMCS, Your Verify Code is: "+code;
 			getMD5(code);
-			sendemail (email,subject,body,altbody)
+			sendemail(email,subject,body,altbody)
 			$('#sendemailbtn').attr('disabled',true)
 			$('#sendemailbtn').html('<span id="resendtime">60</span>s Later Re-send')
 			t = setInterval(function(){

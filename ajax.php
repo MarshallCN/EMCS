@@ -43,6 +43,13 @@
 			echo json_encode($foodary);
 		}
 	}
+	/*Get food exp table*/
+	elseif(isset($_POST['htmlid'])){
+		$foodid = inputCheck($_POST['htmlid']);
+		$sql_exptbl = "SELECT html FROM html AS h JOIN allfood as a ON h.id=a.html_id WHERE a.id='$foodid'";
+		$htmls = $mysql->oneQuery($sql_exptbl);
+		echo $htmls;
+	}
 	/*Delete food*/	
 	elseif(isset($_POST['delfoodid'])){
 		$delid = inputCheck($_POST['delfoodid']);

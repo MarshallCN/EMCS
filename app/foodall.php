@@ -12,7 +12,7 @@
 		<div class="tab-pane active" id="panel-byfood">
 			<p class='emptystate'></p>
 			<div class='col-sm-6 myfoodblock' v-for="(item, index) in fooddata" :id="'food'+item.id">
-				<img class="col-xs-4" :src="'static/img/foodupload/'+ item.picpath" alt='no picture'>
+				<img class="col-xs-4" :src="'static/img/foodupload/'+ item.picpath" alt='no picture' onerror="this.src='static/img/food.jpg'">
 				<div class="col-xs-8 myfoodtbl">
 				<table class='table table-striped'>
 					<tr>
@@ -216,7 +216,7 @@
 						<div class='progress progress-striped active' id='upres' style="display:none"><label style="position:absolute;width:90%;text-align:center"></label>
 							<div class="progress-bar progress-bar-success"></div>
 						</div>
-						<img src='' style='display:none;' id='thumbnail' height=100>
+						<img src='' style='display:none;' id='thumbnail' height=100 alt='no picture uploaded'>
 						<input type="hidden" name='imgname' id="imgname">
 					</div>
 					<div>	

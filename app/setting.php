@@ -20,7 +20,7 @@
 						</div>
 						<div class="form-group">
 							 <label>New Password </label>
-							 <input type="password" class="form-control" onchange='checkpwd(0)' name='newpwd' required/>
+							 <input type="password" class="form-control" onchange='checkpwd(0)' name='pwd' required/>
 							 <kbd class='seepwd' onmousedown="seepwd('newpwd')"><i class='fa fa-eye'></i></kbd>
 						</div>
 						<div class="form-group">

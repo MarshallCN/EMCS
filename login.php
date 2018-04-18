@@ -11,7 +11,7 @@
 		</h1>
 		<div class="col-sm-6 col-sm-offset-3 logmain">
 			<form method="post" class='col-sm-12' autocomplete='off'>
-				<h2 class="text-center">Log In</h2>
+				<h2 class="text-center">Log In or Sign Up</h2>
 				<div class="form-group">
 					<label>Username</label>
 					<input type="text" class="form-control" name='username' maxlength=20 placeholder='' required/><kbd class='seepwd hidden'><i class=''></i>

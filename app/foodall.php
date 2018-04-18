@@ -44,7 +44,7 @@
 					</tr>
 					<tr>
 						<td colspan=2 class='text-right'>
-							<button class='btn btn-default' href="#modal-editfood"  role="button" data-toggle="modal" @click.prevent="editfood(item.id)">Edit</button>
+							<button class='btn btn-default' href="#modal-editfood"  role="button" data-toggle="modal" @click.prevent="editfood(item.id)">More</button>
 							<button class='btn btn-warning' @click.prevent="removefood(item.id)" >Remove</button>
 						</td>
 					<tr>
@@ -55,7 +55,7 @@
 	<!-- Table View -->
 		<div class="tab-pane" id="panel-request">
 			<div class='helptip' id='helptip_icon' style="display:none;">
-				<a class='label label-primary'>E</a> Edit /
+				<a class='label label-primary'>M</a> More /
 				<a class='label label-warning'>R</a> Remove
 			</div>
 			<table class='table table-striped'>
@@ -164,12 +164,12 @@
 						<dl>
 					</div>
 					<div class="form-group col-xs-6">
-						<label>Expiration <a href='javascript:void(0);' onclick="$('#helptip').toggle();$('#exptip').hide()" class="fa fa-question-circle icon_ques"></a>
+						<label>Expiration <a href='javascript:void(0);' onclick="showexp();$('#exptip').hide()" class="fa fa-question-circle icon_ques"></a>
 						</label>
 						<input type="date" class="form-control" name='exp' oninput="checkDate(this)" placeholder="exp" required>
 					</div>
 					<div class="form-group col-xs-6">
-						<label>Exp. Type <a href='javascript:void(0);' onclick="$('#helptip').toggle();$('#exptip').show()" class="fa fa-question-circle icon_ques"></a>
+						<label>Exp. Type <a href='javascript:void(0);' onclick="$('#helptip').hide();$('#exptip').show()" class="fa fa-question-circle icon_ques"></a>
 						</label>
 						<select class="form-control" name='exptype'>
 							<option value='0'>Used By</option>
@@ -221,7 +221,7 @@
 					</div>
 					<div>	
 						<input type="hidden" name='editfoodid'></input>
-						<button type="button" class='btn btn-primary btn-block' onclick='submitform()'><span id='submitting'>Submit</span></button>
+						<button type="button" class='btn btn-primary btn-block' onclick='submitform()'><span id='submitting'>Edit</span></button>
 					</div>
 				</form>
 				

@@ -287,9 +287,9 @@
 				$rmitemid = inputCheck($_POST['spitemid']);
 				$sql = "DELETE FROM shopping WHERE id = $rmitemid";
 				$mysql->query($sql);
-				echo "<script>if(confirm('Move food to storage successfully!\\nDo you want to continue Editing Shopping List?')){location.href='index.php?page=shopping'}</script>";
+				//echo "<script>if(confirm('Move food to storage successfully!\\nDo you want to continue Editing Shopping List?')){location.href='index.php?page=shopping'}</script>";
 			}else{
-				echo "<script>if(confirm('Add food to storage successfully!\\nDo you want to continue adding food?')){location.href='index.php?page=addfood'}</script>";
+				//echo "<script>if(confirm('Add food to storage successfully!\\nDo you want to continue adding food?')){location.href='index.php?page=addfood'}</script>";
 			}
 		}
 		echo "<script>$('#menu_storage')[0].click();activeclass($('.fplace')[0])</script>";

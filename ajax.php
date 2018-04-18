@@ -31,7 +31,7 @@
 		}
 		$resp = ['used'=>$isEmailUsed];
 		echo json_encode($resp);
-	/*Search food*/	
+	/*Search food category while input*/	
 	}elseif(isset($_POST['searchfood'])){
 		$searchfood = $_POST['searchfood'];
 		if(!empty($searchfood)){

@@ -13,12 +13,13 @@
 			<a href="#panel-assoc" data-toggle="tab" id='assoc'><i class="fa fa-lightbulb-o"></i>&nbsp;Inspiration</a>
 		</li>
 	</ul>
-<!-- Manage Food -->		
+<!-- Search Recipes -->		
 <div class="tab-content" id="foodinfo">
 	<div class="tab-pane active" id="panel-recipes">		
 		<form action="index.php?page=plan#recipeslist" method="post">
 		<div class="form-group col-sm-12" style="padding-top:10px">
 		<?php
+		//find all the user's food
 			$sql_myfood = "SELECT id,name,TIMESTAMPDIFF(DAY,NOW(),exp) AS days FROM food WHERE userid = ".$_SESSION['userid']." order by days";
 			$res_myfood = $mysql->query($sql_myfood);
 			$myfoods = array();
@@ -31,6 +32,7 @@
 				<input type='checkbox' name='myfoods[]' id='sfood_".$row_myfood['id']."' value='".$row_myfood['id'].','.$row_myfood['name'].','.$row_myfood['days']."' checked/>
 				</div>";
 			}
+		//collect post data, and create search condition
 			if(isset($_POST['myfoods'])){
 				$cond = '';
 				$foodsinfo='';

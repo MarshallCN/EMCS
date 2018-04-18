@@ -102,12 +102,12 @@
 									<dl>
 								</div>
 								<div class="form-group col-xs-6">
-									<label>Expiration <a href='javascript:void(0);' onclick="$('#helptip').toggle();$('#exptip').hide()" class="glyphicon glyphicon-question-sign icon_ques"></a>
+									<label>Expiration <a href='javascript:void(0);' onclick="$('#helptip').toggle();$('#exptip').hide()" class="fa fa-question-circle icon_ques"></a>
 									</label>
 									<input type="date" class="form-control" name='exp' oninput="checkDate(this)" placeholder="exp" required>
 								</div>
 								<div class="form-group col-xs-6">
-									<label>Exp. Type <a href='javascript:void(0);' onclick="$('#helptip').toggle();$('#exptip').show()" class="glyphicon glyphicon-question-sign icon_ques"></a>
+									<label>Exp. Type <a href='javascript:void(0);' onclick="$('#helptip').toggle();$('#exptip').show()" class="fa fa-question-circle icon_ques"></a>
 									</label>
 									<select class="form-control" name='exptype'>
 										<option value='0'>Used By</option>

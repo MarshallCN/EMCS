@@ -1,4 +1,4 @@
-/* 'use strict'; */
+'use strict';
 
 var API_KEY = window.GoogleSamples.Config.gcmAPIKey;
 var GCM_ENDPOINT = 'https://android.googleapis.com/gcm/send';

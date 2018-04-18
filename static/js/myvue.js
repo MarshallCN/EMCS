@@ -37,7 +37,7 @@ var vm =  new Vue({
 						var warnfood = 0;
 						for(x=0;x<data.length;x++){
 							jsondata = JSON.parse(data[x])
-							if(jsondata.days < that.threshold){
+							if(parseInt(jsondata.days) < parseInt(that.threshold)){
 								warnfood ++;
 							}
 							foodall.push(jsondata)

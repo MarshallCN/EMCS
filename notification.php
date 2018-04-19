@@ -28,7 +28,7 @@ if(isset($_POST['userid'])||isset($_GET['uid'])){
 				"'.$token.'"
 			]}'; 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data_string));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
 		//curl_setopt($ch, CURLOPT_NOSIGNAL, 1);
 		//curl_setopt($ch, CURLOPT_TIMEOUT_MS, 2000);
 		$result = curl_exec($ch);

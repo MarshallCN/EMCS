@@ -164,17 +164,31 @@
 		$type = $_POST['type']=='msgemail'?'msg_email':'msg_chrome';
 		$method = $_POST['type']=='msgemail'?1:0;
 		$status = $_POST['switchbtn']==100?1:0;
-		$sql_switch = "UPDATE user set $type='$status' WHERE id = ".$_SESSION['userid'];
-		$sql_rules = "UPDATE notiplan set available='$status' WHERE method = $method AND user_id = ".$_SESSION['userid'];
-		$mysql->query($sql_switch);
-		$mysql->query($sql_rules);
-		if($type=='msg_email'&&$status==0){
-			ATrigger::doDelete(['userid'=>$_SESSION['userid'],'type'=>'email']);
+		if($type=='msg_email'){
+			$sql_switch = "UPDATE user set msg_email='$status' WHERE id = ".$_SESSION['userid'];
+			$mysql->query($sql_switch);
+			if($status==0){
+				ATrigger::doDelete(['userid'=>$_SESSION['userid'],'type'=>'email']);
+			}
+		}else{
+			$curNoti = $mysql->oneQuery('SELECT COUNT(*) FROM user_token WHERE userid = '.$_SESSION['userid']);
+			if($curNoti>1){
+				if($status == 1){
+					$sql_switch = "UPDATE user set msg_chrome='1' WHERE id = ".$_SESSION['userid'];
+					$mysql->query($sql_switch);
+				}
+			}else{
+				$sql_switch = "UPDATE user set msg_chrome='$status' WHERE id = ".$_SESSION['userid'];
+				$mysql->query($sql_switch);
+				if($status==0){
+					ATrigger::doDelete(['userid'=>$_SESSION['userid'],'type'=>'chrome']);
+				}
+			}
 		}
 		echo json_encode(['res'=>1]);
 	}
 	/*Get all noti rules table*/
-	elseif(isset($_POST['notiplan'])){
+	/* elseif(isset($_POST['notiplan'])){
 		$sql_notiplan = "SELECT * FROM notiplan WHERE user_id = ".$_SESSION['userid']." ORDER BY warnbefore";
 		$res = $mysql->query($sql_notiplan);
 		$notiplan = array();
@@ -182,7 +196,7 @@
 			array_push($notiplan,json_encode($row));
 		}
 		echo json_encode($notiplan);
-	}
+	} */
 	/*Edit Noti rules availablity*/
 	elseif(isset($_POST['notiplanid'])){
 		$notiplanid = inputCheck($_POST['notiplanid']);
@@ -215,7 +229,9 @@
 					$mysql->query($sql_del);
 				}
 					$sql_add = "INSERT user_token VALUES ('','".$_SESSION['userid']."','$subId','$browser')";
+					$sql_upd = "UPDATE user_token SET token='$subId' WHERE browser = '$browser'";
 					$mysql->query($sql_add);
+					$mysql->query($sql_upd);
 					$res = 'add new noti';
 			}
 		}else{

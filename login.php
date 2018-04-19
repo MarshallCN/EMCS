@@ -107,7 +107,7 @@
 					}else{
 						$salt=base64_encode(mcrypt_create_iv(6,MCRYPT_DEV_RANDOM)); //Add random salt
 						$pwdhash = MD5($password.$salt); //MD5 of pwd+salt
-						$sql_newcus = "INSERT INTO user (username, pwdhash, salt_code, email, msg_email, msg_chrome,threshold,retimes) VALUES('$username','$pwdhash','$salt','$email',0,0,3,3)";
+						$sql_newcus = "INSERT INTO user (username, pwdhash, salt_code, email, msg_email, msg_chrome,threshold,retimes) VALUES('$username','$pwdhash','$salt','$email',0,1,3,3)";
 						$mysql->query($sql_newcus);
 						$_SESSION['user'] = $username;
 						$_SESSION['userid'] = mysqli_insert_id($mysql->conn);

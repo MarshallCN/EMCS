@@ -40,7 +40,9 @@
 	$userinfo = $mysql->fetch($res_user); 
 	$browser = md5($_SERVER['HTTP_USER_AGENT']);
 	$isBrowserNoti = $mysql->oneQuery("SELECT COUNT(*) FROM user_token WHERE browser = '$browser' AND user_id = ".$_SESSION['userid']);
+	$isthisBrowserNoti = $mysql->oneQuery("SELECT COUNT(*) FROM user_token WHERE browser = '$browser' AND user_id = ".$_SESSION['userid']);
 	$isNoti = $isBrowserNoti>0?true:false;
+	$isthisNoti = $isthisBrowserNoti>0?true:false;
 ?>
 			<fieldset class="col-sm-8 col-sm-offset-2">
 			<legend>Profile</legend>
@@ -177,13 +179,15 @@
 <script src="noti/main.js"></script>
 <script>
 $("[name='msgemail']").val('<?php echo $userinfo['msg_email']==0?0:100;?>')
-$("[name='msgchrome']").val('<?php echo $isNoti?0:100;?>')
+$("[name='msgchrome']").val('<?php echo $isthisNoti?100:0;?>')
 $("[name='msgemail']").css('background','<?php echo $userinfo['msg_email']==0?'#ccc':'#337ab7';?>')
-$("[name='msgchrome']").css('background','<?php echo $isNoti==0?'#ccc':'#337ab7';?>')
+$("[name='msgchrome']").css('background','<?php echo $isNoti?'#337ab7':'#ccc';?>')
 </script>
 <?php
 if($userinfo['msg_chrome']==0){
 	echo "<script>unsubscribe()</script>";
+}else{
+	echo "<script>subscribe()</script>";
 }
 /**Edit Password (it post 'signup' due to js function variable name is fixed)*/
 	if(isset($_POST['signup'])){

@@ -21,13 +21,12 @@ if(isset($_POST['userid'])||isset($_GET['uid'])){
 		}else{
 			$token = implode('","',$tokens);
 		}
-		$data_string = array(
-			'registration_ids' 	=> array($token),
-			'raw_data' => '1234'
-		);
-		/* $data_string = '{"registration_ids":[
+		/* $data_string = array(
+			'registration_ids' 	=> array($token)
+		); */
+		$data_string = '{"registration_ids":[
 				"'.$token.'"
-			]}'; */
+			]}'; 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data_string));
 		//curl_setopt($ch, CURLOPT_NOSIGNAL, 1);

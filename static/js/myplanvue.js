@@ -98,7 +98,7 @@ var vmassoc =  new Vue({
 						responsive: true,
 						title: {
 							display: true,
-							text: vmassoc.mainnode+' Collocation'
+							text: 'If '+vmassoc.mainnode+' Then ...'
 						},
 						scales: {
 							xAxes: [{

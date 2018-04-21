@@ -232,7 +232,7 @@
 //add/move food into storage	
 	if(isset($_POST['fname'])){
 		$foodname = inputCheck($_POST['fname']);
-		$foodcate = empty($_POST['fcate'])?437:inputCheck($_POST['fcate']);
+		$foodcate = ($_POST['fcate']=='-')?437:inputCheck($_POST['fcate']);
 		$exp = inputCheck($_POST['exp']);
 		$exptype = inputCheck($_POST['exptype']);
 		$vol = inputCheck($_POST['vol']);

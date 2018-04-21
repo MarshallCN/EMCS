@@ -34,24 +34,28 @@ $runtime->start();
 /* Pre-processing, add tag to each recipe */
 function preProcess(){
 	global $mysql;
-	$sql_allfood = "SELECT distinct name FROM allfood group by url";
+	$sql_allfood = "SELECT distinct name FROM allfood where name != 'uncategorized' group by url";
 	$res_allfood = $mysql->query($sql_allfood);
 	while($row = $mysql->fetch($res_allfood)){
 		$node = $row['name'];
-		$mysql->query("UPDATE recipes_tag SET items = IF(items='','$node',CONCAT(items,',','$node')) WHERE recipes_id in (SELECT id FROM recipes WHERE ingredients like '%$node%')");
+		//have to seperate recipes_tag tbl, due to it cannot update the table in from clause
+		$mysql->query("UPDATE recipes_tag SET items = CONCAT(items,',','$node') WHERE recipes_id in (SELECT id FROM recipes WHERE ingredients like '%$node%')");
+		//$nodePattern = str_replace(' - ',' ',$node);
+		//$nodePattern = '+'.str_replace(' ',' +',$nodePattern);
+		//$mysql->query("UPDATE recipes_tags1 SET items = IF(items='','$node',CONCAT(items,',','$node')) WHERE id in (SELECT id FROM recipes1 WHERE MATCH(ingredients) AGAINST ('$node' IN BOOLEAN MODE))");
 	}
 }
-// preProcess(); //Please do not re-insert
+ //preProcess(); //Please do not re-insert
 
 /* FP-Growth */
-/* Scan data source, create header table */
+/* Scan data source, create header table */	
 function creHeader(){
 	global $mysql;
 	$sql_scan1 = "SELECT * FROM recipes_tag";
 	$res_scan = $mysql->query($sql_scan1);
 	while($row = $mysql->fetch($res_scan)){
 		$items = explode(",",$row['items']);
-		for($i=0;$i<count($items);$i++){
+		for($i=1;$i<count($items);$i++){ //first is empty
 			//if the item exists in header table, update num
 			$node = $items[$i];
 			if($res_headers = $mysql->query("SELECT * FROM header WHERE node like '%$node%'")){
@@ -87,7 +91,7 @@ ordHeader();
 /* Order item according to headers table */
 function compareAB($a,$b){
 	global $headers;
-	if($headers[$a]>$headers[$b]){
+	if($headers[$a]>=$headers[$b]){
 		return -1;
 	}else{
 		return 1;
@@ -98,15 +102,16 @@ function compareAB($a,$b){
 function buildTree(){
 	global $mysql;
 	global $headers;
-	$sql_scan2 = "SELECT * FROM recipes_tag limit 100";
+	$sql_scan2 = "SELECT * FROM recipes_tag";
 	$res_scan = $mysql->query($sql_scan2);
 	$mysql->query("INSERT fptree VALUE('','Root',' ','0')");
 	while($row = $mysql->fetch($res_scan)){
 		$items = explode(",",$row['items']);
+		array_shift($items);
 		//order data source according to the header table
 		usort($items,"compareAB");
 		$path = 'Root';	
-		for($v=0;$v<count($items);$v++){
+		for($v=0;$v<count($items);$v++){ //all items in each transaction
 			$node = $items[$v];
 			//MIN SUPPORT is 3
 			if(isset($headers[$node])){
@@ -133,7 +138,7 @@ function buildTree(){
 	}
 	echo 'Processed Record: '.$cid.'<br/>';
 }
-// buildTree(); //Do not re-create again please!
+//	buildTree(); //Do not re-create again please!
 
 
 /* Mining FP-Tree，From the last item of header table, find each path，count nodes, delete node < min threshold */
@@ -151,21 +156,21 @@ function mineTree($test){
 		while($row = $mysql->fetch($res_conTree)){
 			$initNum = $row['num'];
 			$sub_path = explode("/",$row['path']);
-			for($i=0;$i<count($sub_path);$i++){ //$i=0 mens the node->root, which is its own support value
+			for($i=0;$i<count($sub_path);$i++){ //$i=0 means the node->root, which is its own support value
 				$sql_find = "SELECT COUNT(*) FROM subtree WHERE node = '$mineNode' AND assoc = '".$sub_path[$i]."'";
-				if($test='test'){
+				if($test=='test'){
 					if(array_key_exists($sub_path[$i],$subTree[$mineNode])){ //$subTree is only used for testing
 						$subTree[$mineNode][$sub_path[$i]] += $initNum;
 					}else{
 						$subTree[$mineNode][$sub_path[$i]] = $initNum;
 					}
-				}elseif($test='real'){
+				}elseif($test=='real'){
 					if($mysql->oneQuery($sql_find) > 0){
 						//Update existing node	
 						$mysql->query("UPDATE subtree SET num = num+$initNum WHERE node = '$mineNode' AND assoc = '".$sub_path[$i]."'");
 					}else{
 						//New node	
-						$mysql->query("INSERT subtree(node,assoc,num) VALUES ('$mineNode','".$sub_path[$i]."','$initNum')");
+						$mysql->query("INSERT subtree (node,assoc,num) VALUES ('$mineNode','".$sub_path[$i]."','$initNum')");
 					}
 				}
 			}
@@ -176,12 +181,12 @@ function mineTree($test){
 mineTree('test');
 	echo 'Sub tree nodes number: '.count($subTree).'<br/>';
 	print_r($subTree);
-
 */
 
-//mineTree('real'); //Please do not re-create subtree table again, it may crack your browser due to your default max_execution time
 
-//$runtime->stop();
-//echo "<br/>Time: ".$runtime->spent()." s";
+// mineTree('real'); //Please do not re-create subtree table again, it may crack your browser due to your default max_execution time
+
+$runtime->stop();
+echo "<br/>Time: ".$runtime->spent()." s";
 ?>
 </pre>

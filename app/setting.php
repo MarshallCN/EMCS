@@ -39,9 +39,9 @@
 	$res_user = $mysql->query($sql_users);
 	$userinfo = $mysql->fetch($res_user); 
 	$browser = md5($_SERVER['HTTP_USER_AGENT']);
-	$isBrowserNoti = $mysql->oneQuery("SELECT COUNT(*) FROM user_token WHERE browser = '$browser' AND user_id = ".$_SESSION['userid']);
+	$isUserNoti = $mysql->oneQuery("SELECT COUNT(*) FROM user_token WHERE user_id = ".$_SESSION['userid']);
 	$isthisBrowserNoti = $mysql->oneQuery("SELECT COUNT(*) FROM user_token WHERE browser = '$browser' AND user_id = ".$_SESSION['userid']);
-	$isNoti = $isBrowserNoti>0?true:false;
+	$isNoti = $isUserNoti>0?true:false;
 	$isthisNoti = $isthisBrowserNoti>0?true:false;
 ?>
 			<fieldset class="col-sm-8 col-sm-offset-2">
@@ -76,7 +76,7 @@
 						</div>
 						<div class="form-group">
 								<label>Cooking Skill </label>
-								<select class="form-control" name='cook' required>
+								<select class="form-control" name='cook'>
 									<option value="0"> - </option> 
 									<option value="1">I Can't Cook</option> 
 									<option value="2">Beginner</option> 
@@ -186,8 +186,6 @@ $("[name='msgchrome']").css('background','<?php echo $isNoti?'#337ab7':'#ccc';?>
 <?php
 if($userinfo['msg_chrome']==0){
 	echo "<script>unsubscribe()</script>";
-}else{
-	echo "<script>subscribe()</script>";
 }
 /**Edit Password (it post 'signup' due to js function variable name is fixed)*/
 	if(isset($_POST['signup'])){

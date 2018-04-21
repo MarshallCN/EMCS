@@ -171,16 +171,17 @@
 				ATrigger::doDelete(['userid'=>$_SESSION['userid'],'type'=>'email']);
 			}
 		}else{
-			$curNoti = $mysql->oneQuery('SELECT COUNT(*) FROM user_token WHERE userid = '.$_SESSION['userid']);
-			if($curNoti>1){
-				if($status == 1){
-					$sql_switch = "UPDATE user set msg_chrome='1' WHERE id = ".$_SESSION['userid'];
-					$mysql->query($sql_switch);
-				}
-			}else{
-				$sql_switch = "UPDATE user set msg_chrome='$status' WHERE id = ".$_SESSION['userid'];
+			$curNoti = $mysql->oneQuery('SELECT COUNT(*) FROM user_token WHERE user_id = '.$_SESSION['userid']);
+			//enable
+			if($status==1){
+				$sql_switch = "UPDATE user set msg_chrome='1' WHERE id = ".$_SESSION['userid'];
 				$mysql->query($sql_switch);
-				if($status==0){
+			//disable
+			}else{
+				//last one, disable it
+				if($curNoti==0){
+					$sql_switch = "UPDATE user set msg_chrome=0 WHERE id = ".$_SESSION['userid'];
+					$mysql->query($sql_switch);
 					ATrigger::doDelete(['userid'=>$_SESSION['userid'],'type'=>'chrome']);
 				}
 			}

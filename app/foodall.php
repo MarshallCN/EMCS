@@ -154,7 +154,6 @@
 						<div>Data From: <a href="http://www.eatbydate.com" target="_blank">EatByDate</a></div>
 					</div>
 					<div class='helptip' id='exptip' onclick="$(this).hide()" style="display:none">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 						<dl>
 							<dt class="font-weight-bold">Best Before</dt>
 							<dd>The date of the best quality, food may still be eatable after the date expires</dd>

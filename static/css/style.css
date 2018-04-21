@@ -149,6 +149,9 @@ h1 {
 	}
 	.labelText{
 		padding-top: 0px;
+		font-weight: 100;
+		font-size: 20px;
+		font-style: italic;
 	}
 }
 	/*big header*/
@@ -176,6 +179,12 @@ h1 {
 	.logmain{
 		padding-bottom: 30px;
 	}
+	.labelText{
+		padding-top: 10px;
+		font-weight: 100;
+		font-size: 20px;
+		font-style: italic;
+	}
 }
 	/*hide menu button*/
 .icona{
@@ -198,12 +207,6 @@ h1 {
 }
 
 /**Login Page*/
-.labelText{
-	padding-top: 10px;
-	font-weight: 100;
-	font-size: 20px;
-	font-style: italic;
-}
 .muteText{
 	font-size: 25px;
 }

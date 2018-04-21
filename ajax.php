@@ -256,7 +256,7 @@
 	/* Search user's food in header table */
 	}elseif(isset($_POST['searchfoodfeader'])){
 		$searchFood = inputCheck($_POST['searchfoodfeader']);
-		$sql_sheader = "SELECT id,node FROM header WHERE node like '%$searchFood%'";
+		$sql_sheader = "SELECT id,node FROM header WHERE node like '%$searchFood%' AND num > 3";
 		$res_sheader = $mysql->query($sql_sheader);
 		$res = array('multiple'=>'','details'=>[]);
 		$nums = mysqli_num_rows($res_sheader);

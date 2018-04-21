@@ -185,6 +185,11 @@ h1 {
 		font-size: 20px;
 		font-style: italic;
 	}
+	.recipebtn{    
+		position: absolute;
+		right: 20px;
+		top: -50px;
+	}
 }
 	/*hide menu button*/
 .icona{

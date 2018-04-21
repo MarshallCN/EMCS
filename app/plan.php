@@ -46,7 +46,7 @@
 				}
 			}
 		?>
-			<button type="submit" class="btn btn-warning center-block">Search Recipes</button>
+			<button type="submit" class="btn btn-warning recipebtn">Search Recipes</button>
 		</div>
 		</form>
 		<div class="panel-group col-sm-12" id="panel-allrecipe">

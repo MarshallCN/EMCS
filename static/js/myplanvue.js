@@ -13,7 +13,7 @@ var vmassoc =  new Vue({
 			})
 		},
 		methods:{
-			searchHeader: function(){
+			searchHeader: function(){ //only header food can generate associaiton chart, this function search user's food in header table
 				searchFood = $('#assocfood').val()
 				if(searchFood.length>0){
 					var that=this;

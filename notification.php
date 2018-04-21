@@ -7,7 +7,6 @@ if(isset($_POST['userid'])||isset($_GET['uid'])){
 	$headers = array();
 	$headers[] = "Authorization: key=AIzaSyCfUTbrS9FIQUKvqecUXDytzriLIzve5f8";
 	$headers[] = "Content-Type: application/json";
-	//$headers[] = "ttl: 80";
 	$tokens = array();
 	$sql_token = "SELECT * FROM user_token WHERE user_id = '$user_id'";
 	$res = $mysql->query($sql_token);
@@ -29,8 +28,6 @@ if(isset($_POST['userid'])||isset($_GET['uid'])){
 			]}'; 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-		//curl_setopt($ch, CURLOPT_NOSIGNAL, 1);
-		//curl_setopt($ch, CURLOPT_TIMEOUT_MS, 2000);
 		$result = curl_exec($ch);
 		curl_close($ch);
 		echo 'curl --header "Authorization: key=AIzaSyCfUTbrS9FIQUKvqecUXDytzriLIzve5f8" 

@@ -273,7 +273,8 @@
 	elseif(isset($_POST['assocnode'])){
 		$node = str_replace('_',' ',inputCheck($_POST['assocnode']));
 		$rootv = $mysql->oneQuery("SELECT num FROM subtree WHERE node = '$node' AND assoc = 'Root'");
-		$sql_assoc = "SELECT assoc,num/$rootv as conf FROM subtree WHERE node = '$node' AND num/$rootv > 0.05 AND assoc!='root' ORDER BY conf DESC LIMIT 15";
+		$sql_assoc = "SELECT assoc,num/$rootv as conf FROM subtree WHERE node = '$node'
+			AND num/$rootv > 0.05 AND assoc!='root' ORDER BY conf DESC LIMIT 20";
 		$res_assoc = $mysql->query($sql_assoc);
 		$res = ['assoc'=>[],'conf'=>[]];
 		while($row = $mysql->fetch($res_assoc)){

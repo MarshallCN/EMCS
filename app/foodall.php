@@ -257,6 +257,7 @@
 		$firstdate = date_create_from_format('d/M/Y:H:i:s', $setdate);
 		$msgres = $mysql->query("SELECT msg_chrome,msg_email FROM user WHERE id = ".$_SESSION['userid']);
 		$msgSet = $mysql->fetch($msgres);
+		//send chrome notification
 		if($msgSet[0]==1){
 			echo "<script>
 			$.ajax({
@@ -267,9 +268,11 @@
 			},
 			type:'POST'});</script>";
 		}
+		//send email notification
 	 	if($msgSet[1]==1){
 			$useremail = $mysql->oneQuery("SELECT email FROM user WHERE id =".$_SESSION['userid']);
-			$html = htmlspecialchars("<div style='background:#1E3E57;width:100%;height:400px;border-radius:5px;padding:20px'>
+			$html = htmlspecialchars("
+			<div style='background:#1E3E57;width:100%;height:400px;border-radius:5px;padding:20px'>
 			<h3 style='color:#fff'>Your Food $foodname will be expired at</h3>
 			<h1 style='color:#FF6384'>$exp</h1><br/>
 			<h3 style='color:#fff'>Please use it soon!</h3>

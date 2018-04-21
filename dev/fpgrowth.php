@@ -30,7 +30,6 @@ require('../inc/db.php');
 	}
 $runtime= new runtime;
 $runtime->start();
-/* FP-Growth */
 
 /* Pre-processing, add tag to each recipe */
 function preProcess(){
@@ -39,11 +38,12 @@ function preProcess(){
 	$res_allfood = $mysql->query($sql_allfood);
 	while($row = $mysql->fetch($res_allfood)){
 		$node = $row['name'];
-		$mysql->query("UPDATE recipes_tag SET items = IF(items='','$node',CONCAT(items,',','$node')) WHERE id in (SELECT id FROM recipes WHERE ingredients like '%$node%')");
+		$mysql->query("UPDATE recipes_tag SET items = IF(items='','$node',CONCAT(items,',','$node')) WHERE recipes_id in (SELECT id FROM recipes WHERE ingredients like '%$node%')");
 	}
 }
 // preProcess(); //Please do not re-insert
 
+/* FP-Growth */
 /* Scan data source, create header table */
 function creHeader(){
 	global $mysql;
@@ -93,7 +93,6 @@ function compareAB($a,$b){
 		return 1;
 	}
 }
-
 
 /* Second scan DB, Build FP-Tree */
 function buildTree(){

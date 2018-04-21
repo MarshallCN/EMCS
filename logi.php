@@ -8,7 +8,6 @@
 		<h1 class='loginTit text-center'>
 			<a class="fa fa-cutlery"></a>&nbsp;<span class="visible-xs">EMCS</span>
 			<span class="hidden-xs">E<span class='muteText'>xpiration</span> M<span class='muteText'>anagement & </span>C<span class='muteText'>ooking</span> S<span class='muteText'>uggestion</span></span>
-			<div class="labelText">Reduce Your Food Waste</div>
 		</h1>
 		<div class="col-sm-6 col-sm-offset-3 logmain">
 			<form method="post" class='col-sm-12' autocomplete='off'>

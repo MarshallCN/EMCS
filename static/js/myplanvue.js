@@ -64,7 +64,7 @@ var vmassoc =  new Vue({
 						}else{
 							mychart.data.datasets[0].data = data.conf
 							mychart.data.labels = data.assoc
-							mychart.options.title.text = that.mainnode+' Collocation'
+							mychart.options.title.text = 'If '+that.mainnode+', then...'
 							mychart.update()
 						}
 					},

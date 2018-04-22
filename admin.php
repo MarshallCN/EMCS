@@ -13,7 +13,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Operation System</td>
+                            <td>Server Operation System</td>
                             <td class="text-center" colspan=3><div class="label label-warning"><?php echo PHP_OS;?></div></td>
                         </tr>
                         <tr>
@@ -36,7 +36,7 @@
 							?></td>
 						</tr>
                         <tr>
-                            <td>Current Browser</td>
+                            <td>Client Browser</td>
 							<td class="text-center" colspan=3><?php
 								function getBrowser(){
 									$agent=$_SERVER["HTTP_USER_AGENT"];
@@ -69,6 +69,10 @@
 							<td class="text-center" colspan=3><?php echo ROUND((@disk_free_space(".") / (1024 * 1024)), 2).'M';?></td>
                         </tr>
                         <tr>
+                            <td>SSL</td>
+							<td class="text-center" colspan=3><?php echo isset($_SERVER['HTTPS'])?'<i class="fa fa-check"></i>Supported':'<i class="fa fa-close"></i>Not Supported';?></td>
+                        </tr>
+						<tr>
                             <td>SESSION</td>
 							<td class="text-center" colspan=3><?php echo function_exists('session_start')?'<i class="fa fa-check"></i>Supported':'<i class="fa fa-close"></i>Not Supported';?></td>
                         </tr>

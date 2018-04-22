@@ -26,7 +26,7 @@
 							if(function_exists('mysqli_connect')){
 								if(file_exists('inc/db.php')){
 									include('inc/db.php');
-									echo '<i class="fa fa-check"></i> '.mysqli_get_server_info($mysql->conn);
+									echo mysqli_get_server_info($mysql->conn);
 								}else{
 									echo '<i class="fa fa-close"></i>Error: db.php is not exists';
 								}
@@ -36,6 +36,27 @@
 							?></td>
 						</tr>
                         <tr>
+                            <td>Current Browser</td>
+							<td class="text-center" colspan=3><?php
+								function getBrowser(){
+									$agent=$_SERVER["HTTP_USER_AGENT"];
+									if(strpos($agent,'MSIE')!==false || strpos($agent,'rv:11.0')) //IE11?
+									return "IE";
+									else if(strpos($agent,'Firefox')!==false)
+									return "Firefox";
+									else if(strpos($agent,'Chrome')!==false)
+									return "Chrome";
+									else if(strpos($agent,'Opera')!==false)
+									return 'Opera';
+									else if((strpos($agent,'Chrome')==false)&&strpos($agent,'Safari')!==false)
+									return 'Safari';
+									else 
+									return 'Unknown';
+								}
+								echo getBrowser();
+							?></td>
+                        </tr>
+						<tr>
                             <td>Upload Limit</td>
 							<td class="text-center" colspan=3><?php echo ini_get('upload_max_filesize');?></td>
                         </tr>

@@ -18,7 +18,7 @@
                         </tr>
                         <tr>
 							<td>PHP Version</td>
-							<td class="text-center" colspan=3><?php echo phpversion();?></td>
+							<td class="text-center" colspan=3><?php echo $_SERVER["SERVER_SOFTWARE"];?></td>
 						</tr>
                         <tr>
 							<td>MySQL Version</td>
@@ -35,6 +35,18 @@
 							}
 							?></td>
 						</tr>
+                        <tr>
+                            <td>Upload Limit</td>
+							<td class="text-center" colspan=3><?php echo ini_get('upload_max_filesize');?></td>
+                        </tr>
+						<tr>
+                            <td>Execution Time Limit</td>
+							<td class="text-center" colspan=3><?php echo ini_get('max_execution_time').'s';?></td>
+                        </tr>
+						<tr>
+                            <td>Remaing Storage</td>
+							<td class="text-center" colspan=3><?php echo ROUND((@disk_free_space(".") / (1024 * 1024)), 2).'M';?></td>
+                        </tr>
                         <tr>
                             <td>SESSION</td>
 							<td class="text-center" colspan=3><?php echo function_exists('session_start')?'<i class="fa fa-check"></i>Supported':'<i class="fa fa-close"></i>Not Supported';?></td>

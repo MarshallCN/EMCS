@@ -244,7 +244,7 @@ isemail = false;
 			body = "<div style='background:#1E3E57;width:100%;min-height:100px;border-radius:5px;padding:20px'>\
 			<h3 style='color:#fff'>Thanks for registering EMCS, Your Verify Code is </h3><h1 style='color:#FF6384'>"+code+"</h1></div>";
 			altbody = "Thanks for registering EMCS, Your Verify Code is: "+code;
-			getMD5(code);
+			getMD5(code);//put code hash into hidden input
 			sendemail(email,subject,body,altbody)
 			$('#sendemailbtn').attr('disabled',true)
 			$('#sendemailbtn').html('<span id="resendtime">60</span>s Later Re-send')

@@ -172,6 +172,7 @@ function initialiseState() {
   // Are Notifications supported in the service worker?
   if (!('showNotification' in ServiceWorkerRegistration.prototype)) {
 	pushButton.disabled = true;
+	document.querySelector('.js-log').innerHTML = '';
     window.Demo.debug.log('Notifications aren\'t supported.');
     return;
   }
@@ -181,6 +182,7 @@ function initialiseState() {
   // user changes the permission
   if (Notification.permission === 'denied') {
 	pushButton.disabled = true;
+	document.querySelector('.js-log').innerHTML = '';
     window.Demo.debug.log('The user has blocked notifications.');
     return;
   }
@@ -188,6 +190,7 @@ function initialiseState() {
   // Check if push messaging is supported
   if (!('PushManager' in window)) {
 	 pushButton.disabled = true;
+	 document.querySelector('.js-log').innerHTML = '';
     window.Demo.debug.log('Push messaging isn\'t supported.');
     return;
   }
@@ -223,6 +226,7 @@ function initialiseState() {
 		  const clientAuthSecret = new Buffer(subscription.keys.auth, 'base64'); */
       })
       .catch(function(err) {
+		  document.querySelector('.js-log').innerHTML = '';
         window.Demo.debug.log('Error during getSubscription()', err);
       });
   });
@@ -244,6 +248,7 @@ window.addEventListener('load', function() {
     navigator.serviceWorker.register('./service-worker.js')
     .then(initialiseState);
   } else {
+	  document.querySelector('.js-log').innerHTML = '';
     window.Demo.debug.log('Service workers aren\'t supported in this browser.');
   }
 });

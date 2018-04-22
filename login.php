@@ -87,9 +87,9 @@
 		$password = inputCheck($_POST['pwd']);
 		$email = inputCheck($_POST['newemail']);
 		$passwardconfirm = inputCheck($_POST['newpwdconf']);
-		$vcodehash = $_POST['vcodehash'];
-		$verifycode = md5($_POST['verifycode']);
-		if($verifycode != $vcodehash){
+		$vCodeHash = $_POST['vcodehash'];
+		$vInputHash = md5($_POST['verifycode']);
+		if($vInputHash != $vCodeHash){
 			echo"<script>alert('Verify Code is Wrong!');</script>";
 		}else{
 			if($password !=$passwardconfirm){

@@ -3,7 +3,7 @@ require "../inc/db.php";
 echo "Please check the source code of this file, import function is disabled by author.<br/><br/>";
 //#############First attemp, use json_decode, it failed due to exceed memory size###############
 function phpImport() {
-	$jsonFile = 'full_format_recipes.json';
+	$jsonFile = 'full_format_recipes.json'; // Download from https://www.kaggle.com/hugodarwood/epirecipes/data
 	$jsonData = json_decode(file_get_contents($jsonFile), true);
 	for($i=0;$i<3;$i++){
 		print_r($jsonData[$i]);

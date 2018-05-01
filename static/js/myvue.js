@@ -88,7 +88,7 @@ var vm =  new Vue({
 						$('#volrate').html(data.vol)
 						$.ajax({
 							url:'ajax.php',
-							data:{"htmlid":id},
+							data:{"htmlid":data.allfood_id},
 							success:function(data){
 								$("#helptip table").html(data)
 								if(data.length>0){

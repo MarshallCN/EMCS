@@ -1,7 +1,7 @@
 				<form method="post" action="index.php?p=fp-All">   
 					<div class="form-group">
 						<label>Food Name</label>
-						<input type="text" class="form-control" name='fname' placeholder="Type your food name to search a category..." oninput="searchfood();showexp()" autocomplete='off' required>
+						<input type="text" class="form-control" name='fname' placeholder="Type your food name to search a category..." oninput="searchfood()" onchange="showexp()" autocomplete='off' required>
 					</div>
 					<div class="form-group">
 						<label>Choose the Most Similar Category</label>

@@ -60,7 +60,7 @@
 							<form method="post" action="index.php?page=food&storage=all">
 								<div class="form-group">
 									<label>Food Name</label>
-									<input type="text" class="form-control" name='fname' oninput="searchfood();showexp()" placeholder="Food Name" required>
+									<input type="text" class="form-control" name='fname' oninput="searchfood()" onchange="showexp()" placeholder="Food Name" required>
 								</div>
 								<div class="form-group">
 									<label>Food Category</label>

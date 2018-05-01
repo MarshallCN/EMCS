@@ -86,7 +86,20 @@ var vm =  new Vue({
 						$('[name=vol]').val(data.vol)
 						$('[name=editfoodid]').val(data.id)
 						$('#volrate').html(data.vol)
-						showexp()
+						$.ajax({
+							url:'ajax.php',
+							data:{"htmlid":id},
+							success:function(data){
+								$("#helptip table").html(data)
+								if(data.length>0){
+									//$("#helptip").show();						
+								}else{
+									$("#helptip table").html("Cannot find suggestion for selected food")
+									$("#helptip").hide();						
+								}
+							},
+							type:'POST'
+						})
 					},
 					type:'POST',
 					dataType:'json'

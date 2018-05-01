@@ -15,7 +15,7 @@
 				<h2 class="text-center">Log In or Sign Up</h2>
 				<div class="form-group">
 					<label>Username</label>
-					<input type="text" class="form-control" name='username' maxlength=20 placeholder='' required/><kbd class='seepwd hidden'><i class=''></i>
+					<input type="text" class="form-control" name='username' maxlength=20 placeholder='marshall' required/><kbd class='seepwd hidden'><i class=''></i>
 				</div>
 				<div class="form-group">
 					 <label>Password </label>

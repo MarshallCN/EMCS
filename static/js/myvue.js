@@ -86,6 +86,7 @@ var vm =  new Vue({
 						$('[name=vol]').val(data.vol)
 						$('[name=editfoodid]').val(data.id)
 						$('#volrate').html(data.vol)
+						searchfood();
 						$.ajax({
 							url:'ajax.php',
 							data:{"htmlid":data.allfood_id},

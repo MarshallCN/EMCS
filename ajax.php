@@ -3,6 +3,15 @@
 	require "inc/db.php";
 	require_once("atrigger/ATrigger.php");
 	ATrigger::init("4989200868836991246","f5lI15uo41pYL7aY5QNkYq7h5bC7Y6");
+	function curlGet($url,$get){
+		$url = $url.'?'.$get;
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		$res=curl_exec($ch);
+		curl_close($ch);
+		echo $res;
+	}				
 	/*Use get md5 value*/
 	if(isset($_POST['getmd5'])){
 		$data = MD5($_POST['getmd5']);
@@ -73,7 +82,6 @@
 			$expopenunit = inputCheck($_POST['expopenunit']);
 			$imgname = inputCheck($_POST['imgname']);
 			$opendate = $_POST['status']==1 ? 'NOW()':'NULL';
-			$res=3;
 			switch($expopenunit){
 				case "Days": $unit = 1;break;
 				case "Weeks": $unit = 7;break;
@@ -83,15 +91,40 @@
 			if(isset($_POST['editfoodid'])){
 				$editid = inputCheck($_POST['editfoodid']);
 				$sql_editfood = "UPDATE food SET name='$foodname',allfood_id='$foodcate',exp_type='$exptype',exp='$exp',vol='$vol',open_date=$opendate,openday='$opendays',place='$place',picpath='$imgname' WHERE id = $editid";
-				$warndate = date("d/M/Y",strtotime("-".$_SESSION['threshold']." day",strtotime($exp)));
-				$setdate = $warndate.':09:00:00';
-				$firstDate = date_create_from_format('d/M/Y:H:i:s', $setdate);
-				ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$_POST['editfoodid']],$firstDate,$_SESSION['reptimes'], 3,["userid"=>$_SESSION['userid']]);
 				$mysql->query($sql_editfood);
-				//ATrigger::doDelete(['foodid'=>$editfoodid]);
+				$before = $_SESSION['threshold'];
+				$warndate = date("d/m/Y",strtotime("-$before day",strtotime($exp)));
+				$setdate = $warndate.':09:00:00';
+				$firstdate = date_create_from_format('d/m/Y:H:i:s', $setdate);
+				$first = date("Y-m-d",strtotime("-$before day",strtotime($exp)))."T09:00:00Z";
+				$msgres = $mysql->query("SELECT msg_chrome,msg_email FROM user WHERE id = ".$_SESSION['userid']);
+				$msgSet = $mysql->fetch($msgres);
+				//send email notification
+				if($msgSet['msg_email']==1){
+					$useremail = $mysql->oneQuery("SELECT email FROM user WHERE id =".$_SESSION['userid']);
+					$html = htmlspecialchars("
+					<div style='background:#1E3E57;width:100%;height:400px;border-radius:5px;padding:20px'>
+					<h3 style='color:#fff'>Your Food $foodname will be expired at</h3>
+					<h1 style='color:#FF6384'>$exp</h1><br/>
+					<h3 style='color:#fff'>Please use it soon!</h3>
+					<a href='https://marshal1.tech/FYP'>Go to EMCS now!</a>
+					</div>");
+					$postary = [
+						"email"=>$useremail,
+						"subject"=>"Your $foodname will be expired soon!",
+						"body"=>$html,
+						"altbody"=>"Your Food $foodname will be expired at $exp \r\n Please use it soon!"
+					];
+					ATrigger::doCreate("1day", "http://marshal1.tech/FYP/mailer.php", ['type'=>'email','userid'=>$_SESSION['userid'],'foodid'=>$editid],$firstdate,$_SESSION['reptimes'], 3,$postary);			
+					echo 'email noti suc';
+				}
+				//send chrome notification
+				if($msgSet['msg_chrome']==1){
+					curlGet("https://api.atrigger.com/v1/tasks/create","key=4989200868836991246&secret=f5lI15uo41pYL7aY5QNkYq7h5bC7Y6&timeSlice=1day&first=$first&count=".$_SESSION['reptimes']."&retries=3&tag_chrome=chrome&tag_userid=".$_SESSION['userid']."&tag_foodid=$editid&url=http://marshal1.tech/FYP/notification.php?uid=".$_SESSION['userid']);
+					echo 'chrome noti suc';
+				}
+				
 			}
-			/*Atrigger*/
-			echo json_encode(['res'=>1]);
 	}
 	/*Get all food data */
 	elseif(isset($_POST['foods'])){
@@ -252,7 +285,7 @@
 		$setdate = $warndate.':09:00:00';
 		$firstdate = date_create_from_format('d/M/Y:H:i:s', $setdate);
 		ATrigger::doCreate("1day", "http://marshal1.tech/FYP/notification.php", ['type'=>'chrome','userid'=>$_SESSION['userid'],'foodid'=>$foodid],$firstdate,$_SESSION['reptimes'], 3,["userid"=>$_SESSION['userid']]);
-		echo 'suc';
+		echo 'chrome noti suc';
 	/* Search user's food in header table */
 	}elseif(isset($_POST['searchfoodfeader'])){
 		$searchFood = inputCheck($_POST['searchfoodfeader']);

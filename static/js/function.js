@@ -278,28 +278,57 @@ isemail = false;
 		$('#expbtn').html($(ele).html());
 		$('[name="expopenunit"]').val($(ele).html());
 	}
+/* Atriger delete task by food id*/
+	function atrigerDel(delid){
+		$.ajax({  
+		  url: "https://api.atrigger.com/v1/tasks/delete",  
+		  data: {
+			"key":"4989200868836991246",
+			"secret":"f5lI15uo41pYL7aY5QNkYq7h5bC7Y6",
+			"tag_foodid":delid
+		  },  
+		  success: function(data){console.log(data)},  
+		  type:'get',
+		}); 
+	}
 /* use ajax to submit form which add/edit/ food into storage */
 	function submitform(){
-		$.ajax({
-			url:'ajax.php',
-			data: new FormData($('#foodeditform')[0]),
-			success:function(data){
-				setTimeout(function(){
-						$('#modal-editfood').modal('hide')
-						vm.getall()
-					$('#submitting').html('Submit')
-					$('#submitting').removeClass("fa fa-spinner fa-spin fa-3x")
-				},200);
-			},
-			beforeSend:function(){
-				$('#submitting').html('')
-				$('#submitting').addClass("fa fa-spinner fa-spin fa-3x")
-			},
-			type:'POST',
-			processData: false,
-			contentType: false,
-			dataType:'json'
+		editfoodid = $('[name="editfoodid"]').val()
+		$.ajax({  
+		  url: "https://api.atrigger.com/v1/tasks/delete",  
+		  data: {
+			"key":"4989200868836991246",
+			"secret":"f5lI15uo41pYL7aY5QNkYq7h5bC7Y6",
+			"tag_foodid":editfoodid
+		  },  
+		  success: function(data){
+			  console.log(data)
+			  $.ajax({
+					url:'ajax.php',
+					data: new FormData($('#foodeditform')[0]),
+					success:function(data){
+						console.log(data)
+							setTimeout(function(){
+								$('#modal-editfood').modal('hide')
+								vm.getall()
+								$('#submitting').html('Submit')
+								$('#submitting').removeClass("fa fa-spinner fa-spin fa-3x")
+							},200);
+					},
+					beforeSend:function(){
+						
+						//atrigerDel(editfoodid);
+						$('#submitting').html('')
+						$('#submitting').addClass("fa fa-spinner fa-spin fa-3x")
+					},
+					type:'POST',
+					processData: false,
+					contentType: false
+				});
+			  },  
+		  type:'get',
 		});
+		
 	}
 /* Check Shopping List */
 	function checkshop(ele,id,ischeck){

@@ -50,6 +50,7 @@ function preProcess(){
 /* Scan data source, create header table */	
 function creHeader(){
 	global $mysql;
+	global $head;
 	$sql_scan1 = "SELECT * FROM recipes_tag";
 	$res_scan = $mysql->query($sql_scan1);
 	while($row = $mysql->fetch($res_scan)){
@@ -57,7 +58,13 @@ function creHeader(){
 		for($i=1;$i<count($items);$i++){ //first is empty
 			//if the item exists in header table, update num
 			$node = $items[$i];
-			if($res_headers = $mysql->query("SELECT * FROM header WHERE node like '%$node%'")){
+			if(isset($head[$node])){
+				$head[$node]++;
+			}else{
+				$head[$node] = 1;
+			}
+			//The version of Storing in DB
+			/* if($res_headers = $mysql->query("SELECT * FROM header WHERE node like '%$node%'")){
 				if(mysqli_num_rows($res_headers) > 0){
 					$headers = $mysql->fetch($res_headers);
 					$hitem_id = $headers['id'];
@@ -66,24 +73,32 @@ function creHeader(){
 				}else{
 					$mysql->query("INSERT header(node,num) VALUE('$node','1')");
 				}
-			}
+			} */
 		}
 	}
 }
-// creHeader(); //Please do not re-create 
- 
+ creHeader(); //Please do not re-create 
+
 /* Order Header table */
 $headers = [];
 function ordHeader(){
 	global $mysql;
+	global $head;
 	global $headers;
-	$sql_headers = "SELECT * FROM header ORDER BY num DESC";
+	arsort($head);
+	foreach($head as $node=>$sup){
+		if($sup >= 3){ //MIN SUPPORT is 3
+			$headers[$node] = $sup;
+		}
+	}
+	//DB Version
+	/* $sql_headers = "SELECT * FROM header ORDER BY num DESC";
 	$res_headers = $mysql->query($sql_headers);
 	while($row = $mysql->fetch($res_headers)){
 		if($row['num']>=3){ //MIN SUPPORT is 3
 			$headers[$row['node']] = $row['num'];
 		}
-	}
+	} */
 }
 
 ordHeader();
@@ -255,11 +270,18 @@ function mineTreeInMemory($test){ //To Find CBP(conditional base pattern)
  // This will create in Subb-Tree meory and not store in DB
 	mineTreeInMemory('test');
 
+$s=0;
+foreach($subTree as $k=>$v){
+	foreach($v as $x=>$y){
+		$s++;
+	}
+}
+echo "Subtree record:". $s;
 
  //mineTree('test'); //Please do not re-create subtree table again, it may crack your browser due to your default max_execution time
 
 $runtime->stop();
-echo "<br/>Time: ".$runtime->spent()." s";
+echo "<br/>Time: ".$runtime->spent()." s<br/>";
 
 print_r($subTree);
 ?>

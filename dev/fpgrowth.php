@@ -1,6 +1,5 @@
 <pre>
 <?php
-echo "Please check source code comments";
 require('../inc/db.php');
 	class runtime{
 		//to record execution time
@@ -81,25 +80,29 @@ function ordHeader(){
 	$sql_headers = "SELECT * FROM header ORDER BY num DESC";
 	$res_headers = $mysql->query($sql_headers);
 	while($row = $mysql->fetch($res_headers)){
-		$headers[$row['node']] = $row['num'];
+		if($row['num']>=3){ //MIN SUPPORT is 3
+			$headers[$row['node']] = $row['num'];
+		}
 	}
 }
+
 ordHeader();
 //print_r($headers); // It will print all data from header table
-
 
 /* Order item according to headers table */
 function compareAB($a,$b){
 	global $headers;
-	if($headers[$a]>=$headers[$b]){
-		return -1;
-	}else{
-		return 1;
+	if(isset($headers[$a])&&isset($headers[$b])){
+		if($headers[$a]>=$headers[$b]){
+			return -1;
+		}else{
+			return 1;
+		}
 	}
 }
 
 /* Second scan DB, Build FP-Tree */
-function buildTree(){
+/* function buildTree(){
 	global $mysql;
 	global $headers;
 	$sql_scan2 = "SELECT * FROM recipes_tag";
@@ -113,9 +116,7 @@ function buildTree(){
 		$path = 'Root';	
 		for($v=0;$v<count($items);$v++){ //all items in each transaction
 			$node = $items[$v];
-			//MIN SUPPORT is 3
 			if(isset($headers[$node])){
-				if($headers[$node]>=3){
 				$sql_search = "SELECT * FROM fptree WHERE path = '$path' AND node = '$node'";
 				if($res_search = $mysql->query($sql_search)){
 					if(mysqli_num_rows($res_search)>0){
@@ -130,19 +131,58 @@ function buildTree(){
 						$mysql->query($sql_add);
 					}
 				}
-			}
-			$path .= "/$node";
+				$path .= "/$node";
 			} 
 		}
 		$cid = $row['id'];
 	}
 	echo 'Processed Record: '.$cid.'<br/>';
+} */
+function buildTreeInMemory(){
+	global $mysql;
+	global $headers;
+	$sql_scan2 = "SELECT * FROM recipes_tag";
+	$res_scan = $mysql->query($sql_scan2);
+	global $fptree;
+	$fptree = array('Root'=>[' '=>0]); //['node'=>['path'=>'num','path1'=>'num']]
+	while($row = $mysql->fetch($res_scan)){
+		$items = explode(",",$row['items']);
+		array_shift($items);//delete ,
+		//order data source according to the header table
+		usort($items,"compareAB");
+		$path = 'Root';	
+		for($v=0;$v<count($items);$v++){ //all items in each transaction
+			$node = $items[$v];
+			//MIN SUPPORT is 3
+			if(isset($headers[$node])){
+				if(isset($fptree[$node])){
+					if(isset($fptree[$node][$path])){
+						//Update exsiting node
+						$fptree[$node][$path]++;
+					}else{
+						//Create new node
+						$fptree[$node][$path] = 1;
+					}
+				}else{
+					//Create new node from root
+						$fptree[$node][$path] = 1;
+				}
+				$path .= "/$node";
+			}
+		}
+	}
 }
+//This will create in FP-Tree meory and not store in DB
+buildTreeInMemory();
+//echo count($fptree);
+//print_r($fptree);
+
+
 //	buildTree(); //Do not re-create again please!
 
 
 /* Mining FP-Tree，From the last item of header table, find each path，count nodes, delete node < min threshold */
-function mineTree($test){
+ /* function mineTree($test){
 	global $mysql;
 	global $subTree;
 	$sql_headers_trim = "SELECT * FROM header WHERE num>=3 ORDER BY num ASC";
@@ -157,7 +197,7 @@ function mineTree($test){
 			$initNum = $row['num'];
 			$sub_path = explode("/",$row['path']);
 			for($i=0;$i<count($sub_path);$i++){ //$i=0 means the node->root, which is its own support value
-				$sql_find = "SELECT COUNT(*) FROM subtree WHERE node = '$mineNode' AND assoc = '".$sub_path[$i]."'";
+				$sql_find = "SELECT COUNT(*) FROM subtree1 WHERE node = '$mineNode' AND assoc = '".$sub_path[$i]."'";
 				if($test=='test'){
 					if(array_key_exists($sub_path[$i],$subTree[$mineNode])){ //$subTree is only used for testing
 						$subTree[$mineNode][$sub_path[$i]] += $initNum;
@@ -167,26 +207,60 @@ function mineTree($test){
 				}elseif($test=='real'){
 					if($mysql->oneQuery($sql_find) > 0){
 						//Update existing node	
-						$mysql->query("UPDATE subtree SET num = num+$initNum WHERE node = '$mineNode' AND assoc = '".$sub_path[$i]."'");
+						$mysql->query("UPDATE subtree1 SET num = num+$initNum WHERE node = '$mineNode' AND assoc = '".$sub_path[$i]."'");
 					}else{
 						//New node	
-						$mysql->query("INSERT subtree (node,assoc,num) VALUES ('$mineNode','".$sub_path[$i]."','$initNum')");
+						$mysql->query("INSERT subtree1 (node,assoc,num) VALUES ('$mineNode','".$sub_path[$i]."','$initNum')");
+					}
+				}
+			}
+		}
+	}
+}  */
+
+function mineTreeInMemory($test){ //To Find CBP(conditional base pattern)
+	global $mysql;
+	global $fptree;
+	global $subTree;
+	global $headers;
+	asort($headers);
+	foreach($headers as $hnode=>$hnum){
+		$mineNode = $hnode;
+		$subTree[$mineNode] = [];//Only shows the sub-tree
+		foreach($fptree[$mineNode] as $path=>$num){
+			$initNum = $num;
+			$sub_path = explode("/",$path);
+			for($i=0;$i<count($sub_path);$i++){ //$i=0 means the node->root, which is its own support value
+				$sql_find = "SELECT COUNT(*) FROM subtree1 WHERE node = '$mineNode' AND assoc = '".$sub_path[$i]."'";
+				if($test=='test'){
+					if(array_key_exists($sub_path[$i],$subTree[$mineNode])){ //$subTree is only used for testing
+						$subTree[$mineNode][$sub_path[$i]] += $initNum;
+					}else{
+						$subTree[$mineNode][$sub_path[$i]] = $initNum;
+					}
+				}elseif($test=='real'){
+					if($mysql->oneQuery($sql_find) > 0){
+						//Update existing node	
+						$mysql->query("UPDATE subtree1 SET num = num+$initNum WHERE node = '$mineNode' AND assoc = '".$sub_path[$i]."'");
+					}else{
+						//New node	
+						$mysql->query("INSERT subtree1 (node,assoc,num) VALUES ('$mineNode','".$sub_path[$i]."','$initNum')");
 					}
 				}
 			}
 		}
 	}
 }
-/*  this part is testing generated sub tree
-mineTree('test');
-	echo 'Sub tree nodes number: '.count($subTree).'<br/>';
-	print_r($subTree);
-*/
+
+ // This will create in Subb-Tree meory and not store in DB
+	mineTreeInMemory('test');
 
 
-// mineTree('real'); //Please do not re-create subtree table again, it may crack your browser due to your default max_execution time
+ //mineTree('test'); //Please do not re-create subtree table again, it may crack your browser due to your default max_execution time
 
 $runtime->stop();
 echo "<br/>Time: ".$runtime->spent()." s";
+
+print_r($subTree);
 ?>
 </pre>

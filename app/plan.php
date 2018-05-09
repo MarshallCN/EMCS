@@ -24,13 +24,28 @@
 			$res_myfood = $mysql->query($sql_myfood);
 			$myfoods = array();
 			$cond = '';
+			$selectfoods = [];
 			while($row_myfood = $mysql->fetch($res_myfood)){
 				array_push($myfoods,['id'=>$row_myfood['id'],'name'=>$row_myfood['name'],'days'=>$row_myfood['days']]);
 				$cond .= " ingredients like '%".$row_myfood['name']."%' AND ";
-				echo "<div class='col-md-2 col-sm-4'>
-				<label for='sfood_".$row_myfood['id']."' style='cursor:pointer'>".ucfirst(strtolower($row_myfood['name']))." (".$row_myfood['days']."Days): </label>
-				<input type='checkbox' name='myfoods[]' id='sfood_".$row_myfood['id']."' value='".$row_myfood['id'].','.$row_myfood['name'].','.$row_myfood['days']."' checked/>
+				//if greater than warning day threshold
+				if($row_myfood['days']<=$_SESSION['threshold']){
+					$valstr = $row_myfood['id'].",".$row_myfood['name'].",".$row_myfood['days'];
+					array_push($selectfoods,$valstr);
+					$checked = "checked";
+					$days = '<span class="label label-danger">'.$row_myfood['days'].' Days</span>';
+				}else{
+					$checked = '';
+					$days = $row_myfood['days']." Days";
+				}
+					$checked = $row_myfood['days']<=$_SESSION['threshold']?'checked':'';	
+				echo "<div class='col-md-3 col-sm-4'>
+				<label for='sfood_".$row_myfood['id']."' style='cursor:pointer'>".ucfirst(strtolower($row_myfood['name']))." ($days): </label>
+				<input type='checkbox' name='myfoods[]' id='sfood_".$row_myfood['id']."' value='".$row_myfood['id'].','.$row_myfood['name'].','.$row_myfood['days']."' $checked/>
 				</div>";
+			}
+			if(!isset($_POST['myfoods'])){
+				$_POST['myfoods'] = $selectfoods;
 			}
 		//collect post data, and create search condition
 			if(isset($_POST['myfoods'])){

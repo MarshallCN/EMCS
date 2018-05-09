@@ -3,6 +3,7 @@ var vmassoc =  new Vue({
 		data: {
 			foodassocName:[],
 			foodassocData:[],
+			foodliftData:[],
 			mychart:{},
 			mainnode: '',
 			
@@ -61,8 +62,11 @@ var vmassoc =  new Vue({
 						if(typeof mychart=='undefined'){
 							that.foodassocName = data.assoc
 							that.foodassocData = data.conf
+							that.foodliftData = data.lift
+							that.foodlifconfData = data.lifconf
 						}else{
 							mychart.data.datasets[0].data = data.conf
+							mychart.data.datasets[1].data = data.lift
 							mychart.data.labels = data.assoc
 							mychart.options.title.text = 'If '+that.mainnode+', then...'
 							mychart.update()
@@ -92,6 +96,12 @@ var vmassoc =  new Vue({
 							data: vmassoc.foodassocData,
 							backgroundColor: "#FFCE56",
 							borderColor: "#FFCE56",
+						},
+						{
+							label: "Lift",
+							data: vmassoc.foodliftData,
+							backgroundColor: "#39719c",
+							borderColor: "#39719c",
 						}]
 					},
 					options: {
@@ -102,14 +112,14 @@ var vmassoc =  new Vue({
 						},
 						scales: {
 							xAxes: [{
-								stacked: true, 
+								stacked: false, 
 								position: "top",
 								ticks: {
 									beginAtZero:true
 								}
 							}],
 							yAxes: [{
-								stacked: true,
+								stacked: false,
 								position: "left",
 							}]
 						}

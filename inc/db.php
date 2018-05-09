@@ -4,7 +4,7 @@
 		$this->conn=$this->getConn();
 	}
 	function getConn(){
-        $conn =  mysqli_connect('mysql.hostinger.com.hk','u813337812_root','76359599',"u813337812_emcs");
+        $conn =  mysqli_connect('localhost','root','',"emcs");
 		mysqli_query($conn,"set names gbk");
         return $conn;
     }

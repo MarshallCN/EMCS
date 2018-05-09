@@ -4,7 +4,8 @@ var vmassoc =  new Vue({
 			foodassocName:[],
 			foodassocData:[],
 			foodliftData:[],
-			mychart:{},
+			foodconvData:[],
+			foodlevData:[],
 			mainnode: '',
 			
 		},
@@ -53,20 +54,31 @@ var vmassoc =  new Vue({
 					});
 				}
 			},
+			changeMeasure: function(){
+				var val = $('#measure').val().split(',')
+				var label = val[0]
+				var attr = "food"+val[1]+"Data"
+				mychart.data.datasets[1].label = label;
+				mychart.data.datasets[1].data = this[attr];
+				mychart.update()
+			},
 			assoc: function(){
 				var that=this;
 				$.ajax({
 					url:'ajax.php',
 					data:{"assocnode":that.mainnode},
 					success:function(data){
-						if(typeof mychart=='undefined'){
 							that.foodassocName = data.assoc
 							that.foodassocData = data.conf
 							that.foodliftData = data.lift
-							that.foodlifconfData = data.lifconf
-						}else{
+							that.foodconvData = data.conv
+							that.foodlevData = data.lev
+						if(typeof mychart!='undefined'){
+							mychart.data.datasets[0].label = "Confidence"
 							mychart.data.datasets[0].data = data.conf
-							mychart.data.datasets[1].data = data.lift
+							that.changeMeasure()
+							//mychart.data.datasets[1].label = "Conviction"
+							//mychart.data.datasets[1].data = data.conv
 							mychart.data.labels = data.assoc
 							mychart.options.title.text = 'If '+that.mainnode+', then...'
 							mychart.update()
@@ -92,14 +104,10 @@ var vmassoc =  new Vue({
 					data: {
 						labels: vmassoc.foodassocName,
 						datasets: [{
-							label: "Confidence",
-							data: vmassoc.foodassocData,
 							backgroundColor: "#FFCE56",
 							borderColor: "#FFCE56",
 						},
 						{
-							label: "Lift",
-							data: vmassoc.foodliftData,
 							backgroundColor: "#39719c",
 							borderColor: "#39719c",
 						}]

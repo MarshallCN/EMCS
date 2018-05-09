@@ -309,16 +309,22 @@
 		$total = $mysql->oneQuery("select count(*) from recipes");
 		$rootv = $mysql->oneQuery("SELECT num FROM subtree WHERE node = '$node' AND assoc = 'Root'");
 		//Confidence(X→Y) = P(Y | X) = P(X,Y)/ P(X) = P(consequent)/P(antecedent) = num/$rootv
-		$sql_assoc = "SELECT s.assoc,s.num/$rootv as conf,s.num/$rootv/(l.num/$total) AS lift, ($total-l.num)/$total / (($rootv-s.num)/$rootv) as conv FROM subtree AS s INNER JOIN 
+		//Support(A)=$rootv, Support(C)=l.num, Support(A->C) = s.num
+		$sql_assoc = "SELECT s.assoc,s.num/$rootv as conf,
+			s.num/$rootv/(l.num/$total) AS lift, 
+			($total-l.num)/$total / (($rootv-s.num)/$rootv) AS conv, 
+			(s.num/$total) - (($rootv/$total) * (l.num/$total)) AS lev 
+		FROM subtree AS s INNER JOIN 
 		(SELECT node,num from subtree group by node) AS l ON s.assoc = l.node WHERE s.node = '$node' AND s.num/$rootv != 1 
 		AND s.assoc!='root' AND s.num/$rootv > 0.1 AND s.num/$rootv/(l.num/$total) > 1 ORDER BY conf DESC LIMIT 20";
 		$res_assoc = $mysql->query($sql_assoc);
-		$res = ['assoc'=>[],'conf'=>[],'lift'=>[],'lifconf'=>[]];
+		$res = ['assoc'=>[],'conf'=>[],'lift'=>[],'conv'=>[],'lev'=>[]];
 		while($row = $mysql->fetch($res_assoc)){
 			array_push($res['assoc'],$row['assoc']);
 			array_push($res['conf'],$row['conf']);
 			array_push($res['lift'],$row['lift']);
-			array_push($res['lifconf'],$row['conv']);
+			array_push($res['conv'],$row['conv']);
+			array_push($res['lev'],$row['lev']);
 		}
 		echo json_encode($res);
 	}

@@ -175,8 +175,20 @@
 			</div>
 			<div class="form-group col-sm-6" style="padding-top:10px">
 				<label for="#assocfood">Select a Specific Categories</label>
-				<select id="assocmore" class="form-control" @change="select2" @click="select2" disabled>
-				</select>
+				<select id="assocmore" class="form-control" @change="select2" @click="select2" disabled></select>
+				<div class='helptip' id='helptip_icon' style="margin:30px 180px 0 0;display:none;" onclick="$(this).css('display','none')">
+					<i>Change Measurement to reduce relative<br/> metric value of trivial or inexplicable rules</i>
+					<div><b>Conviction</b> - Handle Unusual Food</div>
+					<div><b>Lift</b> - Handle extreme common Food</div>
+				</div>
+				<div class="recipebtn" style="width:120px;margin:90px 50px 0 0;position:fixed">
+					<label for="#measure">Measurement</label>
+					<a href="javascript:void(0);"  onclick="$('#helptip_icon').toggle()" class="fa fa-question-circle icon_ques"></a>
+					<select id='measure' class="form-control" @change='changeMeasure()'>
+						<option value='Conviction,conv'>Conviction</option>
+						<option value='Lift,lift'>Lift</option>
+					</select>
+				</div>
 			</div>
 			<div class="form-group"><h4 id='emptystate'></h4></div>
 			<div class="col-sm-10"><canvas id="assocfoodChart" height="300px"></canvas></div>

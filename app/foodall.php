@@ -156,9 +156,10 @@
 					<div class='helptip' id='exptip' onclick="$(this).hide()" style="display:none">
 						<dl>
 							<dt class="font-weight-bold">Best Before</dt>
-							<dd>The date of the best quality, food may still be eatable after the date expires</dd>
+							<dd>The date of the best quality, food may still be eatable after the date expires<br/>Smell! Watch! Use Your expeience to judge it!</dd>
 							<dt class="font-weight-bold">Used By</dt>
 							<dd>The real expiration date! Don't eat it after the date expires</dd>
+							<dt><a href="http://www.eatbydate.com/whats-in-a-date-shelf-life/">More info</a></dt>
 						<dl>
 					</div>
 					<div class="form-group col-xs-6">

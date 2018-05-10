@@ -196,7 +196,7 @@
 					<div><b>Conviction</b> - Handle Unusual Food</div>
 					<div><b>Lift</b> - Handle extreme common Food</div>
 				</div>
-				<div class="recipebtn" style="width:120px;margin:90px 50px 0 0;position:fixed">
+				<div class="recipebtn measures">
 					<label for="#measure">Measurement</label>
 					<a href="javascript:void(0);"  onclick="$('#helptip_icon').toggle()" class="fa fa-question-circle icon_ques"></a>
 					<select id='measure' class="form-control" @change='changeMeasure()'>

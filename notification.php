@@ -19,6 +19,7 @@ if(isset($_POST['userid'])||isset($_GET['uid'])){
 			$token = $tokens[0];
 		}else{
 			$token = implode('","',$tokens);
+			$esctoken = implode('\",\"',$tokens);
 		}
 		/* $data_string = array(
 			'registration_ids' 	=> array($token)
@@ -32,6 +33,6 @@ if(isset($_POST['userid'])||isset($_GET['uid'])){
 		curl_close($ch);
 		echo 'curl --header "Authorization: key=AIzaSyCfUTbrS9FIQUKvqecUXDytzriLIzve5f8" 
 	--header Content-Type:"application/json" https://android.googleapis.com/gcm/send
-    -d "{\"registration_ids\":[\"'.$token.'\"]}"';	
+    -d "{\"registration_ids\":[\"'.$esctoken.'\"]}"';	
 	}
 }

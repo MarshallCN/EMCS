@@ -193,11 +193,11 @@ if($userinfo['msg_chrome']==0){
 		$res_pwd = $mysql->fetch($mysql->query("SELECT pwdhash,salt_code FROM user WHERE id = '{$_SESSION['userid']}'"));
 		$oldpwdhash = MD5($oldpwd.$res_pwd['salt_code']);
 		if($oldpwdhash == $res_pwd['pwdhash']){
-			$newpwdhash = MD5($_POST['newpwd'].$res_pwd['salt_code']);
+			$newpwdhash = MD5($_POST['pwd'].$res_pwd['salt_code']);
 			if($newpwdhash==$oldpwdhash){
 				echo "<script>
-					$('[name=\"newpwd\"').addClass('alert-danger');
-					$('[name=\"newpwd\"').focus();
+					$('[name=\"pwd\"').addClass('alert-danger');
+					$('[name=\"pwd\"').focus();
 					alert('New Password Cannot be same as original one!');
 				</script>";
 			}else{

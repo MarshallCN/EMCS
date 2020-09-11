@@ -308,19 +308,30 @@
 		$node = str_replace('_',' ',inputCheck($_POST['assocnode']));
 		$total = $mysql->oneQuery("select count(*) from recipes");
 		$rootv = $mysql->oneQuery("SELECT num FROM subtree WHERE node = '$node' AND assoc = 'Root'");
-		//Confidence(X→Y) = P(Y | X) = P(X,Y)/ P(X) = P(consequent)/P(antecedent) = num/$rootv
+		//Confidence(X→Y) = P(Y | X) = P(X,Y)/ P(X) = P(antecedent, consequent)/P(antecedent) = num/$rootv
 		//Support(A)=$rootv, Support(C)=l.num, Support(A->C) = s.num
-		$sql_assoc = "SELECT s.assoc,s.num/$rootv as conf,
-			s.num/$rootv/(l.num/$total) AS lift, 
-			($total-l.num)/$total / (($rootv-s.num)/$rootv) AS conv, 
-			(s.num/$total) - (($rootv/$total) * (l.num/$total)) AS lev 
-		FROM subtree AS s INNER JOIN 
-		(SELECT node,num from subtree group by node) AS l ON s.assoc = l.node WHERE s.node = '$node' AND s.num/$rootv != 1 
-		AND s.assoc!='root' AND s.num/$rootv > 0.1 AND s.num/$rootv/(l.num/$total) > 1 ORDER BY conf DESC LIMIT 20";
+		$sql_assoc = "
+			SELECT s.assoc,
+				s.num/$total AS sup,
+				s.num/$rootv AS conf,
+				s.num/$rootv/(l.num/$total) AS lift, 
+				($total-l.num)/$total / (($rootv-s.num)/$rootv) AS conv, 
+				(s.num/$total) - (($rootv/$total) * (l.num/$total)) AS lev 
+			FROM subtree AS s INNER 
+			JOIN (SELECT node,num from subtree group by node) AS l 
+				ON s.assoc = l.node 
+			WHERE s.node = '$node' 
+				AND s.num/$rootv != 1 
+				AND s.assoc!='root' 
+				AND s.num/$rootv > 0.1 
+				AND s.num/$rootv/(l.num/$total) > 1 
+			ORDER BY conf DESC 
+			LIMIT 20";
 		$res_assoc = $mysql->query($sql_assoc);
-		$res = ['assoc'=>[],'conf'=>[],'lift'=>[],'conv'=>[],'lev'=>[]];
+		$res = ['assoc'=>[],'conf'=>[],'lift'=>[],'conv'=>[],'lev'=>[],'sup'=>[]];
 		while($row = $mysql->fetch($res_assoc)){
 			array_push($res['assoc'],$row['assoc']);
+			array_push($res['sup'],$row['sup']);
 			array_push($res['conf'],$row['conf']);
 			array_push($res['lift'],$row['lift']);
 			array_push($res['conv'],$row['conv']);

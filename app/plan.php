@@ -202,6 +202,8 @@
 					<select id='measure' class="form-control" @change='changeMeasure()'>
 						<option value='Conviction,conv'>Conviction</option>
 						<option value='Lift,lift'>Lift</option>
+						<option value='Leverage,lev'>Leverage</option>
+						<option value='Support,sup'>Support</option>
 					</select>
 				</div>
 			</div>

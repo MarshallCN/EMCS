@@ -70,6 +70,7 @@ var vmassoc =  new Vue({
 					success:function(data){
 							that.foodassocName = data.assoc
 							that.foodassocData = data.conf
+							that.foodsupData = data.sup
 							that.foodliftData = data.lift
 							that.foodconvData = data.conv
 							that.foodlevData = data.lev

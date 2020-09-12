@@ -5,7 +5,7 @@ if(isset($_POST['userid'])||isset($_GET['uid'])){
 	$url = "https://android.googleapis.com/gcm/send";
 	$ch = curl_init($url);
 	$headers = array();
-	$headers[] = "Authorization: key=AIzaSyCfUTbrS9FIQUKvqecUXDytzriLIzve5f8";
+	$headers[] = "Authorization: key=xxxxxxxxxxxxx";
 	$headers[] = "Content-Type: application/json";
 	$tokens = array();
 	$sql_token = "SELECT * FROM user_token WHERE user_id = '$user_id'";
@@ -31,7 +31,7 @@ if(isset($_POST['userid'])||isset($_GET['uid'])){
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
 		$result = curl_exec($ch);
 		curl_close($ch);
-		echo 'curl --header "Authorization: key=AIzaSyCfUTbrS9FIQUKvqecUXDytzriLIzve5f8" 
+		echo 'curl --header "Authorization: key=xxxxxxxxxx" 
 	--header Content-Type:"application/json" https://android.googleapis.com/gcm/send
     -d "{\"registration_ids\":[\"'.$esctoken.'\"]}"';	
 	}

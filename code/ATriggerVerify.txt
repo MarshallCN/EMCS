@@ -1,4 +1,4 @@
-2E53F7725EC0C4419FD646BD239B5EEF
+2E53F772*********9B5EEF
 
 This is ATrigger.com API Verification File.
 This file should be placed on the root folder of target url. This file is unique for each account in ATrigger.com

@@ -17,7 +17,7 @@
 	$page = isset($_GET['page']) ? $_GET['page']:'food';
 	
 	/*Main Pages*/
-	include "inc/header.php";
+	include "inc/header.html";
 	include "inc/nav.php";
 	if($page=='food'){
 		include "app/foodall.php";
@@ -30,5 +30,5 @@
 	}else if($page=='setting'){
 		include "app/setting.php";
 	}
-	include "inc/footer.php";
+	include "inc/footer.html";
 ?>

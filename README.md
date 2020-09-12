@@ -92,11 +92,11 @@ This system uses responsive design, which is compatible on multiple devices
 
 <a name="about"></a>
 # About
-This project is my coursework project in 2018. It also contains a questionnaire survey and user data analysis, relevent docs can be found in ./design folder
+This project is my coursework project in 2018. It also contains a questionnaire survey and user data analysis, relevent docs can be found in ./design folder.
 Some functions may not work on Localhost in Windows, because
 	(1) the system is built to compatible with Linux online server from Hostinger.com
 	(2) Atrigger function requires web server
 	(3) Google Chrome Messaging service requires SSL cerificate (https://)
 	(4) It requires several dependencies packages
 	(5) You may failed to import DB sql backup file due to its size is bigger than your default setting
-	(6) Fp-growth function cost lot time, which may reach max execution time of your default setting
+	(6) Fp-growth function is time-consuming, which may reach max execution time of your default setting

@@ -1,4 +1,4 @@
-This system is biulding, testing and hosting on https://marshal1.tech/FYP (2020 updates: Expired)
+This system is building, testing and hosting on https://marshal1.tech/ (2020 updates: Expired)
 
 And some functions may not work on Localhost in Windows, because
 	(1) the system is built to compatible with Linux online server from Hostinger.com

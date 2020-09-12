@@ -1,6 +1,6 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
-require '../vendor/autoload.php';
+require './vendor/autoload.php';
 if(isset($_POST['email'])&&isset($_POST['subject'])&&isset($_POST['body'])&&isset($_POST['altbody'])){
 	if(!empty($_POST['email'])&&!empty($_POST['subject'])&&!empty($_POST['body'])&&!empty($_POST['altbody'])){
 		$email = $_POST['email'];
@@ -14,7 +14,7 @@ if(isset($_POST['email'])&&isset($_POST['subject'])&&isset($_POST['body'])&&isse
 		$mail->Port = 587;
 		$mail->SMTPAuth = true;
 		$mail->Username = 'emcs@marshal1.tech';
-		$mail->Password = '960618';
+		$mail->Password = 'xxxx';
 		$mail->setFrom('emcs@marshal1.tech', 'EMCS');
 		$mail->addReplyTo('emcs@marshal1.tech', 'EMCS');
 		$mail->addAddress($email);

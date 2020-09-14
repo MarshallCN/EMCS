@@ -2,7 +2,7 @@
 	session_start();
 	require "inc/db.php";
 	require_once("atrigger/ATrigger.php");
-	ATrigger::init("4989200868836991246","f5lI15uo41pYL7aY5QNkYq7h5bC7Y6");
+	ATrigger::init("xxxxx","xxxxx");
 	/*Log out*/
 	if(isset($_GET['logout'])){
 		unset($_SESSION['user']);

@@ -1,7 +1,7 @@
 <?php 
 	session_start();
 	require "inc/db.php";
-	include 'inc/header.php';
+	include 'inc/header.html';
 ?>
 <dl>
 	<dd class="clearfix">
@@ -56,7 +56,7 @@
 	</dd>
 </dl>
 <?php
-	include "inc/footer.php";
+	include "inc/footer.html";
 	if(isset($_POST['login'])){
 		$username = strtolower(inputCheck($_POST['username']));
 		$pwd = inputCheck($_POST['pwd']);

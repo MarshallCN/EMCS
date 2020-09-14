@@ -6,15 +6,15 @@ Expiration Management & Cooking Suggestion (EMCS) is a web-based prototype syste
 - [Responsive Design](#phone)
 - [Tech Docs](#design)
 - [About](#about)
-    
-  
   
 # Dependencies
+![db](https://badgen.net/badge/MariaDB/v10.3.16/?color=pink)
+![php](https://badgen.net/badge/PHP/v7.1.30/?color=pink)
 ![jq](https://badgen.net/badge/jQuery/v3.2.1/?color=yellow)
 ![vue](https://badgen.net/badge/Vue.js/v2.5.13/?color=yellow)
 ![chart](https://badgen.net/badge/Chart.js/v2.5.0/?color=yellow)
 ![fa](https://badgen.net/badge/FontAwesome.css/v4.7.0/?color=blue)
-![bootstrap](https://badgen.net/badge/Bootstrap/v3.3.7/?color=pink)
+![bootstrap](https://badgen.net/badge/Bootstrap/v3.3.7/?color=green)
 ![phpmailer](https://badgen.net/badge/PHPMailer/v5.5/?color=green)
 ![Attrigger](https://badgen.net/badge/Attrigger/v0.1.1/?color=green)
 ![gcm](https://badgen.net/badge/GoogleCloudMessaging/deprecated/?color=red)

@@ -1,5 +1,5 @@
 <?php
-	include('inc/header.php');
+	include('inc/header.html');
 ?>
 	<div class="col-md-6 col-md-offset-3">
 		<div class='col-xs-12' style="margin-top:40px;padding-top:10px;border-radius:5px;min-height:400px;background:#fff;">
